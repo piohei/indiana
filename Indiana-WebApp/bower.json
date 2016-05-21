@@ -1,0 +1,14 @@
+{
+  "name": "indiana-webapp",
+  "version": "1.0.0",
+  "main": "index.html",
+  "ignore": [
+    "**/.*",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": "2.2.4",
+    "threejs": "r77"
+  },
+  "private": true
+}
