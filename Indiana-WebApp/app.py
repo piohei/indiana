@@ -40,6 +40,7 @@ class MapHandler(web.RequestHandler):
         routers = [
             {'x': 10, 'y': 10},
             {'x': 30, 'y': 35},
+            {'x': 50, 'y': -40},
         ]
 
         result = {'rooms': rooms, 'routers': routers}
