@@ -66,7 +66,7 @@ if __name__ == "__main__":
         (r"/", IndexHandler),
         (r"/map", MapHandler),
         (r"/finger_tip", FingerTipHandler),
-        (r"/static/(.*)", web.StaticFileHandler, {"path": "./static"}),
+        (r"/static/(.*)", web.StaticFileHandler, {"path": __file__ + "/../static"}),
         (r"/websocket", SocketHandler)
     ])
     app.listen(8888)
