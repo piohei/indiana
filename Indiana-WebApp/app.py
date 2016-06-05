@@ -1,5 +1,6 @@
 import time
 import requests
+import json
 
 from tornado import web, websocket, ioloop, gen
 
@@ -29,6 +30,22 @@ class FingerTipHandler(web.RequestHandler):
         self.redirect("/finger_tip")
 
 
+class MapHandler(web.RequestHandler):
+    def get(self):
+        rooms = [
+            { 'left_bottom': {'x': 10, 'y':  10}, 'right_up': {'x': 30, 'y': 35} },
+            { 'left_bottom': {'x': 10, 'y': -40}, 'right_up': {'x': 50, 'y': 10} }
+        ]
+
+        routers = [
+            {'x': 10, 'y': 10},
+            {'x': 30, 'y': 35},
+        ]
+
+        result = {'rooms': rooms, 'routers': routers}
+        self.write(json.dumps(result))
+
+
 class SocketHandler(websocket.WebSocketHandler):
     @gen.engine
     def open(self):
@@ -47,6 +64,7 @@ class SocketHandler(websocket.WebSocketHandler):
 if __name__ == "__main__":
     app = web.Application([
         (r"/", IndexHandler),
+        (r"/map", MapHandler),
         (r"/finger_tip", FingerTipHandler),
         (r"/static/(.*)", web.StaticFileHandler, {"path": "./static"}),
         (r"/websocket", SocketHandler)

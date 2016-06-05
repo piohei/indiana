@@ -1,3 +1,5 @@
+// 1 is 1m in real world
+
 var DEBUG = false;
 var currentPosition = { x: 0, y: 0, z: 0 };
 
@@ -16,18 +18,8 @@ ws.onmessage = function (evt) {
     currentPosition.x = received[0];
     currentPosition.y = received[1];
     currentPosition.z = received[2];
+    console.log(currentPosition);
 };
-
-// 1 == 1m in real world (just for scale)
-var roomsInput = [
-    { left_bottom: {x: 10, y: 10}, right_up: {x: 30, y: 35} },
-    { left_bottom: {x: 10, y: -40}, right_up: {x: 50, y: 10} }
-];
-
-var routersInput = [
-    {x: 10, y: 10},
-    {x: 30, y: 35},
-];
 
 function init() {
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
@@ -42,17 +34,21 @@ function init() {
     debugHelpers();
 
     generateLocator();
-    locator.position.set(20, 0, 20);
-    generateMap();
+    locator.position.x = currentPosition.x;
+    locator.position.y = currentPosition.z;
+    locator.position.z = currentPosition.y;
+    generateMap(callback=function() {
+        generateScene();
 
-    generateScene();
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( renderer.domElement );
+        window.addEventListener( 'resize', onWindowResize, false );
 
-    document.body.appendChild( renderer.domElement );
-    window.addEventListener( 'resize', onWindowResize, false );
+        animate();
+    });
 }
 
 function onWindowResize() {
@@ -67,7 +63,9 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame( animate );
-    locator.position.x = 20 + currentPosition.x / 10;
+    locator.position.x = currentPosition.x;
+    locator.position.y = currentPosition.z;
+    locator.position.z = currentPosition.y;
     if(controls != null) controls.update();
     render();
 }
@@ -91,70 +89,76 @@ function generateLocator() {
     locator = new THREE.Mesh( headGeometry, material);
 }
 
-function generateMap() {
+function generateMap(callback) {
     rooms = [];
     lights = [];
     routers = [];
     wallHeight = 2.5;
 
-    roomsInput.forEach(function(room) {
-        var width = room.right_up.x - room.left_bottom.x;
-        var height = room.right_up.y - room.left_bottom.y;
+    $.getJSON("/map").done(function (data) {
+        data.rooms.forEach(function(room) {
+            var width = room.right_up.x - room.left_bottom.x;
+            var height = room.right_up.y - room.left_bottom.y;
 
-        var floorGeometry = new THREE.BoxGeometry(width, 0.01, height);
-        var wallWidth1Geometry = new THREE.BoxGeometry(width + 0.02, wallHeight, 0.02);
-        var wallWidth2Geometry = new THREE.BoxGeometry(width + 0.02, wallHeight, 0.02);
-        var wallHeight1Geometry = new THREE.BoxGeometry(0.02, wallHeight, height + 0.02);
-        var wallHeight2Geometry = new THREE.BoxGeometry(0.02, wallHeight, height + 0.02);
-        var material = new THREE.MeshLambertMaterial({ color: blockColor });
+            var floorGeometry = new THREE.BoxGeometry(width, 0.01, height);
+            var wallWidth1Geometry = new THREE.BoxGeometry(width + 0.02, wallHeight, 0.02);
+            var wallWidth2Geometry = new THREE.BoxGeometry(width + 0.02, wallHeight, 0.02);
+            var wallHeight1Geometry = new THREE.BoxGeometry(0.02, wallHeight, height + 0.02);
+            var wallHeight2Geometry = new THREE.BoxGeometry(0.02, wallHeight, height + 0.02);
+            var material = new THREE.MeshLambertMaterial({ color: blockColor });
 
-        floorGeometry.translate(width / 2, 0, height / 2);
-        floorGeometry.translate(room.left_bottom.x, -0.005, room.left_bottom.y);
+            floorGeometry.translate(width / 2, 0, height / 2);
+            floorGeometry.translate(room.left_bottom.x, -0.005, room.left_bottom.y);
 
-        wallWidth1Geometry.translate(width / 2 + 0.01, 0, 0.01);
-        wallWidth2Geometry.translate(width / 2 + 0.01, 0, 0.01);
-        wallWidth1Geometry.translate(room.left_bottom.x, wallHeight / 2, room.left_bottom.y);
-        wallWidth2Geometry.translate(room.left_bottom.x, wallHeight / 2, room.right_up.y);
+            wallWidth1Geometry.translate(width / 2 + 0.01, 0, 0.01);
+            wallWidth2Geometry.translate(width / 2 + 0.01, 0, 0.01);
+            wallWidth1Geometry.translate(room.left_bottom.x, wallHeight / 2, room.left_bottom.y);
+            wallWidth2Geometry.translate(room.left_bottom.x, wallHeight / 2, room.right_up.y);
 
-        wallHeight1Geometry.translate(0.01, 0, height / 2 + 0.01);
-        wallHeight2Geometry.translate(0.01, 0, height / 2 + 0.01);
-        wallHeight1Geometry.translate(room.left_bottom.x, wallHeight / 2, room.left_bottom.y);
-        wallHeight2Geometry.translate(room.right_up.x, wallHeight / 2, room.left_bottom.y);
+            wallHeight1Geometry.translate(0.01, 0, height / 2 + 0.01);
+            wallHeight2Geometry.translate(0.01, 0, height / 2 + 0.01);
+            wallHeight1Geometry.translate(room.left_bottom.x, wallHeight / 2, room.left_bottom.y);
+            wallHeight2Geometry.translate(room.right_up.x, wallHeight / 2, room.left_bottom.y);
 
-        rooms.push({
-            floor: new THREE.Mesh( floorGeometry, material ),
-            walls: [
-                new THREE.Mesh( wallWidth1Geometry, material ),
-                new THREE.Mesh( wallWidth2Geometry, material ),
-                new THREE.Mesh( wallHeight1Geometry, material ),
-                new THREE.Mesh( wallHeight2Geometry, material )
-            ]
+            rooms.push({
+                floor: new THREE.Mesh( floorGeometry, material ),
+                walls: [
+                    new THREE.Mesh( wallWidth1Geometry, material ),
+                    new THREE.Mesh( wallWidth2Geometry, material ),
+                    new THREE.Mesh( wallHeight1Geometry, material ),
+                    new THREE.Mesh( wallHeight2Geometry, material )
+                ]
+            });
+
+            var light = new THREE.PointLight(lightColor, lightIntensity, Math.max(width, height) * 10);
+
+            light.position.set(
+                (room.left_bottom.x + room.right_up.x) / 2,
+                Math.max(width, height) / 2,
+                (room.left_bottom.y + room.right_up.y) / 2
+            );
+
+            if(DEBUG) {
+                var lightGeometry = new THREE.SphereGeometry(1, 16, 16);
+                var lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+                light.add(new THREE.Mesh(lightGeometry, lightMaterial));
+            }
+
+            lights.push(light);
         });
 
-        var light = new THREE.PointLight(lightColor, lightIntensity, Math.max(width, height) * 10);
+        data["routers"].forEach(function(router) {
+            var geometry = new THREE.SphereGeometry(0.3, 16, 16);
+            var material = new THREE.MeshLambertMaterial({ color: routerColor });
 
-        light.position.set(
-            (room.left_bottom.x + room.right_up.x) / 2,
-            Math.max(width, height) / 2,
-            (room.left_bottom.y + room.right_up.y) / 2
-        );
+            geometry.translate(router.x, wallHeight, router.y);
 
-        if(DEBUG) {
-            var lightGeometry = new THREE.SphereGeometry(1, 16, 16);
-            var lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-            light.add(new THREE.Mesh(lightGeometry, lightMaterial));
-        }
+            routers.push(new THREE.Mesh(geometry, material));
+        });
 
-        lights.push(light);
-    });
-
-    routersInput.forEach(function(router) {
-        var geometry = new THREE.SphereGeometry(0.3, 16, 16);
-        var material = new THREE.MeshLambertMaterial({ color: routerColor });
-
-        geometry.translate(router.x, wallHeight, router.y);
-
-        routers.push(new THREE.Mesh(geometry, material));
+        callback();
+    }).fail(function (data) {
+        alert("Error while getting map!");
     });
 }
 
@@ -194,7 +198,7 @@ function runControls() {
     controls.staticMoving = true;
     controls.dynamicDampingFactor = 0.3;
 
-    controls.keys = [ 65, 83, 68 ];
+    controls.keys = [ 65, 83, 68 ]; // a, s, d
 
     controls.addEventListener( 'change', render );
 }
