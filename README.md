@@ -13,3 +13,9 @@ Mocked RSSI repository:
 
 INPUT DATA:
 (device mac, router mac, timestamp, rssi, channel)
+
+# Installation
+You need to install python3 and bower (npm install -g bower) first. Then run:
+
+1. pip3 install -r requirements.txt
+2. bower install
