@@ -1,27 +1,15 @@
-from flask import Flask, request, json
+from flask import Flask, request, jsonify
 import requests
+from domain import Location, APData
 
 app = Flask("Indiana-FingerTip")
 
 
-class Location:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
-
-    def to_dict(self):
-        return {'x': self.x, 'y': self.y, 'z': self.z}
-
-    def __str__(self, *args, **kwargs):
-        return str(self.x) + ';' + self.y + ';' + self.z
-
-
 def get_location(MAC):
-    url = 'http://localhost:5050/location/' + MAC
+    url = 'http://localhost:8886/location/' + MAC
     response = requests.get(url)
     if response.status_code == 200:
-        res_data_json = response.json()['json']
+        res_data_json = response.json()
         return Location(res_data_json['x'], res_data_json['y'], res_data_json['z'])
     else:
         return None
@@ -31,10 +19,9 @@ def get_location(MAC):
 def post_location():
     #json {MAC:mac, x:x, y:y, z:z} w responsie błąd obliczeń silnika: {engineError: odlegloscOdPunktuWgEngina, engineLocation:{x:x, y:y, z:z}}
     MAC = request.json['MAC']
-    real_location = Location(request.json['x'], request.json['y'], request.json['z'])
+    real_location = Location(dictionary=request.json)
     location_from_engine = get_location(MAC)
-    print(json.dumps(request.json))
-    return "ok"
+    return jsonify(engineError=real_location.distance_from(location_from_engine), engineLocation=location_from_engine.to_dict())
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8887)
