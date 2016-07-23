@@ -2,15 +2,18 @@
 
 var DEBUG = false;
 var currentPosition = { x: 0, y: 0, z: 0 };
+var wallHeight = 2.5;
+var wallThickness = 0.02;
 
 var camera, controls, scene, renderer;
-var rooms, lights, locator;
+var floors, lights, locator;
 
 var lightColor = "#ffffff";
-var lightIntensity = 1;
-var blockColor = "#330099";
-var locatorColor = "#b60000";
-var routerColor = "#00bb00";
+var lightIntensity = 0.4;
+var floorColor = "#3800aa";
+var wallColor  = "#5c018e";
+var locatorColor = "#ff0000";
+var routerColor = "#239123";
 
 var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
 ws.onmessage = function (evt) {
@@ -24,9 +27,9 @@ ws.onmessage = function (evt) {
 function init() {
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
     // camera = new THREE.OrthographicCamera(-100, 100, 100, -100, 1, 1000);
-    camera.position.z = 50;
-    camera.position.y = 20;
-    camera.position.x = 50;
+    camera.position.z = 20;
+    camera.position.y = 10;
+    camera.position.x = 20;
 
     camera.lookAt(new THREE.Vector3(0,0,0));
 
@@ -89,71 +92,87 @@ function generateLocator() {
     locator = new THREE.Mesh( headGeometry, material);
 }
 
+function generateFloor(vertices) {
+    var floorShape = new THREE.Shape();
+
+    floorShape.moveTo(
+        vertices[vertices.length - 1].x,
+        vertices[vertices.length - 1].y
+    );
+
+    vertices.forEach(function(vertex) {
+        floorShape.lineTo(vertex.x, vertex.y);
+    });
+
+    var material = new THREE.MeshLambertMaterial({
+        color: floorColor,
+        emissive: floorColor
+    });
+
+    var floorShapeGeometry = floorShape.extrude({
+        amount: 0.02,
+        bevelEnabled: false
+    }).rotateX( Math.PI / 2);
+
+    return new THREE.Mesh( floorShapeGeometry, material );
+}
+
+function generateWall(wall) {
+    width = Math.sqrt(Math.pow(wall.start.x - wall.end.x, 2) +
+                      Math.pow(wall.start.y - wall.end.y, 2));
+    arc = Math.atan2(wall.start.y - wall.end.y, wall.end.x - wall.start.x);
+
+    wallGeometry = new THREE.PlaneGeometry(width, wallHeight).
+                        translate(width / 2, wallHeight / 2, 0).
+                        rotateY(arc).
+                        translate(wall.start.x, 0, wall.start.y);
+
+    var material = new THREE.MeshLambertMaterial({
+        color: wallColor,
+        emissive: wallColor,
+        side: THREE.DoubleSide
+    });
+
+    return new THREE.Mesh( wallGeometry, material );
+}
+
+function generateRouter(router) {
+    var geometry = new THREE.SphereGeometry(0.10, 16, 16);
+
+    var material = new THREE.MeshLambertMaterial({
+        color: routerColor,
+        emissive: routerColor
+    });
+
+    geometry.translate(router.x, wallHeight, router.y);
+
+    return new THREE.Mesh(geometry, material);
+}
+
 function generateMap(callback) {
-    rooms = [];
+    floors = [];
     lights = [];
     routers = [];
-    wallHeight = 2.5;
 
     $.getJSON("/map").done(function (data) {
-        data.rooms.forEach(function(room) {
-            var width = room.right_up.x - room.left_bottom.x;
-            var height = room.right_up.y - room.left_bottom.y;
+        console.log(data);
 
-            var floorGeometry = new THREE.BoxGeometry(width, 0.01, height);
-            var wallWidth1Geometry = new THREE.BoxGeometry(width + 0.02, wallHeight, 0.02);
-            var wallWidth2Geometry = new THREE.BoxGeometry(width + 0.02, wallHeight, 0.02);
-            var wallHeight1Geometry = new THREE.BoxGeometry(0.02, wallHeight, height + 0.02);
-            var wallHeight2Geometry = new THREE.BoxGeometry(0.02, wallHeight, height + 0.02);
-            var material = new THREE.MeshLambertMaterial({ color: blockColor });
+        floor = generateFloor(data.floors[1].floor);
 
-            floorGeometry.translate(width / 2, 0, height / 2);
-            floorGeometry.translate(room.left_bottom.x, -0.005, room.left_bottom.y);
-
-            wallWidth1Geometry.translate(width / 2 + 0.01, 0, 0.01);
-            wallWidth2Geometry.translate(width / 2 + 0.01, 0, 0.01);
-            wallWidth1Geometry.translate(room.left_bottom.x, wallHeight / 2, room.left_bottom.y);
-            wallWidth2Geometry.translate(room.left_bottom.x, wallHeight / 2, room.right_up.y);
-
-            wallHeight1Geometry.translate(0.01, 0, height / 2 + 0.01);
-            wallHeight2Geometry.translate(0.01, 0, height / 2 + 0.01);
-            wallHeight1Geometry.translate(room.left_bottom.x, wallHeight / 2, room.left_bottom.y);
-            wallHeight2Geometry.translate(room.right_up.x, wallHeight / 2, room.left_bottom.y);
-
-            rooms.push({
-                floor: new THREE.Mesh( floorGeometry, material ),
-                walls: [
-                    new THREE.Mesh( wallWidth1Geometry, material ),
-                    new THREE.Mesh( wallWidth2Geometry, material ),
-                    new THREE.Mesh( wallHeight1Geometry, material ),
-                    new THREE.Mesh( wallHeight2Geometry, material )
-                ]
-            });
-
-            var light = new THREE.PointLight(lightColor, lightIntensity, Math.max(width, height) * 10);
-
-            light.position.set(
-                (room.left_bottom.x + room.right_up.x) / 2,
-                Math.max(width, height) / 2,
-                (room.left_bottom.y + room.right_up.y) / 2
-            );
-
-            if(DEBUG) {
-                var lightGeometry = new THREE.SphereGeometry(1, 16, 16);
-                var lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-                light.add(new THREE.Mesh(lightGeometry, lightMaterial));
-            }
-
-            lights.push(light);
+        walls = [];
+        data.floors[1].walls.forEach(function(wall) {
+            walls.push(generateWall(wall));
         });
 
-        data["routers"].forEach(function(router) {
-            var geometry = new THREE.SphereGeometry(0.3, 16, 16);
-            var material = new THREE.MeshLambertMaterial({ color: routerColor });
+        routers = [];
+        data.floors[1].routers.forEach(function(router) {
+            routers.push(generateRouter(router));
+        });
 
-            geometry.translate(router.x, wallHeight, router.y);
-
-            routers.push(new THREE.Mesh(geometry, material));
+        floors.push({
+            floor: floor,
+            walls: walls,
+            routers: routers
         });
 
         callback();
@@ -165,19 +184,30 @@ function generateMap(callback) {
 function generateScene() {
     scene = new THREE.Scene();
 
+    // Direct light
+    var light = new THREE.DirectionalLight(lightColor, lightIntensity);
+    light.position.set(0.0, 0.0, 10.0).normalize();
+    lights.push(light)
+    scene.add(light);
+
+    // Ambient light
+    var ambientLight = new THREE.AmbientLight(lightColor, lightIntensity);
+    lights.push(ambientLight)
+    scene.add(ambientLight);
+
+    // Scene elements
     scene.add( locator );
 
-    rooms.forEach(function (room) {
-        scene.add(room.floor);
-        room.walls.forEach(function (wall) {
+    floors.forEach(function (floor) {
+        scene.add(floor.floor);
+
+        floor.walls.forEach(function (wall) {
             scene.add(wall);
         });
-    });
-    lights.forEach(function (light) {
-        scene.add(light);
-    });
-    routers.forEach(function (light) {
-        scene.add(light);
+
+        floor.routers.forEach(function (light) {
+            scene.add(light);
+        });
     });
 }
 
@@ -211,7 +241,8 @@ function debugHelpers() {
     var guiControls = new function () {
         this.lightColor = lightColor;
         this.lightIntensity = lightIntensity;
-        this.blockColor = blockColor;
+        this.floorColor = floorColor;
+        this.wallColor = wallColor;
         this.locatorColor = locatorColor;
         this.routerColor = routerColor;
     }
@@ -230,11 +261,25 @@ function debugHelpers() {
         });
     });
 
-    gui.addColor(guiControls, 'blockColor').onChange(function (e) {
-        boxes.forEach(function (item) {
-            item.material = new THREE.MeshLambertMaterial( { color: new THREE.Color(e) } );
+    gui.addColor(guiControls, 'floorColor').onChange(function (e) {
+        floors.forEach(function (floor) {
+            floor.floor.material = new THREE.MeshLambertMaterial({
+                color: new THREE.Color(e),
+                emissive: new THREE.Color(e),
+            });
         });
-        floorMesh.material = new THREE.MeshLambertMaterial( { color: new THREE.Color(e) } );
+    });
+
+    gui.addColor(guiControls, 'wallColor').onChange(function (e) {
+        floors.forEach(function (floor) {
+            floor.walls.forEach(function (wall) {
+                wall.material = new THREE.MeshLambertMaterial({
+                    color: new THREE.Color(e),
+                    emissive: new THREE.Color(e),
+                    side: THREE.DoubleSide
+                });
+            });
+        });
     });
 
     gui.addColor(guiControls, 'locatorColor').onChange(function (e) {
@@ -242,8 +287,13 @@ function debugHelpers() {
     });
 
     gui.addColor(guiControls, 'routerColor').onChange(function (e) {
-        routers.forEach(function (item) {
-            item.material = new THREE.MeshLambertMaterial( { color: new THREE.Color(e) } );
+        floors.forEach(function (floor) {
+            floor.routers.forEach(function (router) {
+                router.material = new THREE.MeshLambertMaterial({
+                    color: new THREE.Color(e),
+                    emissive: new THREE.Color(e)
+                });
+            });
         });
     });
 }
