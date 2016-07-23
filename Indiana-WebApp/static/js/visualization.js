@@ -5,35 +5,34 @@ VISUALIZATION = (function() {
     var camera, controls, scene, renderer;
     var floors, lights, locator;
 
-    var lightColor = "#ffffff";
-    var lightIntensity = 0.4;
-    var floorColor = "#3800aa";
-    var wallColor  = "#5c018e";
-    var locatorColor = "#ff0000";
-    var routerColor = "#239123";
-
     function init() {
-        var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
-        ws.onmessage = function (evt) {
-            received = evt.data.split(":").map( function (v) { return parseInt(v) } );
-            currentPosition.x = received[0];
-            currentPosition.y = received[1];
-            currentPosition.z = received[2];
-            console.log(currentPosition);
-        };
+        // var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
+        // ws.onmessage = function (evt) {
+        //     received = evt.data.split(":").map( function (v) { return parseInt(v) } );
+        //     currentPosition.x = received[0];
+        //     currentPosition.y = received[1];
+        //     currentPosition.z = received[2];
+        //     console.log(currentPosition);
+        // };
     }
 
     VISUALIZATION_3D = (function() {
+
+        var lightColor = "#ffffff";
+        var lightIntensity = 0.4;
+        var floorColor = "#3800aa";
+        var wallColor  = "#5c018e";
+        var locatorColor = "#ff0000";
+        var routerColor = "#239123";
+
         var wallHeight = 2.5;
         var wallThickness = 0.02;
 
         function init() {
             camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
-            camera.position.z = 20;
-            camera.position.y = 10;
             camera.position.x = 20;
-
-            camera.lookAt(new THREE.Vector3(0,0,0));
+            camera.position.y = 10;
+            camera.position.z = 20;
 
             runControls();
             debugHelpers();
@@ -90,13 +89,17 @@ VISUALIZATION = (function() {
         function generateLocator() {
             var headGeometry = new THREE.SphereGeometry(0.2, 16, 16);
             var bodyGeometry = new THREE.CylinderGeometry(0.1, 0.3, 1.7, 36);
-            var material = new THREE.MeshLambertMaterial( { color: 0xff0000 } );
 
             headGeometry.translate(0, 1.7, 0);
             bodyGeometry.translate(0, 1.7 / 2, 0);
             headGeometry.merge(bodyGeometry);
 
-            locator = new THREE.Mesh( headGeometry, material);
+            var material = new THREE.MeshLambertMaterial({
+                color: locatorColor,
+                emissive: locatorColor,
+            });
+
+            locator = new THREE.Mesh(headGeometry, material);
         }
 
         function generateFloor(vertices) {
@@ -121,7 +124,7 @@ VISUALIZATION = (function() {
                 bevelEnabled: false
             }).rotateX( Math.PI / 2);
 
-            return new THREE.Mesh( floorShapeGeometry, material );
+            return new THREE.Mesh(floorShapeGeometry, material);
         }
 
         function generateWall(wall) {
@@ -162,8 +165,6 @@ VISUALIZATION = (function() {
             routers = [];
 
             $.getJSON("/map").done(function (data) {
-                console.log(data);
-
                 floor = generateFloor(data.floors[1].floor);
 
                 walls = [];
@@ -312,8 +313,13 @@ VISUALIZATION = (function() {
 
     VISUALIZATION_2D = (function() {
 
+        var floorColor = "#ffffff";
+        var wallColor  = "#000000";
+        var locatorColor = "#ff0000";
+        var routerColor = "#239123";
+
         function init() {
-            camera = new THREE.OrthographicCamera( -50, 50, 50, -50, 1, 1000 );
+            camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
             camera.position.z = 20;
             camera.position.y = 10;
             camera.position.x = 20;
@@ -373,15 +379,12 @@ VISUALIZATION = (function() {
 
         // Locator height is 1.8
         function generateLocator() {
-            var headGeometry = new THREE.SphereGeometry(0.2, 16, 16);
-            var bodyGeometry = new THREE.CylinderGeometry(0.1, 0.3, 1.7, 36);
-            var material = new THREE.MeshLambertMaterial( { color: 0xff0000 } );
+            var headGeometry = new THREE.CircleGeometry(0.2, 32);
+            var material = new THREE.MeshBasicMaterial({
+                color: locatorColor,
+            });
 
-            headGeometry.translate(0, 1.7, 0);
-            bodyGeometry.translate(0, 1.7 / 2, 0);
-            headGeometry.merge(bodyGeometry);
-
-            locator = new THREE.Mesh( headGeometry, material);
+            locator = new THREE.Mesh(headGeometry, material);
         }
 
         function generateFloor(vertices) {
@@ -393,50 +396,43 @@ VISUALIZATION = (function() {
             );
 
             vertices.forEach(function(vertex) {
-                floorShape.lineTo(vertex.x, vertex.y);
+                floorShape.lineTo(vertex.x, -1 * vertex.y);
             });
 
-            var material = new THREE.MeshLambertMaterial({
+            var material = new THREE.MeshBasicMaterial({
                 color: floorColor,
-                emissive: floorColor
             });
 
-            var floorShapeGeometry = floorShape.extrude({
-                amount: 0.02,
-                bevelEnabled: false
-            }).rotateX( Math.PI / 2);
+            var floorShapeGeometry = new THREE.ShapeGeometry(floorShape);
 
-            return new THREE.Mesh( floorShapeGeometry, material );
+            floorShapeGeometry.translate(0, 0, -0.1);
+
+            return new THREE.Mesh(floorShapeGeometry, material);
         }
 
         function generateWall(wall) {
-            width = Math.sqrt(Math.pow(wall.start.x - wall.end.x, 2) +
-                              Math.pow(wall.start.y - wall.end.y, 2));
-            arc = Math.atan2(wall.start.y - wall.end.y, wall.end.x - wall.start.x);
+            var geometry = new THREE.Geometry();
+            geometry.vertices.push(
+                new THREE.Vector3(wall.start.x, -1 * wall.start.y, 0),
+                new THREE.Vector3(wall.end.x, -1 * wall.end.y, 0)
+            );
 
-            wallGeometry = new THREE.PlaneGeometry(width, wallHeight).
-                                translate(width / 2, wallHeight / 2, 0).
-                                rotateY(arc).
-                                translate(wall.start.x, 0, wall.start.y);
-
-            var material = new THREE.MeshLambertMaterial({
+            var material = new THREE.LineBasicMaterial({
                 color: wallColor,
-                emissive: wallColor,
-                side: THREE.DoubleSide
+                linewidth: 1,
             });
 
-            return new THREE.Mesh( wallGeometry, material );
+            return new THREE.Line(geometry, material);
         }
 
         function generateRouter(router) {
-            var geometry = new THREE.SphereGeometry(0.10, 16, 16);
+            var geometry = new THREE.CircleGeometry(0.10, 32);
 
-            var material = new THREE.MeshLambertMaterial({
+            var material = new THREE.MeshBasicMaterial({
                 color: routerColor,
-                emissive: routerColor
             });
 
-            geometry.translate(router.x, wallHeight, router.y);
+            geometry.translate(router.x, -1 * router.y, 0.1);
 
             return new THREE.Mesh(geometry, material);
         }
@@ -447,8 +443,6 @@ VISUALIZATION = (function() {
             routers = [];
 
             $.getJSON("/map").done(function (data) {
-                console.log(data);
-
                 floor = generateFloor(data.floors[1].floor);
 
                 walls = [];
@@ -474,18 +468,7 @@ VISUALIZATION = (function() {
         }
 
         function generateScene() {
-            scene = new THREE.Scene();
-
-            // Direct light
-            var light = new THREE.DirectionalLight(lightColor, lightIntensity);
-            light.position.set(0.0, 0.0, 10.0).normalize();
-            lights.push(light)
-            scene.add(light);
-
-            // Ambient light
-            var ambientLight = new THREE.AmbientLight(lightColor, lightIntensity);
-            lights.push(ambientLight)
-            scene.add(ambientLight);
+            scene = new THREE.Scene
 
             // Scene elements
             scene.add( locator );
