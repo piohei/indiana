@@ -2,6 +2,7 @@ import collections
 import threading
 
 from flask import Flask, request, jsonify
+from pymongo import MongoClient
 
 from domain import Location, APData
 
@@ -12,6 +13,17 @@ locations = {}
 
 lock = threading.Lock()
 ap_data_store = collections.defaultdict(dict)
+
+client = MongoClient('localhost', 27017)
+db = client.indiana_db
+ap_data = db.ap_data
+
+
+@app.route('/', methods=['POST'])
+def post_real_ap_data():
+    data = request.json
+    ap_data.insert_one(data)
+    return jsonify(message="ok")
 
 
 @app.route('/location/<MAC>', methods=['GET'])
