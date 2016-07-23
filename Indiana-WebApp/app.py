@@ -7,12 +7,22 @@ from tornado import web, websocket, ioloop, gen
 
 class IndexHandler(web.RequestHandler):
     def get(self):
-        self.render("static/index.html")
+        self.render("views/index.html")
+
+
+class Visualizaton3DHandler(web.RequestHandler):
+    def get(self):
+        self.render("views/visualization_3d.html")
+
+
+class Visualizaton2DHandler(web.RequestHandler):
+    def get(self):
+        self.render("views/visualization_2d.html")
 
 
 class FingerTipHandler(web.RequestHandler):
     def get(self):
-        self.render("static/finger_tip.html")
+        self.render("views/finger_tip.html")
 
     def post(self):
         mac = self.get_argument('mac', '')
@@ -153,9 +163,11 @@ class SocketHandler(websocket.WebSocketHandler):
 if __name__ == "__main__":
     app = web.Application([
         (r"/", IndexHandler),
-        (r"/map", MapHandler),
+        (r"/visualization_3d", Visualizaton3DHandler),
+        (r"/visualization_2d", Visualizaton2DHandler),
         (r"/finger_tip", FingerTipHandler),
         (r"/static/(.*)", web.StaticFileHandler, {"path": __file__ + "/../static"}),
+        (r"/map", MapHandler),
         (r"/websocket", SocketHandler)
     ])
     app.listen(8888)

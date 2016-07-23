@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block subtitle %}3D visualization{% end %}
+
+{% block additional_styles %}
+    body {
+      margin: 0px;
+      background-color: #000000;
+      overflow: hidden;
+    }
+{% end %}
+
+{% block container %}
+    <script language="JavaScript">
+        VISUALIZATION.init();
+        VISUALIZATION.run3D();
+    </script>
+{% end %}

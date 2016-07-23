@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block subtitle %}FingerTip{% end %}
+
+{% block container %}
+    <form action="/finger_tip" method="POST">
+        <h1>FingerTip</h1>
+        <h2>MAC</h2>
+        <label for="mac" class="sr-only">MAC Address</label>
+        <input type="text" id="mac" name="mac" class="form-control" placeholder="MAC Address" required="" autofocus="">
+        <h2>Location</h2>
+        <label for="x" class="sr-only">X</label>
+        <input type="text" id="x" name="x" class="form-control" placeholder="X" required="">
+        <label for="y" class="sr-only">Y</label>
+        <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="">
+        <label for="z" class="sr-only">Z</label>
+        <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Send data</button>
+    </form>
+{% end %}
