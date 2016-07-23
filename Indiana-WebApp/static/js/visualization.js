@@ -6,14 +6,14 @@ VISUALIZATION = (function() {
     var floors, lights, locator;
 
     function init() {
-        // var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
-        // ws.onmessage = function (evt) {
-        //     received = evt.data.split(":").map( function (v) { return parseInt(v) } );
-        //     currentPosition.x = received[0];
-        //     currentPosition.y = received[1];
-        //     currentPosition.z = received[2];
-        //     console.log(currentPosition);
-        // };
+        var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
+        ws.onmessage = function (evt) {
+            received = evt.data.split(":").map( function (v) { return parseInt(v) } );
+            currentPosition.x = received[0];
+            currentPosition.y = received[1];
+            currentPosition.z = received[2];
+            console.log(currentPosition);
+        };
     }
 
     VISUALIZATION_3D = (function() {
@@ -319,12 +319,22 @@ VISUALIZATION = (function() {
         var routerColor = "#239123";
 
         function init() {
-            camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
-            camera.position.z = 20;
-            camera.position.y = 10;
-            camera.position.x = 20;
+            camera = new THREE.OrthographicCamera(
+                window.innerWidth / -2 / 30,
+                window.innerWidth / 2 / 30,
+                window.innerHeight / 2 / 30,
+                window.innerHeight / -2 / 30,
+                -500,
+                1000
+            );
 
-            camera.lookAt(new THREE.Vector3(0,0,0));
+            camera.position.x = 16.5;
+            camera.position.y = -6;
+            camera.position.z = 10;
+
+            camera.rotation.x = 0;
+            camera.rotation.y = 0;
+            camera.rotation.z = 0;
 
             runControls();
             debugHelpers();
@@ -383,6 +393,8 @@ VISUALIZATION = (function() {
             var material = new THREE.MeshBasicMaterial({
                 color: locatorColor,
             });
+
+            headGeometry.translate(0, 0, 0.2);
 
             locator = new THREE.Mesh(headGeometry, material);
         }
@@ -491,7 +503,7 @@ VISUALIZATION = (function() {
                 return;
             }
 
-            controls = new THREE.TrackballControls( camera );
+            controls = new THREE.OrthographicTrackballControls( camera );
 
             controls.rotateSpeed = 1.0;
             controls.zoomSpeed = 1.0;
@@ -499,6 +511,10 @@ VISUALIZATION = (function() {
 
             controls.noZoom = false;
             controls.noPan = false;
+            controls.noRotate = true;
+            controls.noRoll = true;
+
+            controls.target = new THREE.Vector3(16.5, -6, 0);
 
             controls.staticMoving = true;
             controls.dynamicDampingFactor = 0.3;
