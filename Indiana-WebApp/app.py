@@ -30,11 +30,11 @@ class FingerTipHandler(web.RequestHandler):
         y = self.get_argument('y', '')
         z = self.get_argument('z', '')
 
-        requests.post("http://localhost:8887/", json={
-                "MAC": mac,
-                "x": x,
-                "y": y,
-                "z": z,
+        requests.post("http://localhost:8887/actual_location", json={
+                "mac": mac,
+                "x": float(x),
+                "y": float(y),
+                "z": float(z),
             })
 
         self.redirect("/finger_tip")
