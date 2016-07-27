@@ -18,9 +18,9 @@
                 <label for="z" class="sr-only">Z</label>
                 <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2">
                 <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block" onclick="FINGERTIP.postFingertip()">Send fingertip</button>
-                <button id="delete_btn"  type="button" class="btn btn-lg btn-danger btn-block">Delete finfertip</button>
-                <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block">Get status</button>
-                <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block">End status</button>
+                <button id="delete_btn"  type="button" class="btn btn-lg btn-danger btn-block" onclick="FINGERTIP.deleteFingertip()">Delete finfertip</button>
+                <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="FINGERTIP.getStatus()">Get status</button>
+                <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block" onclick="FINGERTIP.endStatus()">End status</button>
             </form>
         </div>
         <div class="col-sm-6">

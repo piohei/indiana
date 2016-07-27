@@ -16,8 +16,11 @@ var FINGERTIP = (function(){
         }
     }
 
+    function log(msg) {
+        $("#result").append(msg + "\n");
+    }
+
     function postFingertip() {
-        console.log("post");
         var request = {};
         try {
             request.x = toNumber($("#x").val());
@@ -25,33 +28,75 @@ var FINGERTIP = (function(){
             request.z = toNumber($("#z").val());
             request.mac = validateMAC($("#mac").val());
         } catch (err) {
-            $("#result").append(err + "\n");
+            log(err);
             return;
         }
 
         $.ajax({
-            url: "http://" + window.location.hostname + ":8887/actual_location",
+            url: "http://localhost:8887/actual_location",
             type: "POST",
             crossDomain: true,
             data: JSON.stringify(request),
             contentType : 'application/json',
             success: function (response) {
-                $("#result").append("status: " + response.status + "; message: " + response.data + "\n");
+                log("status: " + response.status + "; message: " + response.data);
                 $("#delete_btn").prop("disabled", false);
             },
             error: function (xhr, status) {
-                var span = $("#result");
-                span.append("status: " + status + "; code: " + xhr.status);
+                var msg = "status: " + status + "; code: " + xhr.status;
                 if (xhr && xhr.responseJSON && xhr.responseJSON.data) {
-                    span.append("; message: " + xhr.responseJSON.data);
+                    msg = msg +"; message: " + xhr.responseJSON.data
                 }
-                span.append("\n");
-
-
+                log(msg);
             }
         });
 
     }
+
+    function deleteFingertip() {
+        $.ajax({
+            url: "http://localhost:8887/actual_location",
+            type: "DELETE",
+            crossDomain: true,
+            success: function (response) {
+                log("status: " + response.status + "; message: " + response.data);
+                $("#delete_btn").prop("disabled", true);
+            },
+            error: function (xhr, status) {
+                var msg = "status: " + status + "; code: " + xhr.status;
+                if (xhr && xhr.responseJSON && xhr.responseJSON.data) {
+                    msg = msg +"; message: " + xhr.responseJSON.data
+                }
+                log(msg);
+            }
+        });
+
+    }
+
+    function getStatus() {
+        var ws = new WebSocket("ws://localhost:8887/status");
+        FINGERTIP.statusWebSocket = ws;
+        ws.onopen = function(evt) {
+            $("#end_status_btn").prop("disabled", false);
+            $("#status_btn").prop("disabled", true);
+        };
+        ws.onmessage = function (evt) {
+            log(evt.data);
+        };
+        ws.onclose = function(evt) {
+            $("#end_status_btn").prop("disabled", true);
+            $("#status_btn").prop("disabled", false);
+        };
+
+    }
+
+    function endStatus() {
+        if (FINGERTIP.statusWebSocket) {
+            FINGERTIP.statusWebSocket.close()
+        }
+    }
+
+
     var init = function(){
         $("#delete_btn").prop("disabled", true);
         $("#end_status_btn").prop("disabled", true);
@@ -60,6 +105,9 @@ var FINGERTIP = (function(){
 
     return {
         init: init,
-        postFingertip: postFingertip
+        postFingertip: postFingertip,
+        deleteFingertip: deleteFingertip,
+        getStatus: getStatus,
+        endStatus: endStatus
     }
 })();

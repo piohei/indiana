@@ -122,11 +122,14 @@ class APDataHandler(APIHandler):
 
 
 class SocketHandler(websocket.WebSocketHandler):
+    def check_origin(self, origin):
+        return True
+
     @gen.engine
     def open(self):
         fingertip = fingertip_service.current_fingertip
         if fingertip is None:
-            self.write("No fingertip")
+            self.write_message("No fingertip")
             self.close()
         else:
             mac = fingertip.mac
@@ -134,7 +137,7 @@ class SocketHandler(websocket.WebSocketHandler):
             while not self._on_close_called:
                 fingertip = fingertip_service.current_fingertip
                 if fingertip is None or mac != fingertip.mac:
-                    self.write("Fingertip ended")
+                    self.write_message("Fingertip ended")
                     self.close()
                 else:
                     count = ap_data_collection.count({"time": {"$gt": fingertip.start_time}})
