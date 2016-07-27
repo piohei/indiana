@@ -8,7 +8,8 @@
   ],
   "dependencies": {
     "jquery": "2.2.4",
-    "threejs": "r77"
+    "threejs": "r77",
+    "bootstrap": "3.3.6"
   },
   "private": true
 }

@@ -91,6 +91,11 @@ fingertip_service = FingertipService()
 
 
 class ActualLocationHandler(APIHandler):
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with, content-type")
+        self.set_header('Access-Control-Allow-Methods', 'POST, OPTIONS, DELETE')
+
     @schema.validate(input_schema={"type": "object"})
     def post(self):
         fingertip_service.set_fingertip(**(self.body))
@@ -99,6 +104,10 @@ class ActualLocationHandler(APIHandler):
     def delete(self):
         fingertip_service.end_fingertip()
         self.success("ok")
+
+    def options(self):
+        self.set_status(204)
+        self.finish()
 
 class APDataHandler(APIHandler):
     @schema.validate(input_schema={"type": "object"})
@@ -154,6 +163,6 @@ if __name__ == "__main__":
         (r"/status", SocketHandler),
         (r"/", APDataHandler)
     ])
-    app.listen(8888)
+    app.listen(8887)
     CleanupJob().start()
     ioloop.IOLoop.instance().start()

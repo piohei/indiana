@@ -24,22 +24,6 @@ class FingerTipHandler(web.RequestHandler):
     def get(self):
         self.render("views/finger_tip.html")
 
-    def post(self):
-        mac = self.get_argument('mac', '')
-        x = self.get_argument('x', '')
-        y = self.get_argument('y', '')
-        z = self.get_argument('z', '')
-
-        requests.post("http://localhost:8887/actual_location", json={
-                "mac": mac,
-                "x": float(x),
-                "y": float(y),
-                "z": float(z),
-            })
-
-        self.redirect("/finger_tip")
-
-
 class MapHandler(web.RequestHandler):
     def get(self):
         floor = [
