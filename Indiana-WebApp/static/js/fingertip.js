@@ -1,24 +1,27 @@
 "use strict";
 
 var FINGERTIP = (function(){
-    function toNumber(x) {
-        var n = Number(x);
-        if (isNaN(n)) {
-            throw "not a number " + x;
-        }
-        return n;
-    }
-
-    function validateMAC(s) {
-        var format = /^([a-fA-F0-9]{2}:){5}([a-fA-F0-9]{2})$/;
-        if (!format.test(s)) {
-            throw "invalid MAC: " + s;
-        }
-    }
 
     function log(msg) {
         $("#result").append(msg + "\n");
     }
+
+    function logSuccess(response) {
+        log("status: " + response.status + "; message: " + response.data);
+    }
+
+    function logError(xhr, status) {
+        var msg = "status: " + status + "; code: " + xhr.status;
+        if (xhr && xhr.responseJSON && xhr.responseJSON.data) {
+            msg = msg +"; message: " + xhr.responseJSON.data
+        }
+        log(msg);
+    }
+
+    const HOST = window.location.hostname + ":8887/";
+    const BASE_HTTP_URL = "http://" + HOST;
+    const ACTUAL_LOCATION_URL = BASE_HTTP_URL + "actual_location";
+    const STATUS_URL = "ws://" + HOST + "status";
 
     function postFingertip() {
         var request = {};
@@ -26,55 +29,30 @@ var FINGERTIP = (function(){
             request.x = toNumber($("#x").val());
             request.y = toNumber($("#y").val());
             request.z = toNumber($("#z").val());
-            request.mac = validateMAC($("#mac").val());
+            request.mac = toUpperCaseMAC($("#mac").val());
         } catch (err) {
             log(err);
             return;
         }
-
-        $.ajax({
-            url: "http://localhost:8887/actual_location",
-            type: "POST",
-            crossDomain: true,
-            data: JSON.stringify(request),
-            contentType : 'application/json',
-            success: function (response) {
-                log("status: " + response.status + "; message: " + response.data);
-                $("#delete_btn").prop("disabled", false);
-            },
-            error: function (xhr, status) {
-                var msg = "status: " + status + "; code: " + xhr.status;
-                if (xhr && xhr.responseJSON && xhr.responseJSON.data) {
-                    msg = msg +"; message: " + xhr.responseJSON.data
-                }
-                log(msg);
-            }
+        CORS.post({
+            url: ACTUAL_LOCATION_URL,
+            data: request,
+            onSuccess: logSuccess,
+            onError: logError
         });
 
     }
 
     function deleteFingertip() {
-        $.ajax({
-            url: "http://localhost:8887/actual_location",
-            type: "DELETE",
-            crossDomain: true,
-            success: function (response) {
-                log("status: " + response.status + "; message: " + response.data);
-                $("#delete_btn").prop("disabled", true);
-            },
-            error: function (xhr, status) {
-                var msg = "status: " + status + "; code: " + xhr.status;
-                if (xhr && xhr.responseJSON && xhr.responseJSON.data) {
-                    msg = msg +"; message: " + xhr.responseJSON.data
-                }
-                log(msg);
-            }
+        CORS.delete({
+            url: ACTUAL_LOCATION_URL,
+            onSuccess: logSuccess,
+            onError: logError
         });
-
     }
 
     function getStatus() {
-        var ws = new WebSocket("ws://localhost:8887/status");
+        var ws = new WebSocket(STATUS_URL);
         FINGERTIP.statusWebSocket = ws;
         ws.onopen = function(evt) {
             $("#end_status_btn").prop("disabled", false);
@@ -96,15 +74,7 @@ var FINGERTIP = (function(){
         }
     }
 
-
-    var init = function(){
-        $("#delete_btn").prop("disabled", true);
-        $("#end_status_btn").prop("disabled", true);
-    };
-
-
     return {
-        init: init,
         postFingertip: postFingertip,
         deleteFingertip: deleteFingertip,
         getStatus: getStatus,

@@ -6,6 +6,9 @@ body {
 
 form {
   max-width: 330px;
+}
+
+.centered {
   padding: 15px;
   margin: 0 auto;
 }

@@ -154,5 +154,5 @@ if __name__ == "__main__":
         (r"/map", MapHandler),
         (r"/websocket", SocketHandler)
     ])
-    app.listen(8888)
+    app.listen(8888, address="0.0.0.0")
     ioloop.IOLoop.instance().start()

@@ -1,12 +1,12 @@
-import json
 import time
 from threading import RLock
-from wrapt import synchronized
+
+from pymongo import MongoClient
 from tornado import web, websocket, ioloop, gen
 from tornado_json import schema
 from tornado_json.exceptions import api_assert
 from tornado_json.requesthandlers import APIHandler
-from pymongo import MongoClient
+from wrapt import synchronized
 
 global_lock = RLock()
 
@@ -38,10 +38,11 @@ class Fingertip(object):
     def is_same_fingertip(self, other):
         return other is not None and self.location == other.location and self.mac == other.mac
 
+
 class FingertipService(object):
     def __init__(self):
         self.current_fingertip = None
-        self.current_websockets=[]
+        self.current_websockets = []
 
     @synchronized(global_lock)
     def set_fingertip(self, mac="", x=0, y=0, z=0):
@@ -101,7 +102,9 @@ class ActualLocationHandler(APIHandler):
         fingertip_service.set_fingertip(**(self.body))
         return "ok"
 
+    @synchronized(global_lock)
     def delete(self):
+        api_assert(fingertip_service.current_fingertip is not None, 404, "No fingertip found")
         fingertip_service.end_fingertip()
         self.success("ok")
 
@@ -109,13 +112,14 @@ class ActualLocationHandler(APIHandler):
         self.set_status(204)
         self.finish()
 
+
 class APDataHandler(APIHandler):
     @schema.validate(input_schema={"type": "object"})
     def post(self):
         fingertip = fingertip_service.current_fingertip
         api_assert(fingertip is not None and not fingertip.is_outdated(), 400, "fingertip gone or outdated")
         api_assert(self.body["data"], 400, "empty data")
-        #maybe assert if contains fingertip mac
+        # maybe assert if contains fingertip mac
         result = ap_data_collection.insert_one(self.body)
         api_assert(result.acknowledged, 500, "error saving")
         return "ok"
@@ -149,6 +153,7 @@ class SocketHandler(websocket.WebSocketHandler):
         if self in fingertip_service.current_websockets:
             fingertip_service.current_websockets.remove(self)
 
+
 class CleanupJob(ioloop.PeriodicCallback):
     CALLBACK_TIME = 30000
 
@@ -166,6 +171,6 @@ if __name__ == "__main__":
         (r"/status", SocketHandler),
         (r"/", APDataHandler)
     ])
-    app.listen(8887)
+    app.listen(8887, address="0.0.0.0")
     CleanupJob().start()
     ioloop.IOLoop.instance().start()

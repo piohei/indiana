@@ -5,7 +5,7 @@
 {% block container %}
     <div class="clearfix">
         <div class="col-sm-6">
-            <form>
+            <form class="centered">
                 <h1>FingerTip</h1>
                 <h2>MAC</h2>
                 <label for="mac" class="sr-only">MAC Address</label>
@@ -20,19 +20,11 @@
                 <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block" onclick="FINGERTIP.postFingertip()">Send fingertip</button>
                 <button id="delete_btn"  type="button" class="btn btn-lg btn-danger btn-block" onclick="FINGERTIP.deleteFingertip()">Delete finfertip</button>
                 <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="FINGERTIP.getStatus()">Get status</button>
-                <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block" onclick="FINGERTIP.endStatus()">End status</button>
+                <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block" onclick="FINGERTIP.endStatus()" disabled="disabled">End status</button>
             </form>
         </div>
         <div class="col-sm-6">
-            <form>
-                <label for="result" class="sr-only">result</label>
-                <textarea id="result" rows="20" cols="50" readonly="readonly"></textarea>
-            </form>
+            <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
         </div>
     </div>
-
-    <script language="JavaScript">
-        FINGERTIP.init();
-    </script>
-
 {% end %}
