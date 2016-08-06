@@ -536,7 +536,7 @@ VISUALIZATION = (function() {
                 this.wallColor = wallColor;
                 this.locatorColor = locatorColor;
                 this.routerColor = routerColor;
-            }
+            };
 
             var gui = new dat.GUI();
 
@@ -590,7 +590,189 @@ VISUALIZATION = (function() {
         }
 
         return {
+            run: run
+        }
+    }());
+
+    FINGERTIP_VISUALIZATION = (function() {
+
+        var floorColor = "#ffffff";
+        var wallColor  = "#000000";
+        var locatorColor = "#ff0000";
+        var routerColor = "#239123";
+
+        function init() {
+            camera = new THREE.OrthographicCamera(
+                1000 / -2 / 30,
+                1000 / 2 / 30,
+                390 / 2 / 30,
+                390 / -2 / 30,
+                -500,
+                1000
+            );
+
+            camera.position.x = 16.5;
+            camera.position.y = -6;
+            camera.position.z = 10;
+
+            camera.rotation.x = 0;
+            camera.rotation.y = 0;
+            camera.rotation.z = 0;
+
+            generateLocator();
+            locator.position.x = currentPosition.x;
+            locator.position.y = currentPosition.z;
+            locator.position.z = currentPosition.y;
+
+            generateMap(callback = function() {
+                generateScene();
+
+                renderer = new THREE.WebGLRenderer({canvas: document.getElementById("map-canvas")});
+                renderer.setPixelRatio( window.devicePixelRatio );
+
+                render();
+            });
+        }
+
+        function render() {
+            var fingertip = {};
+            try {
+                fingertip.x = toNumber($("#x").val());
+                fingertip.y = toNumber($("#y").val());
+                fingertip.z = toNumber($("#z").val());
+            } catch (err) {
+                fingertip.x = 0;
+                fingertip.y = 0;
+                fingertip.z = 0;
+            }
+            console.log(fingertip);
+            locator.position.x = fingertip.x;
+            locator.position.y = -fingertip.y;
+            locator.position.z = -fingertip.z;
+            renderer.render( scene, camera );
+        }
+
+        function run() {
+            init();
+        }
+
+        // Helpers
+
+        // Locator height is 1.8
+        function generateLocator() {
+            var headGeometry = new THREE.CircleGeometry(0.2, 32);
+            var material = new THREE.MeshBasicMaterial({
+                color: locatorColor,
+            });
+
+            headGeometry.translate(0, 0, 0.2);
+
+            locator = new THREE.Mesh(headGeometry, material);
+        }
+
+        function generateFloor(vertices) {
+            var floorShape = new THREE.Shape();
+
+            floorShape.moveTo(
+                vertices[vertices.length - 1].x,
+                vertices[vertices.length - 1].y
+            );
+
+            vertices.forEach(function(vertex) {
+                floorShape.lineTo(vertex.x, -1 * vertex.y);
+            });
+
+            var material = new THREE.MeshBasicMaterial({
+                color: floorColor,
+            });
+
+            var floorShapeGeometry = new THREE.ShapeGeometry(floorShape);
+
+            floorShapeGeometry.translate(0, 0, -0.1);
+
+            return new THREE.Mesh(floorShapeGeometry, material);
+        }
+
+        function generateWall(wall) {
+            var geometry = new THREE.Geometry();
+            geometry.vertices.push(
+                new THREE.Vector3(wall.start.x, -1 * wall.start.y, 0),
+                new THREE.Vector3(wall.end.x, -1 * wall.end.y, 0)
+            );
+
+            var material = new THREE.LineBasicMaterial({
+                color: wallColor,
+                linewidth: 1,
+            });
+
+            return new THREE.Line(geometry, material);
+        }
+
+        function generateRouter(router) {
+            var geometry = new THREE.CircleGeometry(0.10, 32);
+
+            var material = new THREE.MeshBasicMaterial({
+                color: routerColor,
+            });
+
+            geometry.translate(router.x, -1 * router.y, 0.1);
+
+            return new THREE.Mesh(geometry, material);
+        }
+
+        function generateMap(callback) {
+            floors = [];
+            lights = [];
+            routers = [];
+
+            $.getJSON("/map").done(function (data) {
+                floor = generateFloor(data.floors[1].floor);
+
+                walls = [];
+                data.floors[1].walls.forEach(function(wall) {
+                    walls.push(generateWall(wall));
+                });
+
+                routers = [];
+                data.floors[1].routers.forEach(function(router) {
+                    routers.push(generateRouter(router));
+                });
+
+                floors.push({
+                    floor: floor,
+                    walls: walls,
+                    routers: routers
+                });
+
+                callback();
+            }).fail(function (data) {
+                alert("Error while getting map!");
+            });
+        }
+
+        function generateScene() {
+            scene = new THREE.Scene
+
+            // Scene elements
+            scene.add( locator );
+
+            floors.forEach(function (floor) {
+                scene.add(floor.floor);
+
+                floor.walls.forEach(function (wall) {
+                    scene.add(wall);
+                });
+
+                floor.routers.forEach(function (light) {
+                    scene.add(light);
+                });
+            });
+        }
+
+
+        return {
             run: run,
+            reload: render
         }
     }());
 
@@ -598,5 +780,7 @@ VISUALIZATION = (function() {
         init: init,
         run3D: VISUALIZATION_3D.run,
         run2D: VISUALIZATION_2D.run,
+        runFingertip: FINGERTIP_VISUALIZATION.run
+
     }
 }());

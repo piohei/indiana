@@ -13,11 +13,11 @@
                    autofocus="" value="99:AF:00:12:12:12">
             <h2>Location</h2>
             <label for="x" class="sr-only">X</label>
-            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="1">
+            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="1" onchange="FINGERTIP_VISUALIZATION.reload()">
             <label for="y" class="sr-only">Y</label>
-            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="1.5">
+            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="1.5" onchange="FINGERTIP_VISUALIZATION.reload()">
             <label for="z" class="sr-only">Z</label>
-            <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2">
+            <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2" disabled="disabled" >
             <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
                     onclick="FINGERTIP.postFingertip()">Send fingertip
             </button>
@@ -27,6 +27,7 @@
 
         </form>
     </div>
+
     <div class="col-sm-6">
         <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
         <div class="control-holder centered"><button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="FINGERTIP.getStatus()">
@@ -37,37 +38,15 @@
         </button></div>
     </div>
 </div>
+
 <div class="clearfix">
     <div class="centered">
         <canvas id="map-canvas" width="960" height="360" class="map-canvas centered"></canvas>
     </div>
 </div>
+
+
 <script language="JavaScript">
-    var c = document.getElementById("map-canvas");
-    var ctx = c.getContext("2d");
-
-    var img = new Image();
-    img.src="/static/images/plan.jpg";
-
-    img.onload = function() {
-        ctx.drawImage(img, 0, 0, 960, 360);
-        var request = {};
-        try {
-            request.x = toNumber($("#x").val());
-            request.y = toNumber($("#y").val());
-        } catch (err) {
-            log(err);
-            return;
-        }
-        ctx.beginPath();
-        ctx.fillStyle="red";
-        ctx.arc(Math.floor(request.x * 58.3 / 2), Math.floor(request.y * 58.3 / 2), 2, 0, Math.PI*2, true);
-        ctx.fill();
-    };
-
-    ctx.beginPath();
-    ctx.rect(0, 0, 960, 360);
-    ctx.fillStyle = "black";
-    ctx.fill();
+    VISUALIZATION.runFingertip();
 </script>
 {% end %}
