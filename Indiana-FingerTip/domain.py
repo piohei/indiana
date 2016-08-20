@@ -1,5 +1,7 @@
 import math
 
+from utils import millis
+
 class Location:
     def __init__(self, x=0, y=0, z=0, dictionary=None):
         if dictionary is not None:
@@ -42,3 +44,25 @@ class APData(object):
 
     def to_dict(self):
         return self.__dict__
+
+
+class Fingertip(object):
+    VALIDITY_PERIOD = 300000
+
+    def __init__(self, mac="", x=0, y=0, z=0):
+        self.mac = mac
+        self.location = {"x": float(x), "y": float(y), "z": float(z)}
+        self.start_time = millis()
+        self.end_time = None
+
+    def to_dict(self):
+        return {"mac": self.mac, "start_time": self.start_time, "end_time": self.end_time, "location": self.location}
+
+    def is_outdated(self):
+        return millis() > (self.start_time + self.VALIDITY_PERIOD)
+
+    def is_same_fingertip(self, other):
+        return other is not None and self.location == other.location and self.mac == other.mac
+
+    def __str__(self):
+        return "{} ({}, {}, {})".format(self.mac, self.location["x"], self.location["y"], self.location["z"])
