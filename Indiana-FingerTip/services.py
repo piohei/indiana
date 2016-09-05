@@ -1,5 +1,7 @@
 from threading import RLock
 
+from tornado.websocket import WebSocketClosedError
+
 from domain import Fingertip
 from utils import millis
 
@@ -22,8 +24,10 @@ class WebSocketService(object):
         with self.lock:
             try:
                 self.list.remove(web_socket)
-            finally:
                 web_socket.write_message(message)
+            except WebSocketClosedError:
+                pass
+            finally:
                 web_socket.close()
 
     def close_current_sockets(self, message="closed"):
@@ -74,6 +78,6 @@ class FingertipService(object):
             if self.current_fingertip is None:
                 return "no fingertip"
             count = self.db.count_ap_data_entries_since(self.current_fingertip.start_time)
-            return "fingertip is: {}; collected samples {}".format(self.current_fingertip, count)
+            return "{}: collected {}".format(self.current_fingertip, count)
 
 

@@ -30,12 +30,17 @@
 
     <div class="col-sm-6">
         <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
-        <div class="control-holder centered"><button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="FINGERTIP.getStatus()">
+        <div class="control-holder centered">
+            <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="FINGERTIP.getStatus()">
             Get status
-        </button>
-        <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block"
+            </button>
+            <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block"
                 onclick="FINGERTIP.endStatus()" disabled="disabled">End status
-        </button></div>
+            </button>
+            <button id="clear_log_btn" type="button" class="btn btn-lg btn-warning btn-block"
+                onclick="FINGERTIP.clearLog()">Clear log
+            </button>
+        </div>
     </div>
 </div>
 

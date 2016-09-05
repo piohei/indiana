@@ -74,10 +74,15 @@ var FINGERTIP = (function(){
         }
     }
 
+    function clearLog() {
+        $("#result").text("");
+    }
+
     return {
         postFingertip: postFingertip,
         deleteFingertip: deleteFingertip,
         getStatus: getStatus,
-        endStatus: endStatus
+        endStatus: endStatus,
+        clearLog: clearLog
     }
 })();

@@ -1,22 +1,33 @@
 from pymongo import MongoClient
 
-db = MongoClient('52.42.120.42', 27017).indiana_db
+import config
+
+db = MongoClient(config.DB_HOST, config.DB_PORT).indiana_db
 
 
 class DbException(Exception):
     def __init__(self, message):
         self.message = message
 
+def assert_acknowledged(result):
+    if not result.acknowledged:
+        raise DbException("Db operation unsuccessful")
+    return result
 
 def insert_into(collection, obj_dictionary):
-    inserted = collection.insert_one(obj_dictionary)
-    if not inserted.acknowledged:
-        raise DbException("not inserted")
-    return inserted
+    return assert_acknowledged(collection.insert_one(obj_dictionary))
 
 
 def save_fingertip(fingertip):
-    return insert_into(db.fingertips, fingertip.to_dict())
+    return assert_acknowledged(db.fingertips.replace_one(
+        filter={
+            "location.x": fingertip.location["x"],
+            "location.y": fingertip.location["y"],
+            "location.z": fingertip.location["z"]
+        },
+        replacement=fingertip.to_dict(),
+        upsert=True
+    ))
 
 
 def save_ap_data(ap_data_dict):

@@ -49,9 +49,9 @@ class APData(object):
 class Fingertip(object):
     VALIDITY_PERIOD = 300000
 
-    def __init__(self, mac="", x=0, y=0, z=0):
+    def __init__(self, mac="", x=0, y=0, z=0, **kwargs):
         self.mac = mac
-        self.location = {"x": float(x), "y": float(y), "z": float(z)}
+        self.location = kwargs["location"] if "location" in kwargs else {"x": float(x), "y": float(y), "z": float(z)}
         self.start_time = millis()
         self.end_time = None
 

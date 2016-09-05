@@ -107,4 +107,5 @@ crashlytics.properties
 crashlytics-build.properties
 
 **/bower_components/
+**/config.py
 
