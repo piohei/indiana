@@ -1,0 +1,26 @@
+{
+	"_id" : ObjectId("57c98c1836d1686c959a47e5"),
+	"location" : {
+		"x" : 5,
+		"z" : -2,
+		"y" : 2
+	},
+	"mac" : "DC:EE:06:61:B0:3D",
+	"end_time" : NumberLong("1472826392960"),
+	"start_time" : NumberLong("1472826203859")
+}
+
+{
+	"_id" : ObjectId("57c98b5c36d1686c959a46f8"),
+	"data" : [
+		{
+			"rss1" : -64,
+			"clientMac" : "DCEE0661B03D",
+			"rss2" : -61,
+			"rss3" : -69
+		}
+	],
+	"time" : NumberLong("1472826206943"),
+	"band" : 2,
+	"apMac" : "F8E71E290500"
+}

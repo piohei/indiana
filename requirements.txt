@@ -1,0 +1,8 @@
+flask==0.10.1
+pymongo==3.3.0
+requests==2.10.0
+tornado-json==1.2.2
+tornado==4.3
+wrapt==1.10.8
+py==1.4.31
+pytest==3.0.2
