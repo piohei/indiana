@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from pymongo import MongoClient
-import config
+from config import config
 
-db = MongoClient(config.DB_HOST, config.DB_PORT)[config.DB_NAME]
+db = MongoClient(config['db']['host'], config['db']['port'])[config['db']['name']]
 
 
 class DBException(Exception):

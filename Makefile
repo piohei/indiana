@@ -6,4 +6,4 @@ run:
 	  foreman start
 
 test:
-	  pytest .
+	  INDIANA_ENV=test pytest .

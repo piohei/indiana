@@ -18,6 +18,8 @@ You need to install python3 and bower (npm install -g bower) first. Then run:
 
 or just run `make init`
 
+Then copy configuration file. Use: `cp config/development.yml.example config/developmnet.yml`
+
 # Run
 
 `make run`
