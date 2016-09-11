@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from threading import RLock
+from helpers.utils import millis
+from models import Fingertip, APData
+
 
 class FingertipException(Exception):
     def __init__(self, message):
@@ -14,7 +17,7 @@ class FingertipService(object):
 
     def set_fingertip(self, mac="", x=0, y=0, z=0):
         with self.lock:
-            new_fingertip = models.Fingertip(mac, x, y, z)
+            new_fingertip = Fingertip(mac, x, y, z)
             if new_fingertip.is_same(self.current_fingertip):
                 raise FingertipException("same as current")
             if self.current_fingertip is not None:
@@ -41,7 +44,6 @@ class FingertipService(object):
         with self.lock:
             if self.current_fingertip is None:
                 return "no fingertip"
-            count = models.ap_data.count_entries_since(self.current_fingertip.start_time)
+            count = APData.count_entries_since(self.current_fingertip.start_time)
             return "{}: collected {}".format(self.current_fingertip, count)
 
-service = FingertipService()

@@ -2,6 +2,7 @@
 
 from helpers import db
 
+
 class APData(object):
     def __init__(self, device_MAC='', router_MAC='', timestamp='', rssi=0,
                  channel=-1, tuple=None, dictionary=None):
@@ -24,7 +25,8 @@ class APData(object):
         self.rssi = rssi
         self.channel = channel
 
-    def collection_name(self):
+    @staticmethod
+    def collection_name():
         return 'ap_data'
 
     def save(self):
@@ -34,9 +36,9 @@ class APData(object):
         return self.__dict__
 
     def __str__(self, *args, **kwargs):
-        return "APData[device_MAC={}, router_MAC={}, rssi={}, channel={}, t={}]". \
-                    format(self.device_MAC, self.router_MAC, self.rssi,
-                           self.channel, self.timestamp)
+        return "APData[device_MAC={}, router_MAC={}, rssi={}, channel={}, t={}]".format(
+                self.device_MAC, self.router_MAC, self.rssi,self.channel, self.timestamp)
 
-def count_entries_since(t):
-    db.count({'time': {'$gt': start_time}})
+    @classmethod
+    def count_entries_since(cls, t):
+        db.count(cls.collection_name(), {'time': {'$gt': t}})
