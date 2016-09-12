@@ -2,7 +2,7 @@
 
 from pymongo import MongoClient
 
-db = MongoClient("127.0.0.1", 27017)["indiana_db2"]
+db = MongoClient(config['db']['host'], config['db']['port'])[config['db']['name']]
 
 
 class DBException(Exception):
