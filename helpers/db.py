@@ -37,3 +37,11 @@ def replace_one(collection, filter={}, replacement={}, upsert=True):
 
 def count(collection, filter={}):
     return db[collection].count(filter)
+
+
+def find(collection, query={}):
+    return db[collection].find(query)
+
+
+def group(collection, key, condition={}, initial={}, reduce=None, finalize=None):
+    return db[collection].group(key=key, condition=condition, initial=initial, reduce=reduce, finalize=finalize)

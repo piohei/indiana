@@ -37,8 +37,27 @@ class APData(object):
 
     def __str__(self, *args, **kwargs):
         return "APData[device_MAC={}, router_MAC={}, rssi={}, channel={}, t={}]".format(
-                self.device_MAC, self.router_MAC, self.rssi,self.channel, self.timestamp)
+                self.device_MAC, self.router_MAC, self.rssi, self.channel, self.timestamp)
 
     @classmethod
     def count_entries_since(cls, t):
         db.count(cls.collection_name(), {'time': {'$gt': t}})
+
+    @classmethod
+    def group_for_fingertip(cls, fingertip):
+        return db.group(
+            collection=cls.collection_name(),
+            key=["apMac", "band"],
+            condition={
+                "time": {
+                    "$gte": fingertip.start_time,
+                    "$lte": fingertip.end_time
+                }
+            },
+            initial={"ap_data": []},
+            reduce="function(curr, result) {"
+                       "var o = curr.data[0];"
+                       "var mapped = {rss1: o.rss1, rss2: o.rss2, rss3: o.rss3, time: curr.time};"
+                       "result.ap_data.push(mapped);"
+                   "}"
+        )
