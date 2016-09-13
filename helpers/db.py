@@ -2,7 +2,12 @@
 
 from pymongo import MongoClient
 
-db = MongoClient(config['db']['host'], config['db']['port'])[config['db']['name']]
+from config.config import config
+
+client = MongoClient(config['db']['host'], config['db']['port'])
+print("Connection to MongoDB {} created".format(client.address))
+
+db = client[config['db']['name']]
 
 
 class DBException(Exception):
