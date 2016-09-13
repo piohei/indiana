@@ -5,16 +5,16 @@ import yaml
 
 env = None
 try:
-  env = os.environ['INDIANA_ENV']
+    env = os.environ['INDIANA_ENV']
 except KeyError as e:
-  env = 'development'
+    env = 'development'
 
-if env not in ['development', 'test']:
-  raise Exception("Unknown environment: {}".format(env))
+if env not in ['development', 'test', 'production']:
+    raise Exception("Unknown environment: {}".format(env))
 
 config_path = os.path.abspath(
                 os.path.join(
-                  os.path.dirname(__file__), 'config', "{}.yml".format(env)
+                  os.path.dirname(__file__), "{}.yml".format(env)
                 )
               )
 

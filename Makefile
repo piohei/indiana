@@ -5,5 +5,8 @@ init:
 run:
 	  foreman start
 
+production:
+	  INDIANA_ENV=production foreman start
+
 test:
 	  INDIANA_ENV=test pytest .
