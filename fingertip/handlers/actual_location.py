@@ -17,8 +17,22 @@ class ActualLocationHandler(APIHandler):
         self.set_header("Access-Control-Allow-Headers", "x-requested-with, content-type")
         self.set_header('Access-Control-Allow-Methods', 'POST, OPTIONS, DELETE')
 
-    # todo schema
-    @schema.validate(input_schema={"type": "object"})
+    @schema.validate(input_schema={
+        "type": "object",
+        "properties": {
+            "mac": {"type": "string"},
+            "x": {
+                "type": "number",
+                "minimum": 0
+            },
+            "y": {
+                "type": "number",
+                "minimum": 0
+            },
+            "z": {"type": "number"}
+        },
+        "required": ["mac", "x", "y", "z"]
+    })
     def post(self):
         try:
             self.fingertip_service.set_fingertip(**(self.body))

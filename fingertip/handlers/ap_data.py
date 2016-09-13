@@ -12,7 +12,30 @@ class APDataHandler(APIHandler):
         self.fingertip_service = fingertip_service
 
     # todo schema
-    @schema.validate(input_schema={"type": "object"})
+    @schema.validate(input_schema={
+        "type": "object",
+        "properties": {
+            "apMac": {"type": "string"},
+            "time": {"type": "number"},
+            "band": {
+                "type": "number",
+                "minimum": 0
+            },
+            "data": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "clientMac": {"type": "string"},
+                        "rss1": {"type": "number"},
+                        "rss2": {"type": "number"},
+                        "rss3": {"type": "number"}
+                    }
+                }
+            }
+        },
+        "required": ["apMac", "time", "band", "data"]
+    })
     def post(self):
         current_fingertip = self.fingertip.service.current_fingertip
 
