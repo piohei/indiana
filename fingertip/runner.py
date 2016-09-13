@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from app import App
+from fingertip.app import App
 
 app = App()
 

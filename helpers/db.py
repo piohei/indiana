@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from pymongo import MongoClient
-from config import config
 
-db = MongoClient(config['db']['host'], config['db']['port'])[config['db']['name']]
+from config.config import config
+
+client = MongoClient(config['db']['host'], config['db']['port'])
+print("Connection to MongoDB {} created".format(client.address))
+
+db = client[config['db']['name']]
 
 
 class DBException(Exception):
@@ -16,10 +20,12 @@ def assert_acknowledged(result):
         raise DBException("Db operation unsuccessful")
     return result
 
+
 def insert_into(collection, obj_dictionary):
     return assert_acknowledged(
                db[collection].insert_one(obj_dictionary)
            )
+
 
 def replace_one(collection, filter={}, replacement={}, upsert=True):
     return assert_acknowledged(
@@ -27,6 +33,7 @@ def replace_one(collection, filter={}, replacement={}, upsert=True):
                    filter=filter, replacement=replacement, upsert=upsert
                )
            )
+
 
 def count(collection, filter={}):
     return db[collection].count(filter)

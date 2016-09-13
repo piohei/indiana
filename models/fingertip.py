@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from helpers.utils import millis
+from helpers import db
+
+
 class Fingertip(object):
     VALIDITY_PERIOD = 300000
 
@@ -24,3 +28,10 @@ class Fingertip(object):
         return "Fingertip[mac={} location=[{}; {}; {}]]". \
                    format(self.mac, self.location['x'],
                           self.location['y'], self.location['z'])
+
+    @staticmethod
+    def collection_name():
+        return "fingertips"
+
+    def save(self):
+        db.insert_into(self.collection_name(), self.to_dict())

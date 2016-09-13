@@ -1,28 +1,50 @@
 # -*- coding: utf-8 -*-
 
-from tornado import web
-import json
-from services import fingertip
-from helpers import db
+from tornado_json import schema
+from tornado_json.exceptions import APIError, api_assert
+from tornado_json.requesthandlers import APIHandler
+from helpers.db import DBException
 from models.ap_data import APData
 
-class APDataHandler(web.RequestHandler):
+
+class APDataHandler(APIHandler):
+    def initialize(self, fingertip_service):
+        self.fingertip_service = fingertip_service
+
+    # todo schema
+    @schema.validate(input_schema={
+        "type": "object",
+        "properties": {
+            "apMac": {"type": "string"},
+            "time": {"type": "number"},
+            "band": {
+                "type": "number",
+                "minimum": 0
+            },
+            "data": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "clientMac": {"type": "string"},
+                        "rss1": {"type": "number"},
+                        "rss2": {"type": "number"},
+                        "rss3": {"type": "number"}
+                    }
+                }
+            }
+        },
+        "required": ["apMac", "time", "band", "data"]
+    })
     def post(self):
-        current_fingertip = fingertip.service.current_fingertip
+        current_fingertip = self.fingertip.service.current_fingertip
 
-        if current_fingertip is not None and not current_fingertip.is_outdated():
-            self.set_status(400, reason='Fingertip gone or outdated.')
-            self.finish()
+        api_assert(current_fingertip is not None and not current_fingertip.is_outdated(), 400, "fingertip gone or outdated")
 
-        if self.request.body is None:
-            self.set_status(400, reason='Empty body.')
-            self.finish()
+        api_assert(self.body["data"], 400, "empty data")
 
         try:
-            body = json.loads(self.request.body.decode('utf-8'))
-            APData(body).save()
-
-        except json.decoder.JSONDecodeError as e:
-            self.set_status(400, reason='Error parsing JSON.')
-        except db.DBException as e:
-            self.set_status(500, reason=e.message)
+            APData(self.body).save()
+        except DBException as e:
+            raise APIError(500, e.message)
+        return "ok"
