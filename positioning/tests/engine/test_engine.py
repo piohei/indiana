@@ -5,7 +5,7 @@ from . import context
 import unittest
 from unittest.mock import patch
 from positioning.engine import Engine, EngineException
-from positioning.chaines import Alpha
+from positioning.chains import Alpha
 
 class TestEngine(unittest.TestCase):
     def test_engine_creating_with_wrong_link(self):
