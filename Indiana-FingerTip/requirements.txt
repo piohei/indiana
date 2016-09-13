@@ -1,5 +1,0 @@
-tornado==4.3
-requests==2.10.0
-pymongo==3.3.0
-wrapt==1.10.8
-tornado-json==1.2.2

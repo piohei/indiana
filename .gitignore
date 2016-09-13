@@ -107,5 +107,7 @@ crashlytics.properties
 crashlytics-build.properties
 
 **/bower_components/
-**/config.py
 
+/config/*.yml
+
+.DS_Store
