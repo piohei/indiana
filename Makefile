@@ -1,12 +1,12 @@
 init:
-		pip3 install -r requirements.txt
-		cd web && bower install && cd ..
+	pip3 install -r requirements.txt
+	cd web && bower install && cd ..
 
 run:
-	  foreman start
+	foreman start
 
 production:
-	  INDIANA_ENV=production foreman start
+	INDIANA_ENV=production foreman start
 
 test:
-	  INDIANA_ENV=test pytest .
+	INDIANA_ENV=test pytest .
