@@ -26,10 +26,13 @@ class WebSocketService(object):
     def close_current_sockets(self, message='closed'):
         with self.lock:
             while self.list:
-                web_socket = self.list.pop()
+                web_socket = self.list[0]
                 self.remove_socket(web_socket, message)
 
     def broadcast(self, message):
         with self.lock:
             for ws in self.list:
-                ws.write_message(message)
+                try:
+                    ws.write_message(message)
+                except WebSocketClosedError:
+                    pass
