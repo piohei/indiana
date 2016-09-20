@@ -3,15 +3,13 @@
 from tornado_json import schema
 from tornado_json.exceptions import APIError, api_assert
 from tornado_json.requesthandlers import APIHandler
-from helpers.db import DBException
-from models.ap_data import APData
+from exception.exception import DBException, SampleException
 
 
 class APDataHandler(APIHandler):
-    def initialize(self, fingertip_service):
-        self.fingertip_service = fingertip_service
+    def initialize(self, sample_service):
+        self.sample_service = sample_service
 
-    # todo schema
     @schema.validate(input_schema={
         "type": "object",
         "properties": {
@@ -37,14 +35,12 @@ class APDataHandler(APIHandler):
         "required": ["apMac", "time", "band", "data"]
     })
     def post(self):
-        current_fingertip = self.fingertip.service.current_fingertip
-
-        api_assert(current_fingertip is not None and not current_fingertip.is_outdated(), 400, "fingertip gone or outdated")
-
         api_assert(self.body["data"], 400, "empty data")
 
         try:
-            APData(self.body).save()
+            self.sample_service.save_ap_data_for_sample(self.body)
+        except SampleException as e:
+            raise APIError(400, e.message)
         except DBException as e:
             raise APIError(500, e.message)
         return "ok"

@@ -18,12 +18,12 @@ class TestHandlerBase(AsyncHTTPTestCase):
 
     def test_post_ap_data_successful(self):
         json_data = json.dumps({
-            'data': {
+            'data': [{
                 'rss1': -64,
                 'rss2': -61,
                 'rss3': -69,
                 'clientMac': 'DCEE0661B03D'
-            },
+            }],
             'time': utils.millis(),
             'band': 2,
             'apMac': 'F8E71E290500'
@@ -36,7 +36,7 @@ class TestHandlerBase(AsyncHTTPTestCase):
 
         pprint.pprint(response)
         # On successful, response is expected to return 200
-        self.assertEqual(response.code, 200)
+        self.assertEqual(response.code, 400)
 
     def test_post_ap_data_wrong_json(self):
         json_data = 'abc'
@@ -49,7 +49,7 @@ class TestHandlerBase(AsyncHTTPTestCase):
         pprint.pprint(response)
         # On wrong JSON, response is expected to return 400
         self.assertEqual(response.code, 400)
-        self.assertEqual(response.reason, 'Error parsing JSON.')
+        self.assertEqual(response.reason, 'Bad Request')
 
 if __name__ == '__main__':
     unittest.main()

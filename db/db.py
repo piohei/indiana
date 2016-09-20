@@ -3,16 +3,12 @@
 from pymongo import MongoClient
 
 from config.config import config
+from exception.exception import DBException
 
 client = MongoClient(config['db']['host'], config['db']['port'])
 print("Connection to MongoDB {} created".format(client.address))
 
 db = client[config['db']['name']]
-
-
-class DBException(Exception):
-    def __init__(self, message):
-        self.message = message
 
 
 def assert_acknowledged(result):
@@ -27,16 +23,12 @@ def insert_into(collection, obj_dictionary):
            )
 
 
-def replace_one(collection, filter={}, replacement={}, upsert=True):
+def replace_one(collection, filter, replacement, upsert=True):
     return assert_acknowledged(
                db[collection].replace_one(
                    filter=filter, replacement=replacement, upsert=upsert
                )
            )
-
-
-def count(collection, filter={}):
-    return db[collection].count(filter)
 
 
 def find(collection, query={}):
@@ -45,3 +37,5 @@ def find(collection, query={}):
 
 def group(collection, key, condition={}, initial={}, reduce=None, finalize=None):
     return db[collection].group(key=key, condition=condition, initial=initial, reduce=reduce, finalize=finalize)
+
+

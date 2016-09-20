@@ -3,14 +3,14 @@
 from tornado_json import schema
 from tornado_json.exceptions import APIError
 from tornado_json.requesthandlers import APIHandler
-from fingertip.services import FingertipException
-from helpers.db import DBException
+from exception.exception import DBException, SampleException
+from models.sample_stamp import SampleStamp
 
 
-class ActualLocationHandler(APIHandler):
-    def initialize(self, fingertip_service):
+class SampleStampHandler(APIHandler):
+    def initialize(self, sample_service):
         super().initialize()
-        self.fingertip_service = fingertip_service
+        self.sample_service = sample_service
 
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
@@ -35,15 +35,16 @@ class ActualLocationHandler(APIHandler):
     })
     def post(self):
         try:
-            self.fingertip_service.set_fingertip(**(self.body))
-        except FingertipException as e:
+            sample = SampleStamp(**(self.body))
+            self.sample_service.set_sample_stamp(sample)
+        except SampleException as e:
             self.set_status(400, reason=e.message)
         return "ok"
 
     def delete(self):
         try:
-            self.fingertip_service.end_fingertip()
-        except FingertipException as e:
+            self.sample_service.end_sample()
+        except SampleException as e:
             raise APIError(400, e.message)
         except DBException as e:
             raise APIError(500, e.message)

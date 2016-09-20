@@ -24,11 +24,11 @@ var FINGERTIP = (function(){
     const STATUS_URL = "ws://" + HOST + "status";
 
     function postFingertip() {
-        var request = {};
+        var request = {location:{}};
         try {
-            request.x = toNumber($("#x").val());
-            request.y = toNumber($("#y").val());
-            request.z = toNumber($("#z").val());
+            request.location.x = toNumber($("#x").val());
+            request.location.y = toNumber($("#y").val());
+            request.location.z = toNumber($("#z").val());
             request.mac = toUpperCaseMAC($("#mac").val());
         } catch (err) {
             log(err);
