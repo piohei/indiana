@@ -7,7 +7,7 @@ from models.location import Location
 class SampleStamp(object):
     VALIDITY_PERIOD = 300000
 
-    def __init__(self, mac, location, start_time=None, end_time=None):
+    def __init__(self, mac, location, start_time=None, end_time=None, **ignored):
         self.mac = mac
         self.location = Location(**location)
         self.start_time = start_time if start_time is not None else millis()
@@ -27,3 +27,6 @@ class SampleStamp(object):
 
     def __str__(self):
         return "Sample[{} {}]".format(self.mac, self.location)
+
+    def __eq__(self, other):
+        return self.to_dict() == other.to_dict()

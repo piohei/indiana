@@ -9,7 +9,7 @@ def loc(x):
     return {"x": x, "y": x, "z": x}
 
 
-def stamp(location, st):
+def stamp(location, st=1):
     return SampleStamp(mac="1", location=location, start_time=st, end_time=st+2)
 
 
@@ -31,7 +31,7 @@ class TestSampleStampDao(unittest.TestCase):
         self.assertIsNotNone(result.upserted_id)
 
     def checked_replace(self, x, time):
-        result = self.save(x)
+        result = self.save(x, time)
         self.assertTrue(result.acknowledged)
         self.assertEqual(1, result.matched_count)
         self.assertEqual(1, result.modified_count)
@@ -64,5 +64,24 @@ class TestSampleStampDao(unittest.TestCase):
         self.checked_replace(4, 12)
 
         self.assertSize(4)
+        self.assertStartTimeForLocation(3, 9)
+        self.assertStartTimeForLocation(4, 12)
+
+    def test_find_maps_correctly(self):
+        stamp1 = stamp(loc(1))
+        stamp2 = stamp(loc(2))
+
+        self.under_test.save(stamp1)
+        self.under_test.save(stamp2)
+
+        result1 = self.under_test.find({"location": loc(1)})
+        self.assertEqual(1, len(result1))
+        self.assertEqual(stamp1, result1[0])
+
+        result2 = self.under_test.all()
+        self.assertEqual(2, len(result2))
+        self.assertEqual(stamp1, result2[0])
+        self.assertEqual(stamp2, result2[1])
+
 
 

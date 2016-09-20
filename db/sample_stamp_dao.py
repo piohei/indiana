@@ -19,7 +19,7 @@ class SampleStampDAO(object):
         )
 
     def find(self, query):
-        return map(SampleStamp, find(self.collection_name(), query))
+        return list(map(lambda x: SampleStamp(**x), find(self.collection_name(), query)))
 
     def all(self):
         return self.find(query={})
