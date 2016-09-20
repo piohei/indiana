@@ -3,6 +3,9 @@
 import links
 
 class Alpha:
+    def __init__(self, *args):
+        pass
+
     def calculate(self, *args):
         res = args
 

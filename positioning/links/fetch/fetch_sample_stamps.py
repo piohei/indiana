@@ -1,4 +1,4 @@
-class FetchLocationSamples(object):
+class FetchSamplesStamps(object):
     def __init__(self, sample_stamp_dao):
         self.sample_stamp_dao = sample_stamp_dao
 
