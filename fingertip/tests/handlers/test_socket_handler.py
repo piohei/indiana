@@ -4,7 +4,8 @@ from . import context
 
 import unittest
 
-class TestCleanupJob(unittest.TestCase):
+class TestSocketHandler(unittest.TestCase):
+    #no out of the box testing in tornado - leaving it now
     pass
 
 if __name__ == '__main__':
