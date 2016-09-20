@@ -21,24 +21,30 @@ class SampleStampHandler(APIHandler):
         "type": "object",
         "properties": {
             "mac": {"type": "string"},
-            "x": {
-                "type": "number",
-                "minimum": 0
-            },
-            "y": {
-                "type": "number",
-                "minimum": 0
-            },
-            "z": {"type": "number"}
+            "location": {
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "number",
+                        "minimum": 0
+                    },
+                    "y": {
+                        "type": "number",
+                        "minimum": 0
+                    },
+                    "z": {"type": "number"}
+                },
+                "required": ["x", "y", "z"]
+            }
         },
-        "required": ["mac", "x", "y", "z"]
+        "required": ["mac", "location"]
     })
     def post(self):
         try:
             sample = SampleStamp(**(self.body))
             self.sample_service.set_sample_stamp(sample)
         except SampleException as e:
-            self.set_status(400, reason=e.message)
+            raise APIError(400, e.message)
         return "ok"
 
     def delete(self):

@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
+import json
+import unittest
 from unittest.mock import Mock
 
 from tornado import web
+from tornado.testing import AsyncHTTPTestCase
 
 from exception.exception import SampleException, DBException
 from fingertip.handlers import APDataHandler
-from . import context
-
-import unittest
-from tornado.testing import AsyncHTTPTestCase, get_unused_port
-import json
-import pprint
-
-import fingertip
 from helpers import utils
 
 
@@ -38,14 +33,7 @@ def empty_data():
         'apMac': 'F8E71E290500'
     }
 
-
-def error_body(text):
-    return ('{"status": "fail", "data": "' + text + '"}').encode('ascii')
-
-OK = b'{"status": "success", "data": "ok"}'
-DECODE_ERROR = error_body("Input is malformed; could not decode JSON object.")
-
-
+# TODO refactor
 class TestAPDataHandler(AsyncHTTPTestCase):
 
     def get_app(self):
@@ -63,7 +51,6 @@ class TestAPDataHandler(AsyncHTTPTestCase):
             body=json.dumps(data))
 
         self.assertEqual(response.code, 200)
-        self.assertEqual(OK, response.body)
         self.sample_service.save_ap_data_for_sample.assert_called_once_with(data)
 
     def test_post_ap_data_wrong_json(self):
@@ -75,7 +62,6 @@ class TestAPDataHandler(AsyncHTTPTestCase):
             body=json_data)
 
         self.assertEqual(response.code, 400)
-        self.assertEqual(DECODE_ERROR, response.body)
         self.sample_service.save_ap_data_for_sample.assert_not_called()
 
     def test_post_ap_data_empty(self):
@@ -87,7 +73,6 @@ class TestAPDataHandler(AsyncHTTPTestCase):
                 body=json.dumps(data))
 
         self.assertEqual(response.code, 400)
-        self.assertEqual(error_body('empty data'), response.body)
         self.sample_service.save_ap_data_for_sample.assert_not_called()
 
     def test_post_ap_data_sample_exception(self):
@@ -100,7 +85,6 @@ class TestAPDataHandler(AsyncHTTPTestCase):
                 body=json.dumps(data))
 
         self.assertEqual(response.code, 400)
-        self.assertEqual(error_body('message'), response.body)
         self.sample_service.save_ap_data_for_sample.assert_called_once_with(data)
 
     def test_post_ap_data_db_exception(self):
@@ -113,7 +97,6 @@ class TestAPDataHandler(AsyncHTTPTestCase):
                 body=json.dumps(data))
 
         self.assertEqual(response.code, 500)
-        self.assertEqual(error_body('message'), response.body)
         self.sample_service.save_ap_data_for_sample.assert_called_once_with(data)
 
 if __name__ == '__main__':
