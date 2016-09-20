@@ -3,8 +3,6 @@
 from threading import RLock
 
 from exception.exception import SampleException
-from helpers.utils import millis
-from models import SampleStamp, APData
 
 
 class SampleService(object):
@@ -25,8 +23,8 @@ class SampleService(object):
     def end_sample(self):
         with self.lock:
             if self.current_sample_stamp is not None:
-                self.current_sample_stamp.end_time = millis()
                 try:
+                    self.current_sample_stamp.end()
                     self.sample_stamp_dao.save(self.current_sample_stamp)
                 finally:
                     self.current_sample_stamp = None
@@ -35,7 +33,7 @@ class SampleService(object):
 
     def end_if_outdated(self):
         with self.lock:
-            if self.current_sample_stamp and self.current_sample_stamp.is_outdated():
+            if self.current_sample_stamp is not None and self.current_sample_stamp.is_outdated():
                 self.end_sample()
 
     def save_ap_data_for_sample(self, ap_data_dict):

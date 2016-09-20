@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from exception.exception import SampleException
 from helpers.utils import millis
 from models.location import Location
 
@@ -19,6 +19,11 @@ class SampleStamp(object):
     def is_same(self, other):
         return other is not None and self.location == other.location \
                and self.mac == other.mac
+
+    def end(self):
+        if self.end_time is not None:
+            raise SampleException("Sample already ended")
+        self.end_time = millis()
 
     def to_dict(self):
         d = dict(self.__dict__)
