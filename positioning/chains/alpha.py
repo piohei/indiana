@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
+from positioning.chains.base import Base
+from positioning.links.pass_args import PassArgs
 
-import links
 
-class Alpha:
-    def __init__(self, *args):
-        pass
-
-    def calculate(self, *args):
-        res = args
-
-        res = links.pass_args.calculate(*res)
-        res = links.pass_args.calculate(*res)
-
-        return res
+class Alpha(Base):
+    def links(self):
+        return [
+          PassArgs,
+          PassArgs
+        ]

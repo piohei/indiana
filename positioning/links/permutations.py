@@ -1,10 +1,12 @@
+from positioning.links.base import Base
+
 from collections import defaultdict
 
 from helpers.utils import functional_add
 from models.fingertip import Fingertip
 
 
-class Permutations(object):
+class Permutations(Base):
 
     def permutate(self, source_dict, keys_left):
         if not keys_left:

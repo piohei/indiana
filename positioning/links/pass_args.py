@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
+from positioning.links.base import Base
 
-class PassArgs:
+class PassArgs(Base):
     def calculate(self, *args):
         return args
-
-pass_args = PassArgs()

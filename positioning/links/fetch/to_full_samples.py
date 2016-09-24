@@ -1,9 +1,12 @@
+from positioning.links.base import Base
+
 from models.sample import Sample
 
 
-class ToFullSamples(object):
+class ToFullSamples(Base):
     def __init__(self, rssi_measure_dao):
-        self.rssi_measure_dao = rssi_measure_dao
+        super
+        self.rssi_measure_dao = self.params['rssi_measure_dao']
 
     def to_sample(self, stamp):
         measures = self.rssi_measure_dao.grouped_time_measures_for_range(
