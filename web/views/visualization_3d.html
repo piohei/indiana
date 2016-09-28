@@ -4,16 +4,16 @@
 
 {% block additional_styles %}
     body {
-      margin: 0px;
-      padding: 0px;
-      background-color: #000000;
-      overflow: hidden;
+        margin: 0px;
+        padding: 0px;
+        background-color: #000000;
+        overflow: hidden;
     }
 {% end %}
 
 {% block container %}
     <script language="JavaScript">
-        VISUALIZATION.init();
-        VISUALIZATION.run3D();
+        VISUALIZATION.init("3D");
+        VISUALIZATION.run();
     </script>
 {% end %}

@@ -7,20 +7,23 @@ import fingertip.handlers as handlers
 import fingertip.services as services
 import fingertip.jobs as jobs
 
-import db
+from db.db import db
+from db.ap_data_dao import APDataDAO
+from db.sample_stamp_dao import SampleStampDAO
 
 
 class App:
     def __init__(self):
         self.global_lock = RLock()
 
-        self.ap_data_dao = db.APDataDAO()
-        self.sample_stamp_dao = db.SampleStampDAO()
+        self.ap_data_dao = APDataDAO()
+        self.sample_stamp_dao = SampleStampDAO()
 
         self.sample_service = services.SampleService(self.ap_data_dao, self.sample_stamp_dao, self.global_lock)
         self.web_socket_service = services.WebSocketService(self.global_lock)
 
         self.app = web.Application([
+            (r"/position/([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})", handlers.PositionHandler, {}),
             (r"/actual_location", handlers.SampleStampHandler, {"sample_service": self.sample_service}),
             (r"/status", handlers.SocketHandler, {"web_socket_service": self.web_socket_service}),
             (r"/", handlers.APDataHandler, {"sample_service": self.sample_service})
