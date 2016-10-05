@@ -10,6 +10,7 @@ import fingertip.jobs as jobs
 from db.db import db
 from db.ap_data_dao import APDataDAO
 from db.sample_stamp_dao import SampleStampDAO
+from db.rssi_measure_dao import RSSIMeasureDAO
 
 
 class App:
@@ -18,15 +19,26 @@ class App:
 
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
+        self.rssi_measure_dao = RSSIMeasureDAO()
 
         self.sample_service = services.SampleService(self.ap_data_dao, self.sample_stamp_dao, self.global_lock)
         self.web_socket_service = services.WebSocketService(self.global_lock)
 
         self.app = web.Application([
-            (r"/position/([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})", handlers.PositionHandler, {}),
-            (r"/actual_location", handlers.SampleStampHandler, {"sample_service": self.sample_service}),
-            (r"/status", handlers.SocketHandler, {"web_socket_service": self.web_socket_service}),
-            (r"/", handlers.APDataHandler, {"sample_service": self.sample_service})
+            (r"/position/([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})", handlers.PositionHandler, {
+                    "ap_data_dao": self.ap_data_dao,
+                    "sample_stamp_dao": self.sample_stamp_dao,
+                    "rssi_measure_dao": self.rssi_measure_dao
+                }),
+            (r"/actual_location", handlers.SampleStampHandler, {
+                    "sample_service": self.sample_service
+                }),
+            (r"/status", handlers.SocketHandler, {
+                    "web_socket_service": self.web_socket_service
+                }),
+            (r"/", handlers.APDataHandler, {
+                    "sample_service": self.sample_service
+                })
         ])
 
         self.jobs = [
