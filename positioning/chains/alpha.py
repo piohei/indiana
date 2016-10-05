@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from positioning.chains.base import Base
-from positioning.links.pass_args import PassArgs
+
+import positioning.links as links
 
 
 class Alpha(Base):
     def links(self):
         return [
-          PassArgs,
-          PassArgs
+          links.PassArgs,
+          links.PassArgs
         ]

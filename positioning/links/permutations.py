@@ -16,8 +16,8 @@ class Permutations(Base):
             partial_results = self.permutate(source_dict, tail)
             rssis = source_dict[ap_mac]
             return [
-                functional_add(ap_mac, rssi.to_rssi_measure(), partial)
-                for rssi in rssis
+                (functional_add(ap_mac, rssi.to_rssi_measure(), partial)
+                for rssi in rssis)
                 for partial in partial_results
             ]
 
@@ -27,7 +27,7 @@ class Permutations(Base):
     def calculate(self, samples):
         return [
             Fingertip(
-                sample.location,
+                sample.location(),
                 {
                     band: self.permutations_for_macs(macs_to_rssis)
                     for band, macs_to_rssis in sample.ap_data_by_band_and_mac.items()

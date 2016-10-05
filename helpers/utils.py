@@ -10,4 +10,4 @@ def millis():
 def functional_add(key, value, dictionary):
     new = dict(dictionary)
     new[key] = value
-    return value
+    return new

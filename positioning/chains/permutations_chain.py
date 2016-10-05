@@ -1,14 +1,12 @@
 from positioning.chains.base import Base
 
-from positioning.links.permutations import Permutations
-from positioning.links.fetch.fetch_sample_stamps import FetchSamplesStamps
-from positioning.links.fetch.to_full_samples import ToFullSamples
+import positioning.links as links
 
 
 class PermutationsChain(Base):
     def links(self):
         return [
-            FetchSamplesStamps,
-            ToFullSamples,
-            Permutations
+            links.FetchSamplesStamps,
+            links.ToFullSamples,
+            links.Permutations
         ]
