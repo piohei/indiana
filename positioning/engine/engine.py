@@ -11,6 +11,7 @@ class EngineException(Exception):
 class Engine(object):
     CHAINS = {
         'alpha': chains.Alpha,
+        'beta': chains.Beta,
         'permutations': chains.PermutationsChain
     }
 
