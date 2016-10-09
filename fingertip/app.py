@@ -12,6 +12,8 @@ from db.ap_data_dao import APDataDAO
 from db.sample_stamp_dao import SampleStampDAO
 from db.rssi_measure_dao import RSSIMeasureDAO
 
+from helpers.utils import mac_regexp_dashes
+
 
 class App:
     def __init__(self):
@@ -25,7 +27,7 @@ class App:
         self.web_socket_service = services.WebSocketService(self.global_lock)
 
         self.app = web.Application([
-            (r"/position/([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})", handlers.PositionHandler, {
+            (r"/position/" + mac_regexp_dashes(), handlers.PositionHandler, {
                     "ap_data_dao": self.ap_data_dao,
                     "sample_stamp_dao": self.sample_stamp_dao,
                     "rssi_measure_dao": self.rssi_measure_dao

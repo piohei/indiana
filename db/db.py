@@ -35,6 +35,10 @@ def find(collection, query={}):
     return db[collection].find(query)
 
 
+def count(collection, query={}):
+    return db[collection].count(query)
+
+
 def group(collection, key, condition={}, initial={}, reduce=None, finalize=None):
     return db[collection].group(key=key, condition=condition, initial=initial, reduce=reduce, finalize=finalize)
 

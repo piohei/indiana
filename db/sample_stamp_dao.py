@@ -1,11 +1,36 @@
-from db.db import find, replace_one
-from models import SampleStamp
+from db.db import replace_one
+from db.base_dao import BaseDAO
+from models import SampleStamp, Mac, Location, Time
 
 
-class SampleStampDAO(object):
+class SampleStampDAO(BaseDAO):
     @staticmethod
     def collection_name():
-        return "sample_stamps"
+        return 'sample_stamps'
+
+    def from_db_object(self, db_object):
+        return SampleStamp(
+            mac=Mac(db_object['mac']),
+            location=Location(
+                x=db_object['location']['x'],
+                y=db_object['location']['y'],
+                z=db_object['location']['z']
+            ),
+            start_time=Time(int(db_object['start_time'])),
+            end_time=Time(int(db_object['end_time']))
+        )
+
+    def to_db_object(self, sample_stamp):
+        return {
+            'mac': sample_stamp.mac.mac,
+            'location': {
+                'x': sample_stamp.location.x,
+                'y': sample_stamp.location.y,
+                'z': sample_stamp.location.z
+            },
+            'start_time': sample_stamp.start_time.millis,
+            'end_time': sample_stamp.end_time.millis
+        }
 
     def save(self, sample_stamp):
         return replace_one(
@@ -15,11 +40,5 @@ class SampleStampDAO(object):
                     'location.y': sample_stamp.location.y,
                     'location.z': sample_stamp.location.z
                 },
-                replacement=sample_stamp.to_dict()
+                replacement=self.to_db_object(sample_stamp)
         )
-
-    def find(self, query):
-        return list(map(lambda x: SampleStamp(**x), find(self.collection_name(), query)))
-
-    def all(self):
-        return self.find(query={})
