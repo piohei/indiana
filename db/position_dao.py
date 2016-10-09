@@ -15,8 +15,7 @@ class PositionDAO(BaseDAO):
                 y=db_object['location']['y'],
                 z=db_object['location']['z']
             ),
-            created_at=Time(int(db_object['created_at'])),
-            end_time=Time(int(db_object['end_time']))
+            created_at=Time(int(db_object['created_at']))
         )
 
     def to_db_object(self, position):
