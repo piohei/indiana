@@ -11,6 +11,6 @@ class Fingertip(object):
         self.ap_data_by_mac_and_signal = ap_data_by_mac_and_signal
 
     def __str__(self, *args, **kwargs):
-        return "Fingertip[location={}, ap_data_by_mac_and_signal={}]".format(
+        return "Fingertip(location={}, ap_data_by_mac_and_signal={})".format(
                     self.location, self.ap_data_by_mac_and_signal
                 )

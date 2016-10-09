@@ -21,3 +21,6 @@ def mac_regexp_dashes():
            r'[a-fA-F0-9]{2}-' \
            r'[a-fA-F0-9]{2}-' \
            r'[a-fA-F0-9]{2}$'
+
+def correct_mac(mac):
+    return ':'.join([mac[i:i+2].lower() for i in range(0, len(mac), 2)])

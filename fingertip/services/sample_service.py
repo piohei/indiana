@@ -3,6 +3,7 @@
 from threading import RLock
 
 from exception.exception import SampleException
+from models import APData, Mac, Time, RSSI, Signal
 
 
 class SampleService(object):
@@ -36,11 +37,11 @@ class SampleService(object):
             if self.current_sample_stamp is not None and self.current_sample_stamp.is_outdated():
                 self.end_sample()
 
-    def save_ap_data_for_sample(self, ap_data_dict):
+    def save_ap_data_for_sample(self, ap_data):
         stamp = self.current_sample_stamp
         if stamp is None or stamp.is_outdated():
             raise SampleException("sample stamp gone or outdated")
-        self.ap_data_dao.save_dict(ap_data_dict)
+        self.ap_data_dao.save(ap_data)
 
     def get_status(self):
         with self.lock:

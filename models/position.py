@@ -18,6 +18,6 @@ class Position(object):
         self.created_at = created_at if created_at is not None else Time()
 
     def __str__(self, *args, **kwargs):
-        return "Position[mac={}, location={}, created_at={}]".format(
+        return "Position(mac={}, location={}, created_at={})".format(
                     self.mac, self.location, self.created_at
                 )

@@ -17,6 +17,6 @@ class Sample(object):
         return self.stamp.location
 
     def __str__(self, *args, **kwargs):
-        return "Sample[stamp={}, ap_data_by_mac_and_signal={}]".format(
+        return "Sample(stamp={}, ap_data_by_mac_and_signal={})".format(
                     self.stamp, self.ap_data_by_mac_and_signal
                 )
