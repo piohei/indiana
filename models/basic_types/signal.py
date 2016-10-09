@@ -28,3 +28,9 @@ class Signal(object):
 
     def __repr__(self):
         return '"{}"'.format(str(self))
+
+    def __eq__(self, other):
+        return self.channel == other.channel and self.band == self.band
+
+    def __hash__(self):
+        return hash("{}{}".format(self.channel, self.band))

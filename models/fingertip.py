@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .location import Location
+from .basic_types.location import Location
 
 
 class Fingertip(object):

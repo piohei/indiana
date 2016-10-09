@@ -8,7 +8,7 @@ from models import APData, Mac, Time, RSSI, Signal
 class APDataDAO(BaseDAO):
     @staticmethod
     def collection_name():
-        return 'ap_data'
+        return 'ap_datas'
 
     def from_db_object(self, db_object):
         return APData(

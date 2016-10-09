@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from exception.exception import SampleException
 
-from .location import Location
-from .mac import Mac
-from .time import Time
+from .basic_types.location import Location
+from .basic_types.mac import Mac
+from .basic_types.time import Time
 
 
 class SampleStamp(object):
@@ -35,23 +35,6 @@ class SampleStamp(object):
         if self.end_time is not None:
             raise SampleException("Sample already ended")
         self.end_time = Time()
-
-    @staticmethod
-    def from_db_object(db_object):
-        return SampleStamp(
-            mac=Mac.from_db_object(db_object["mac"]),
-            location=Location.from_db_object(db_object["location"]),
-            start_time=Time.from_db_object(db_object["start_time"]) if db_object["start_time"] is not None else None,
-            end_time=Time.from_db_object(db_object["end_time"]) if db_object["end_time"] is not None else None
-        )
-
-    def to_db_object(self):
-        return {
-            "mac": self.mac.to_db_object(),
-            "location": self.location.to_db_object(),
-            "start_time": self.start_time.to_db_object() if self.start_time is not None else None,
-            "end_time": self.end_time.to_db_object() if self.end_time is not None else None
-        }
 
     def __str__(self):
         return "SampleStamp[mac={} location={} time=({} - {})]".format(

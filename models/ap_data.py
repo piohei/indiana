@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from .mac import Mac
-from .time import Time
-from .rssi import RSSI
-from .signal import Signal
+from .basic_types.mac import Mac
+from .basic_types.time import Time
+from .basic_types.rssi import RSSI
+from .basic_types.signal import Signal
 
 
 class APData(object):

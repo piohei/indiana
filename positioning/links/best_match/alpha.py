@@ -10,13 +10,14 @@ class BestMatchAlpha(Base):
         best_sample = samples[0]
         best_error = math.inf
 
+
         for sample in samples:
             err = 0
-            for band in self.measures.keys():
-                for mac in self.measures[band].keys():
-                    if not self.measures[band][mac]["rssi1"]:
+            for mac in self.measures.keys():
+                for signal in self.measures[mac].keys():
+                    if len(self.measures[mac][signal]) == 0:
                         continue
-                    diff = sample.get_measure_for(2, mac)["rssi1"]["avg"] - self.measures[band][mac]["rssi1"]
+                    diff = sample.get_measure_for(mac, signal)["1"]["avg"] - self.measures[mac][signal]["1"]
                     err += pow(diff, 2)
 
             if err < best_error:

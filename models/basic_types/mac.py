@@ -17,3 +17,9 @@ class Mac(object):
 
     def __repr__(self):
         return '"{}"'.format(str(self))
+
+    def __eq__(self, other):
+        return self.mac == other.mac
+
+    def __hash__(self):
+        return hash(self.mac)

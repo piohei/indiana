@@ -29,8 +29,8 @@ class Permutations(Base):
             Fingertip(
                 sample.location(),
                 {
-                    band: self.permutations_for_macs(macs_to_rssis)
-                    for band, macs_to_rssis in sample.ap_data_by_band_and_mac.items()
+                    signal: self.permutations_for_macs(macs_to_rssis)
+                    for signal, macs_to_rssis in sample.ap_data_by_mac_and_signal.items()
                 }
             ) for sample in samples
         ]
