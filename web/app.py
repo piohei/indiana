@@ -3,11 +3,13 @@
 from tornado import web, ioloop
 import os
 
+from config.config import env
+
 import handlers
 
 class App:
     def __init__(self):
-        self.app = web.Application([
+        self.app = web.Application(handlers=[
                         (r"/", handlers.RootHandler),
                         (r"/visualization/3d", handlers.Visualization3DHandler),
                         (r"/visualization/2d", handlers.Visualization2DHandler),
@@ -17,6 +19,7 @@ class App:
                     ],
                     static_path=os.path.join(os.path.dirname(__file__), "static"),
                     template_path=os.path.join(os.path.dirname(__file__), "views"),
+                    debug=(env == 'development')
                     )
 
     def get_app(self):
