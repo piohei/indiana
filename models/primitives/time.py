@@ -19,3 +19,9 @@ class Time(object):
 
     def __repr__(self):
         return '"{}"'.format(str(self))
+
+    def __eq__(self, other):
+        return self.millis == other.millis
+
+    def __hash__(self):
+        return hash(self.millis)

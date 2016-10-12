@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from exception.exception import SampleException
 
-from .basic_types.location import Location
-from .basic_types.mac import Mac
-from .basic_types.time import Time
+from .base import BaseDBModel
+
+from .primitives.location import Location
+from .primitives.mac import Mac
+from .primitives.time import Time
 
 
-class SampleStamp(object):
+class SampleStamp(BaseDBModel):
     VALIDITY_PERIOD = 300000
 
-    def __init__(self, mac, location, start_time=None, end_time=None, **ignored):
+    def __init__(self, mac, location, start_time=None, end_time=None, _id=None):
+        BaseDBModel.__init__(self, _id)
         if type(mac) != Mac:
             raise ValueError("Argument mac must be type of models.Mac")
         if type(location) != Location:
@@ -37,9 +40,6 @@ class SampleStamp(object):
         self.end_time = Time()
 
     def __str__(self):
-        return "SampleStamp[mac={} location={} time=({} - {})]".format(
-                    self.mac, self.location, self.start_time, self.end_time
+        return "SampleStamp[id={} mac={} location={} time=({} - {})]".format(
+                    self._id, self.mac, self.location, self.start_time, self.end_time
                 )
-
-    def __eq__(self, other):
-        return self.to_dict() == other.to_dict()

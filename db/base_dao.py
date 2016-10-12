@@ -12,13 +12,13 @@ class BaseDAO(object):
     def to_db_object(self, object):
         raise NotImplementedError
 
-    def find(self, query):
+    def find(self, query={}):
         return list(map(self.from_db_object, find(self.collection_name(), query)))
 
     def all(self):
         return self.find(query={})
 
-    def count(self, query):
+    def count(self, query={}):
         return count(self.collection_name(), query)
 
     def save(self, object):

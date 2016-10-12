@@ -15,3 +15,9 @@ class RSSI(object):
 
     def __repr__(self):
         return '"{}"'.format(str(self))
+
+    def __eq__(self, other):
+        return self.dBm == other.dBm
+
+    def __hash__(self):
+        return hash(self.dBm)

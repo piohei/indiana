@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from .basic_types.mac import Mac
-from .basic_types.location import Location
-from .basic_types.time import Time
+from .primitives.mac import Mac
+from .primitives.location import Location
+from .primitives.time import Time
 
 
 class Position(object):

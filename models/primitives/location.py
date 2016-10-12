@@ -39,3 +39,12 @@ class Location(object):
 
     def __str__(self, *args, **kwargs):
         return "Location[{}; {}; {}]".format(self.x, self.y, self.z)
+
+    def __repr__(self):
+        return '"{}"'.format(str(self))
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.z
+
+    def __hash__(self):
+        return hash(str(self))

@@ -42,4 +42,3 @@ def count(collection, query={}):
 def group(collection, key, condition={}, initial={}, reduce=None, finalize=None):
     return db[collection].group(key=key, condition=condition, initial=initial, reduce=reduce, finalize=finalize)
 
-

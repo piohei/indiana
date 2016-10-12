@@ -19,7 +19,8 @@ class APDataDAO(BaseDAO):
             signal=Signal(
                 channel=int(db_object['signal']['channel']),
                 band=db_object['signal']['band']
-            )
+            ),
+            _id=db_object['_id']
         )
 
     def to_db_object(self, ap_data):
@@ -31,7 +32,8 @@ class APDataDAO(BaseDAO):
             'signal': {
                 'channel': ap_data.signal.channel,
                 'band': ap_data.signal.band
-            }
+            },
+            '_id': ap_data._id
         }
 
     # Don't know why but doesn't work
@@ -100,7 +102,7 @@ class APDataDAO(BaseDAO):
                     res[router_mac][signal][k] = {
                         'min': RSSI(min(values)),
                         'max': RSSI(max(values)),
-                        'avg': sum(values) / float(len(values))
+                        'avg': RSSI(sum(values) / float(len(values)))
                     }
 
         return res

@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from .basic_types.mac import Mac
-from .basic_types.time import Time
-from .basic_types.rssi import RSSI
-from .basic_types.signal import Signal
+from .base import BaseDBModel
+
+from .primitives.mac import Mac
+from .primitives.time import Time
+from .primitives.rssi import RSSI
+from .primitives.signal import Signal
 
 
-class APData(object):
-    def __init__(self, router_mac, device_mac, created_at, rssis, signal):
+class APData(BaseDBModel):
+    def __init__(self, router_mac, device_mac, created_at, rssis, signal, _id=None):
+        BaseDBModel.__init__(self, _id)
         if type(router_mac) != Mac:
             raise ValueError('Argument router_mac must be type of models.Mac')
         if type(device_mac) != Mac:
@@ -31,5 +34,8 @@ class APData(object):
 
     def __str__(self, *args, **kwargs):
         rssis = ', '.join(list(map(lambda k: str(k) + ': ' + str(self.rssis[k]), self.rssis.keys())))
-        return 'APData(router_mac={}, device_mac={}, rssis=[{}], singal={}, created_at={})'.format(
-                self.router_mac, self.device_mac, rssis, self.signal, self.created_at)
+        return 'APData(id={}, router_mac={}, device_mac={}, rssis=[{}], singal={}, created_at={})'.format(
+                self._id, self.router_mac, self.device_mac, rssis, self.signal, self.created_at)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__

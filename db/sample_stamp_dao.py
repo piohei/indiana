@@ -17,7 +17,8 @@ class SampleStampDAO(BaseDAO):
                 z=db_object['location']['z']
             ),
             start_time=Time(int(db_object['start_time'])),
-            end_time=Time(int(db_object['end_time']))
+            end_time=Time(int(db_object['end_time'])),
+            _id=db_object['_id']
         )
 
     def to_db_object(self, sample_stamp):
@@ -29,16 +30,15 @@ class SampleStampDAO(BaseDAO):
                 'z': sample_stamp.location.z
             },
             'start_time': sample_stamp.start_time.millis,
-            'end_time': sample_stamp.end_time.millis
+            'end_time': sample_stamp.end_time.millis,
+            '_id': sample_stamp._id
         }
 
     def save(self, sample_stamp):
         return replace_one(
                 collection=self.collection_name(),
                 filter={
-                    'location.x': sample_stamp.location.x,
-                    'location.y': sample_stamp.location.y,
-                    'location.z': sample_stamp.location.z
+                    '_id': sample_stamp._id
                 },
                 replacement=self.to_db_object(sample_stamp)
         )
