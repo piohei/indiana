@@ -2,8 +2,9 @@
 
 from tornado_json import schema
 from tornado_json.requesthandlers import APIHandler
-from helpers.utils import millis
 from collections import defaultdict
+
+from models import Time
 from positioning.engine import Engine
 
 
@@ -31,8 +32,8 @@ class PositionHandler(APIHandler):
     })
     def get(self, mac):
         #mac = mac.replace('-', ':').lower()
-        end   = millis()
-        start = end - 15 * 1000
+        end   = Time()
+        start = Time(end.millis - 15 * 1000)
 
         data = self.rssi_measure_dao.grouped_rssi_stats(start, end)
         measures = {}

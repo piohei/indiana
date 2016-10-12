@@ -2,7 +2,7 @@
 
 from pymongo import MongoClient
 
-from config.config import config
+from config import config
 from exception.exception import DBException
 
 client = MongoClient(config['db']['host'], config['db']['port'])
