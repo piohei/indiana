@@ -47,6 +47,12 @@ class SampleService(object):
         with self.lock:
             if self.current_sample_stamp is None:
                 return "no fingertip"
-            count = self.ap_data_dao.count_entries_since(self.current_sample_stamp.start_time)
+
+            count = self.ap_data_dao.count({
+                'created_at': {
+                    '$gt': self.current_sample_stamp.start_time.millis
+                }
+            })
+
             return "{}: collected {}".format(self.current_sample_stamp, count)
 

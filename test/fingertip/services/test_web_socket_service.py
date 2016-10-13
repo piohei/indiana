@@ -69,6 +69,5 @@ class TestWebSocketService(unittest.TestCase):
         self.sock2.write_message.assert_called_once_with(MESSAGE)
 
 
-
 if __name__ == '__main__':
     unittest.main()

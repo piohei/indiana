@@ -8,10 +8,6 @@ from exception import SampleException
 from fingertip.services import *
 
 
-def not_ended_stamp():
-    return stamp(loc(1), et=None)
-
-
 class TestSampleService(unittest.TestCase):
 
     def setUp(self):
@@ -114,7 +110,7 @@ class TestSampleService(unittest.TestCase):
         self.under_test.save_ap_data_for_sample(ap_data)
 
         old_stamp.is_outdated.assert_called_once_with()
-        self.ap_data_dao.save_dict.assert_called_once_with(ap_data)
+        self.ap_data_dao.save.assert_called_once_with(ap_data)
 
     def test_save_ap_data_stamp_present_and_outdated(self):
         old_stamp = Mock()
@@ -123,26 +119,30 @@ class TestSampleService(unittest.TestCase):
 
         self.assertRaises(SampleException, self.under_test.save_ap_data_for_sample, Mock())
         old_stamp.is_outdated.assert_called_once_with()
-        self.ap_data_dao.save_dict.assert_not_called()
+        self.ap_data_dao.save.assert_not_called()
 
     def test_save_ap_data_stamp_absent(self):
         self.assertIsNone(self.under_test.current_sample_stamp)
 
         self.assertRaises(SampleException, self.under_test.save_ap_data_for_sample, Mock())
-        self.ap_data_dao.save_dict.assert_not_called()
+        self.ap_data_dao.save.assert_not_called()
 
     def test_get_status_when_none(self):
         self.assertIsNone(self.under_test.current_sample_stamp)
         self.assertEqual("no fingertip", self.under_test.get_status())
-        self.ap_data_dao.count_entries_since.assert_not_called()
+        self.ap_data_dao.count.assert_not_called()
 
     def test_get_status_when_present(self):
-        old_stamp = MagicMock()
-        old_stamp.start_time = 1
+        old_stamp = Mock()
+        old_stamp.start_time = Time(1)
         self.under_test.current_sample_stamp = old_stamp
-        self.ap_data_dao.count_entries_since = Mock(return_value=10)
+        self.ap_data_dao.count = Mock(return_value=10)
         self.assertEqual("{}: collected {}".format(old_stamp, 10), self.under_test.get_status())
-        self.ap_data_dao.count_entries_since.assert_called_once_with(1)
+        self.ap_data_dao.count.assert_called_once_with({
+            'created_at': {
+                '$gt': 1
+            }
+        })
 
 
 if __name__ == '__main__':
