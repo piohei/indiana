@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from .base.base_model import BaseModel
+
 from .primitives.mac import Mac
 from .primitives.location import Location
 from .primitives.time import Time
 
 
-class Position(object):
+class Position(BaseModel):
     def __init__(self, mac, location, created_at=None):
         if type(mac) != Mac:
             raise ValueError("Argument mac must be type of models.Mac")

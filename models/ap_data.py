@@ -36,6 +36,3 @@ class APData(BaseDBModel):
         rssis = ', '.join(list(map(lambda k: str(k) + ': ' + str(self.rssis[k]), self.rssis.keys())))
         return 'APData(id={}, router_mac={}, device_mac={}, rssis=[{}], singal={}, created_at={})'.format(
                 self._id, self.router_mac, self.device_mac, rssis, self.signal, self.created_at)
-
-    def __eq__(self, other):
-        return self.__dict__ == other.__dict__

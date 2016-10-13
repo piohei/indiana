@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from .base.base_model import BaseModel
+
 from .sample_stamp import SampleStamp
 
 
-class Sample(object):
+class Sample(BaseModel):
     def __init__(self, stamp, ap_data_by_mac_and_signal):
         if type(stamp) != SampleStamp:
             raise ValueError("Argument stamp must be type of models.SampleStamp")

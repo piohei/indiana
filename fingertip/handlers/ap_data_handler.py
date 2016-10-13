@@ -43,12 +43,14 @@ class APDataHandler(APIHandler):
         try:
             ap_datas = []
 
-            router_mac = correct_mac(self.body['apMac'])
+            router_mac = Mac(correct_mac(self.body['apMac']))
             signal = Signal(band='2.4', channel=self.body['band'])
             created_at = Time(int(self.body['time']))
 
-            for item in self.body['data']['items']:
-                device_mac = correct_mac(item['clientMac'])
+            print(self.body)
+
+            for item in self.body['data']:
+                device_mac = Mac(correct_mac(item['clientMac']))
                 rssis = {}
                 if item['rss1'] is not None:
                     rssis['1'] = RSSI(float(item['rss1']))

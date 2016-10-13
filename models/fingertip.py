@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from .base.base_model import BaseModel
+
 from .primitives.location import Location
 
 
-class Fingertip(object):
+class Fingertip(BaseModel):
     def __init__(self, location, ap_data_by_mac_and_signal):
         if type(location) != Location:
             raise ValueError("Argument location must be type of models.Location")

@@ -8,7 +8,7 @@ from tornado.testing import AsyncHTTPTestCase
 
 from exception import SampleException, DBException
 from fingertip.handlers import APDataHandler
-from helpers import utils
+from models import *
 
 
 def correct_dict():
@@ -19,7 +19,7 @@ def correct_dict():
             'rss3': -69,
             'clientMac': 'DCEE0661B03D'
         }],
-        'time': utils.millis(),
+        'time': 10,
         'band': 2,
         'apMac': 'F8E71E290500'
     }
@@ -28,7 +28,7 @@ def correct_dict():
 def empty_data():
     return {
         'data': [],
-        'time': utils.millis(),
+        'time': 10,
         'band': 2,
         'apMac': 'F8E71E290500'
     }
@@ -42,6 +42,17 @@ class TestAPDataHandler(AsyncHTTPTestCase):
             (r"/", APDataHandler, {"sample_service": self.sample_service})
         ])
 
+    def check_ap_data(self, ap_data):
+        self.assertEqual(ap_data.router_mac, Mac("F8:E7:1E:29:05:00"))
+        self.assertEqual(ap_data.device_mac, Mac("DC:EE:06:61:B0:3D"))
+        self.assertEqual(ap_data.created_at, Time(10))
+        self.assertEqual(ap_data.signal, Signal(band='2.4', channel=2))
+        self.assertEqual(ap_data.rssis, {
+                '1': RSSI(-64),
+                '2': RSSI(-61),
+                '3': RSSI(-69)
+            })
+
     def test_post_ap_data_successful(self):
         data = correct_dict()
 
@@ -51,7 +62,9 @@ class TestAPDataHandler(AsyncHTTPTestCase):
             body=json.dumps(data))
 
         self.assertEqual(response.code, 200)
-        self.sample_service.save_ap_data_for_sample.assert_called_once_with(data)
+        self.assertEqual(1, self.sample_service.save_ap_data_for_sample.call_count)
+        created_ap_data = self.sample_service.save_ap_data_for_sample.call_args[0][0]
+        self.check_ap_data(created_ap_data)
 
     def test_post_ap_data_wrong_json(self):
         json_data = 'abc'
@@ -85,7 +98,9 @@ class TestAPDataHandler(AsyncHTTPTestCase):
                 body=json.dumps(data))
 
         self.assertEqual(response.code, 400)
-        self.sample_service.save_ap_data_for_sample.assert_called_once_with(data)
+        self.assertEqual(1, self.sample_service.save_ap_data_for_sample.call_count)
+        created_ap_data = self.sample_service.save_ap_data_for_sample.call_args[0][0]
+        self.check_ap_data(created_ap_data)
 
     def test_post_ap_data_db_exception(self):
         data = correct_dict()
@@ -97,7 +112,9 @@ class TestAPDataHandler(AsyncHTTPTestCase):
                 body=json.dumps(data))
 
         self.assertEqual(response.code, 500)
-        self.sample_service.save_ap_data_for_sample.assert_called_once_with(data)
+        self.assertEqual(1, self.sample_service.save_ap_data_for_sample.call_count)
+        created_ap_data = self.sample_service.save_ap_data_for_sample.call_args[0][0]
+        self.check_ap_data(created_ap_data)
 
 if __name__ == '__main__':
     unittest.main()
