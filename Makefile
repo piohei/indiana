@@ -1,3 +1,5 @@
+.PHONY: init run production test
+
 init:
 	pip3 install -r requirements.txt
 	cd web && bower install && cd ..
