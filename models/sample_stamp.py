@@ -40,6 +40,6 @@ class SampleStamp(BaseDBModel):
         self.end_time = Time()
 
     def __str__(self):
-        return "SampleStamp[id={} mac={} location={} time=({} - {})]".format(
+        return "SampleStamp(id={}, mac={}, location={}, time=[{} - {}])".format(
                     self._id, self.mac, self.location, self.start_time, self.end_time
                 )

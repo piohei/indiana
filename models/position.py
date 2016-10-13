@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-from .base.base_model import BaseModel
+from .base.base_db_model import BaseDBModel
 
 from .primitives.mac import Mac
 from .primitives.location import Location
 from .primitives.time import Time
 
 
-class Position(BaseModel):
-    def __init__(self, mac, location, created_at=None):
+class Position(BaseDBModel):
+    def __init__(self, mac, location, created_at=None, _id=None):
+        BaseDBModel.__init__(self, _id)
         if type(mac) != Mac:
             raise ValueError("Argument mac must be type of models.Mac")
         if type(location) != Location:
@@ -20,6 +21,6 @@ class Position(BaseModel):
         self.created_at = created_at if created_at is not None else Time()
 
     def __str__(self, *args, **kwargs):
-        return "Position(mac={}, location={}, created_at={})".format(
-                    self.mac, self.location, self.created_at
+        return "Position(id={}, mac={}, location={}, created_at={})".format(
+                    self._id, self.mac, self.location, self.created_at
                 )
