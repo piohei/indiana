@@ -4,7 +4,7 @@ from config import config
 from db import db, SampleStampDAO
 
 from models import *
-from test.mocks import *
+from test.factory import *
 
 
 class TestSampleStampDao(unittest.TestCase):

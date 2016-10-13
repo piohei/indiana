@@ -4,7 +4,7 @@ from config import config
 from db import db, APDataDAO
 
 from models import *
-from test.mocks import *
+from test.factory import *
 
 
 class TestAPDataDao(unittest.TestCase):

@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import Mock, MagicMock
 
-from test.mocks import *
+from test.factory import *
 
 from exception import SampleException
 from fingertip.services import *
