@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 import json
 import unittest
 from unittest.mock import Mock
@@ -9,13 +8,13 @@ from tornado.testing import AsyncHTTPTestCase
 
 from exception import SampleException, DBException
 from fingertip.handlers import APDataHandler, SampleStampHandler
-from helpers import utils
-from models import SampleStamp
+
+from models import *
 
 
 def correct_dict():
     return {
-        "mac": "SOMEMAC",
+        "mac": "DC:EE:06:61:B0:3D",
         "location": {
             "x": 1,
             "y": 1,
@@ -25,7 +24,7 @@ def correct_dict():
 
 def error_dict():
     return {
-        "mac": "SOMEMAC",
+        "mac": "DC:EE:06:61:B0:3D",
         "location": {
             "x": -1,
             "y": 1,
