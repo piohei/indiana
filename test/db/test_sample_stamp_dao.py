@@ -1,8 +1,7 @@
 import unittest
 
-import db.db as db
-from config.config import config
-from db.sample_stamp_dao import SampleStampDAO
+from config import config
+from db import db, SampleStampDAO
 
 from models import *
 from test.mocks import *
