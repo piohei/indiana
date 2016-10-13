@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from exception.exception import SampleException
+from exception import SampleException
 
-from .base import BaseDBModel
+from .base.base_db_model import BaseDBModel
 
 from .primitives.location import Location
 from .primitives.mac import Mac

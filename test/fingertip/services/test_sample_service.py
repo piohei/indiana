@@ -2,9 +2,10 @@
 import unittest
 from unittest.mock import Mock, MagicMock
 
-from exception.exception import SampleException
-from fingertip.services import SampleService
-from helpers.test_utils import loc, stamp
+from test.mocks import *
+
+from exception import SampleException
+from fingertip.services import *
 
 
 def not_ended_stamp():

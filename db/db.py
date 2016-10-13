@@ -3,7 +3,7 @@
 from pymongo import MongoClient
 
 from config import config
-from exception.exception import DBException
+from exception import DBException
 
 client = MongoClient(config['db']['host'], config['db']['port'])
 print("Connection to MongoDB {} created".format(client.address))

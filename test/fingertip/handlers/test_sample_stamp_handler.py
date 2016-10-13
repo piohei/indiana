@@ -7,7 +7,7 @@ from unittest.mock import Mock
 from tornado import web
 from tornado.testing import AsyncHTTPTestCase
 
-from exception.exception import SampleException, DBException
+from exception import SampleException, DBException
 from fingertip.handlers import APDataHandler, SampleStampHandler
 from helpers import utils
 from models import SampleStamp

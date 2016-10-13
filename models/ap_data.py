@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .base import BaseDBModel
+from .base.base_db_model import BaseDBModel
 
 from .primitives.mac import Mac
 from .primitives.time import Time

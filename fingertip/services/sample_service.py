@@ -2,7 +2,7 @@
 
 from threading import RLock
 
-from exception.exception import SampleException
+from exception import SampleException
 from models import APData, Mac, Time, RSSI, Signal
 
 

@@ -3,8 +3,8 @@ from models import SampleStamp, Mac, Time, Location
 
 from pymongo import MongoClient
 
-from config.config import config
-from exception.exception import DBException
+from config import config
+from exception import DBException
 
 
 client = MongoClient(config['db']['host'], config['db']['port'])
