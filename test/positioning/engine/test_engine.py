@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-
-from . import context
-
 import unittest
 from unittest.mock import patch
 from positioning.engine import Engine, EngineException
