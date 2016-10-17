@@ -8,12 +8,11 @@ from config import config
 from .rabbit import connection
 
 
-class Subscriber(object):
+class BaseSubscriber(object):
     def __init__(self, key):
         self.key = key
         self.connection = connection()
         self.channel = self.connection.channel()
-        self.queue = Queue()
         self.thread = Thread(target = self.channel.start_consuming)
 
     def start(self):
@@ -32,7 +31,7 @@ class Subscriber(object):
         )
 
         self.channel.basic_consume(
-            lambda c, m, p, b: self.callback(c, m, p, b),
+            self.internal_callback,
             queue=queue_name,
             no_ack=True
         )
@@ -46,15 +45,12 @@ class Subscriber(object):
         if self.thread.isAlive():
             self.thread.join()
 
-    def callback(self, ch, method, properties, body):
+    def internal_callback(self, ch, method, properties, body):
         message = json.loads(body.decode("utf-8"))
-        self.queue.put(message)
+        self.callback(message)
 
-    def get(self, timeout=60):
-        try:
-            return self.queue.get(timeout=timeout)
-        except Empty:
-            return None
+    def callback(self, message):
+        raise NotImplementedError
 
     def destroy(self):
         self.connection.close()

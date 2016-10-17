@@ -7,7 +7,7 @@ class Mac(object):
     def __init__(self, mac):
         if type(mac) != str:
             raise ValueError('Argument mac must be string')
-        if re.search(mac_regexp(), mac) is None:
+        if re.search("^{}$".format(mac_regexp()), mac) is None:
             raise ValueError('Argument mac must be valid mac')
 
         self.mac = mac.lower()

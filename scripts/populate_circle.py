@@ -1,38 +1,15 @@
-import datetime
-import math
+#!/usr/bin/env python
+import pika
+import sys
+import json
 import time
 
-import requests
+import sys
+import os
 
-from domain import Location, APData
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-n = 1
-A = 0
-
-
-class Device(object):
-    def __init__(self, mac, location):
-        self.MAC = mac
-        self.location = location
-
-class Router(Device):
-    def __init__(self, mac, location, channel):
-        super().__init__(mac, location)
-        self.channel = channel
-
-    @staticmethod
-    def count_rssi(d):
-        return -10*n*math.log(d, 10) + A
-
-    def get_ap_data(self, device):
-        distance = self.location.distnace_from(device.location)
-        rssi = self.count_rssi(distance)
-        timestamp = datetime.datetime.now().timestamp()
-        return APData(device.MAC, self.MAC, timestamp, rssi, self.channel)
-
-
-base_url = 'http://localhost:8886/'
-url = base_url + 'location/'
+from models import Location
 
 loc1 = Location(15, 25, 0)
 loc2 = Location(20, 30, 0)
@@ -55,8 +32,22 @@ for i in range(5):
 
 mac = '11:12:13:14:15:16'
 
+connection = pika.BlockingConnection(pika.ConnectionParameters(
+        host='localhost'))
+channel = connection.channel()
+
+channel.exchange_declare(exchange='positions',
+                         exchange_type='topic')
+
+routing_key = "positions.{}".format(mac.replace(':', '_'))
+
 while True:
     for loc in locations:
-        requests.post(base_url + 'location/' + mac, json=loc.to_dict())
-        print("waiting... ({0})".format(loc.to_dict()))
+        message = loc.to_db_object
+        channel.basic_publish(exchange='positions',
+                              routing_key=routing_key,
+                              body=json.dumps(loc.to_db_object()))
+        print("waiting... ({0})".format(loc.to_db_object()))
         time.sleep(1)
+
+connection.close()

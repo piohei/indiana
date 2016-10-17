@@ -446,7 +446,7 @@ VISUALIZATION = (function() {
 
     function init(_type) {
         type = _type;
-        var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/websocket");
+        var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/position/11-12-13-14-15-16");
         ws.onmessage = function (evt) {
             received = evt.data.split(":").map( function (v) { return parseInt(v) } );
             currentPosition.x = received[0];
@@ -454,6 +454,9 @@ VISUALIZATION = (function() {
             currentPosition.z = received[2];
             console.log(currentPosition);
         };
+        ws.onopen = function (evt) {
+            ws.send("start");
+        }
     }
 
     function run() {
@@ -495,8 +498,8 @@ VISUALIZATION = (function() {
         requestAnimationFrame( animate );
 
         locator.position.x = currentPosition.x;
-        locator.position.y = currentPosition.z;
-        locator.position.z = currentPosition.y;
+        locator.position.y = currentPosition.y;
+        locator.position.z = currentPosition.z;
 
         if(controls != null) controls.update();
 
@@ -561,8 +564,8 @@ VISUALIZATION = (function() {
         });
 
         locator.position.x = currentPosition.x;
-        locator.position.y = currentPosition.z;
-        locator.position.z = currentPosition.y;
+        locator.position.y = currentPosition.y;
+        locator.position.z = currentPosition.z;
     }
 
     FINGERTIP_VISUALIZATION = (function() {
@@ -593,8 +596,8 @@ VISUALIZATION = (function() {
             generateLocator();
 
             locator.position.x = currentPosition.x;
-            locator.position.y = currentPosition.z;
-            locator.position.z = currentPosition.y;
+            locator.position.y = currentPosition.y;
+            locator.position.z = currentPosition.z;
 
             generateMap(callback = function() {
                 generateScene();

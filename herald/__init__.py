@@ -1,2 +1,3 @@
 from .publisher import Publisher
-from .subscriber import Subscriber
+from .synchronous_subscriber import SynchronousSubscriber
+from .asynchronous_subscriber import AsynchronousSubscriber

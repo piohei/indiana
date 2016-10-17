@@ -20,9 +20,9 @@ class TestPublisher(unittest.TestCase):
 
     def setUp(self):
         self.publisher = Publisher(key="test.1")
-        self.subscriber1 = Subscriber(key="test.1")
-        self.subscriber2 = Subscriber(key="test.2")
-        self.subscriber = Subscriber(key="test.*")
+        self.subscriber1 = SynchronousSubscriber(key="test.1")
+        self.subscriber2 = SynchronousSubscriber(key="test.2")
+        self.subscriber = SynchronousSubscriber(key="test.*")
 
     def tearDown(self):
         self.publisher.destroy()
