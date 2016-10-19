@@ -16,6 +16,7 @@ class App:
                 (r"/visualization/3d", Visualization3DHandler),
                 (r"/visualization/2d", Visualization2DHandler),
                 (r"/fingertip", FingerTipHandler),
+                (r"/path", PathHandler),
                 (r"/map", MapHandler),
                 (r"/", RootHandler),
             ],

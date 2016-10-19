@@ -9,7 +9,7 @@ from .handlers import *
 from .services import *
 from .jobs import *
 
-from db import APDataDAO, SampleStampDAO
+from db import APDataDAO, SampleStampDAO, PathDAO
 
 from helpers.utils import mac_regexp_dashes
 
@@ -20,9 +20,11 @@ class App:
 
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
+        self.path_dao = PathDAO()
 
         self.sample_service = SampleService(self.ap_data_dao, self.sample_stamp_dao, self.global_lock)
         self.web_socket_service = WebSocketService(self.global_lock)
+        self.path_service = PathService(self.path_dao, self.global_lock)
 
         self.app = web.Application(handlers=[
             (r"/position/" + mac_regexp_dashes(), PositionHandler, {
@@ -34,6 +36,9 @@ class App:
                 }),
             (r"/status", SocketHandler, {
                     "web_socket_service": self.web_socket_service
+                }),
+            (r"/path", PathHandler, {
+                    "path_service": self.path_service
                 }),
             (r"/", APDataHandler, {
                     "sample_service": self.sample_service

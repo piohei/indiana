@@ -9,3 +9,4 @@ from .fingertip import Fingertip
 from .position import Position
 from .sample import Sample
 from .sample_stamp import SampleStamp
+from .path_stamp import PathStamp

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Path{% end %}
+
+{% block container %}
+<div class="clearfix">
+    <div class="col-sm-6">
+        <form class="centered control-holder">
+            <h1>Path</h1>
+            <label for="mac" class="sr-only">MAC Address</label>
+            <input type="text" id="mac" name="mac" class="form-control" placeholder="MAC Address" required=""
+                   autofocus="" value="99:AF:00:12:12:12">
+            <label for="name" class="sr-only">MAC Address</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Path name" required=""
+                   value="path1">
+
+            <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
+                    onclick="PATH.startRecording()">Record path
+            </button>
+            <button id="delete_btn" type="button" class="btn btn-lg btn-danger btn-block"
+                    onclick="PATH.stopRecording()">Stop recording
+            </button>
+
+        </form>
+    </div>
+
+    <div class="col-sm-6">
+        <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
+        <div class="control-holder centered">
+            <button id="clear_log_btn" type="button" class="btn btn-lg btn-warning btn-block"
+                    onclick="clearLog()">Clear log
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+<script language="JavaScript">
+    //VISUALIZATION.runFingertip();
+</script>
+{% end %}

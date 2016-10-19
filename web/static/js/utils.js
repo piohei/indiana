@@ -17,6 +17,26 @@ function toUpperCaseMAC(s) {
     return s.toUpperCase()
 }
 
+function log(msg) {
+    $("#result").append(msg + "\n");
+}
+
+function logSuccess(response) {
+    log("status: " + response.status + "; message: " + response.data);
+}
+
+function logError(xhr, status) {
+    var msg = "status: " + status + "; code: " + xhr.status;
+    if (xhr && xhr.responseJSON && xhr.responseJSON.data) {
+        msg = msg +"; message: " + xhr.responseJSON.data
+    }
+    log(msg);
+}
+
+function clearLog() {
+    $("#result").text("");
+}
+
 var CORS = (function(){
     var CORS = {};
 

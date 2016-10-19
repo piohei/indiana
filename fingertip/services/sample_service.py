@@ -38,9 +38,6 @@ class SampleService(object):
                 self.end_sample()
 
     def save_ap_data_for_sample(self, ap_data):
-        stamp = self.current_sample_stamp
-        if stamp is None or stamp.is_outdated():
-            raise SampleException("sample stamp gone or outdated")
         self.ap_data_dao.save(ap_data)
 
     def get_status(self):

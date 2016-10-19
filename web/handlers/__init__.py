@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .fingertip import FingerTipHandler
+from .path import PathHandler
 from .map import MapHandler
 from .root import RootHandler
 from .position_handler import PositionHandler

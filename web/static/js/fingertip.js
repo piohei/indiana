@@ -2,22 +2,6 @@
 
 var FINGERTIP = (function(){
 
-    function log(msg) {
-        $("#result").append(msg + "\n");
-    }
-
-    function logSuccess(response) {
-        log("status: " + response.status + "; message: " + response.data);
-    }
-
-    function logError(xhr, status) {
-        var msg = "status: " + status + "; code: " + xhr.status;
-        if (xhr && xhr.responseJSON && xhr.responseJSON.data) {
-            msg = msg +"; message: " + xhr.responseJSON.data
-        }
-        log(msg);
-    }
-
     const HOST = window.location.hostname + ":8887/";
     const BASE_HTTP_URL = "http://" + HOST;
     const ACTUAL_LOCATION_URL = BASE_HTTP_URL + "actual_location";
