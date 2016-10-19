@@ -13,7 +13,7 @@ class Position(BaseDBModel):
             raise ValueError("Argument mac must be type of models.Mac")
         if type(location) != Location:
             raise ValueError("Argument location must be type of models.Location")
-        if created_at is not None and type(time) != Time:
+        if created_at is not None and type(created_at) != Time:
             raise ValueError("Argument created_at must be type of models.Time")
 
         self.mac = mac

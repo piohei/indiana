@@ -38,7 +38,9 @@ class SampleStampDAO(BaseDAO):
         return replace_one(
                 collection=self.collection_name(),
                 filter={
-                    '_id': sample_stamp._id
+                    'location.x': sample_stamp.location.x,
+                    'location.y': sample_stamp.location.y,
+                    'location.z': sample_stamp.location.z
                 },
                 replacement=self.to_db_object(sample_stamp)
         )
