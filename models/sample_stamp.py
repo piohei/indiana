@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 from exception import SampleException
 
-from .base.base_db_model import BaseDBModel
+from .base.base_db_model import BaseModel
 
 from .primitives.location import Location
 from .primitives.mac import Mac
 from .primitives.time import Time
 
 
-class SampleStamp(BaseDBModel):
+class SampleStamp(BaseModel):
     VALIDITY_PERIOD = 300000
 
-    def __init__(self, mac, location, start_time=None, end_time=None, _id=None):
-        BaseDBModel.__init__(self, _id)
+    def __init__(self, mac, location, start_time=None, end_time=None):
+        super().__init__()
         if type(mac) != Mac:
             raise ValueError("Argument mac must be type of models.Mac")
         if type(location) != Location:
@@ -28,7 +28,7 @@ class SampleStamp(BaseDBModel):
         self.end_time = end_time
 
     def is_outdated(self):
-        return Time() > (self.start_time + self.VALIDITY_PERIOD)
+        return Time().millis > (self.start_time.millis + self.VALIDITY_PERIOD)
 
     def is_same(self, other):
         return other is not None and self.location == other.location \
@@ -40,6 +40,6 @@ class SampleStamp(BaseDBModel):
         self.end_time = Time()
 
     def __str__(self):
-        return "SampleStamp(id={}, mac={}, location={}, time=[{} - {}])".format(
-                    self._id, self.mac, self.location, self.start_time, self.end_time
+        return "SampleStamp(mac={}, location={}, time=[{} - {}])".format(
+                    self.mac, self.location, self.start_time, self.end_time
                 )
