@@ -11,9 +11,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from models import Location
 
-loc1 = Location(15, 25, 0)
-loc2 = Location(20, 30, 0)
-loc3 = Location(15, 20, 0)
+loc1 = Location(3, 1, 0)
+loc2 = Location(6, 1, 0)
+loc3 = Location(3, 3, 0)
 
 locations = []
 

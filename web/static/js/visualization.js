@@ -448,10 +448,16 @@ VISUALIZATION = (function() {
         type = _type;
         var ws = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/position/11-12-13-14-15-16");
         ws.onmessage = function (evt) {
-            received = evt.data.split(":").map( function (v) { return parseInt(v) } );
-            currentPosition.x = received[0];
-            currentPosition.y = received[1];
-            currentPosition.z = received[2];
+            received = evt.data.split(":").map( function (v) { return parseFloat(v) } );
+            if(type == "3D") {
+                currentPosition.x = received[0];
+                currentPosition.z = received[1];
+                currentPosition.y = received[2];
+            } else {
+                currentPosition.x = received[0];
+                currentPosition.y = -received[1];
+                currentPosition.z = received[2];
+            }
             console.log(currentPosition);
         };
         ws.onopen = function (evt) {

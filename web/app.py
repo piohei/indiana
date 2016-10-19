@@ -10,7 +10,6 @@ from .handlers import *
 
 class App:
     def __init__(self):
-        print("/position/(" + mac_regexp_dashes() + ")")
         self.app = web.Application(
             handlers=[
                 (r"/position/({})".format(mac_regexp_dashes()), PositionHandler),
