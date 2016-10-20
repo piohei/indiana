@@ -31,11 +31,11 @@ class PositionHandler(APIHandler):
         "required": ["x", "y", "z"]
     })
     def get(self, mac):
-        #mac = mac.replace('-', ':').lower()
+        mac = mac.replace('-', ':').lower()
         end   = Time()
         start = Time(end.millis - 15 * 1000)
 
-        data = self.rssi_measure_dao.grouped_rssi_stats(start, end)
+        data = self.ap_data_dao.grouped_rssi_stats(start, end)
         measures = {}
         for band in data.keys():
             measures[band] = defaultdict(lambda: { "rssi1": None })
@@ -50,5 +50,9 @@ class PositionHandler(APIHandler):
         })
 
         res = en.calculate()
+
+        publisher = Publisher("positions.{}".format(mac))
+        publisher.publish(loc.to_db_object())
+        publisher.destroy()
 
         return {"x": res.x, "y": res.y, "z": 0}
