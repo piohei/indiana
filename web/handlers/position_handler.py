@@ -14,7 +14,7 @@ class PositionHandler(websocket.WebSocketHandler):
         self.sub.start()
 
     def send_position(self, data):
-        message = "{}:{}:{}".format(data['x'], data['y'], data['z'])
+        message = "{}:{}:{}".format(data['x'], data['y'], 0)
         print(message)
         self.write_message(message)
 

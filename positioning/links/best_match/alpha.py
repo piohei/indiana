@@ -17,7 +17,7 @@ class BestMatchAlpha(Base):
                 for signal in self.measures[mac].keys():
                     if len(self.measures[mac][signal]) == 0:
                         continue
-                    diff = sample.get_measure_for(mac, signal)["1"]["avg"].dBm - self.measures[mac][signal]["1"]
+                    diff = sample.get_measure_for(mac, signal)["1"]["avg"].dBm - self.measures[mac][signal]["1"]["avg"].dBm
                     err += pow(diff, 2)
 
             if err < best_error:
