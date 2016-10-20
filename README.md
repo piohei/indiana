@@ -27,3 +27,6 @@ Then copy configuration file. Use: `cp config/development.yml.example config/dev
 # Test
 
 `make test`
+
+# Place to change mac for visualization
+https://github.com/maveron58/indiana/blob/positioning_framework/web/static/js/visualization.js#L449
