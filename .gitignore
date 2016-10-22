@@ -115,3 +115,6 @@ crashlytics-build.properties
 
 # node vendors
 node_modules
+
+# babel generated
+babel_generated
