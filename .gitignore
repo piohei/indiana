@@ -112,3 +112,6 @@ crashlytics-build.properties
 /log/
 
 .DS_Store
+
+# node vendors
+node_modules
