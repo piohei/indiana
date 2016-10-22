@@ -2,6 +2,8 @@
 
 init:
 	pip3 install -r requirements.txt
+	npm install
+	npm run build
 	cd web && bower install && cd ..
 
 run:
