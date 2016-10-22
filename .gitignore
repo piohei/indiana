@@ -118,3 +118,6 @@ node_modules
 
 # babel generated
 babel_generated
+
+# browserify generated
+web/static/js/visualization.js
