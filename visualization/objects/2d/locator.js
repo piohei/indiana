@@ -10,19 +10,15 @@ export class Locator extends THREE.Mesh {
 // Theese are class private functions
 function _generateGeometry() {
   // locator is 1.8 height
-  var headGeometry = new THREE.SphereGeometry(0.2, 16, 16);
-  var bodyGeometry = new THREE.CylinderGeometry(0.1, 0.3, 1.7, 36);
+  var headGeometry = new THREE.CircleGeometry(0.2, 32);
 
-  headGeometry.translate(0, 1.7, 0);
-  bodyGeometry.translate(0, 1.7 / 2, 0);
-  headGeometry.merge(bodyGeometry);
+  headGeometry.translate(0, 0, 0.2);
 
   return headGeometry;
 }
 
 function _generateMaterial(color) {
-  return new THREE.MeshLambertMaterial({
-    color: color,
-    emissive: color,
+  return new THREE.MeshBasicMaterial({
+      color: color,
   });
 }

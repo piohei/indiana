@@ -1,5 +1,5 @@
 export class Floor extends THREE.Mesh {
-  constructor(vertices, color="#3800aa") {
+  constructor(vertices, color="#ffffff") {
     var geometry = _generateGeometry(vertices);
     var material = _generateMaterial(color);
 
@@ -17,18 +17,17 @@ function _generateGeometry(vertices) {
   );
 
   vertices.forEach(function(vertex) {
-      floorShape.lineTo(vertex.x, vertex.y);
+      floorShape.lineTo(vertex.x, -1 * vertex.y);
   });
 
-  return floorShape.extrude({
-    amount: 0.02,
-    bevelEnabled: false
-  }).rotateX( Math.PI / 2);
+  var geometry = new THREE.ShapeGeometry(floorShape)
+  geometry.translate(0, 0, -0.1);
+
+  return geometry;
 }
 
 function _generateMaterial(color) {
-  return new THREE.MeshLambertMaterial({
-    color: color,
-    emissive: color,
+  return new THREE.MeshBasicMaterial({
+      color: color,
   });
 }

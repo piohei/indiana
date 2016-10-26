@@ -1,10 +1,14 @@
 import {MapLevel} from './map_level'
-import {Locator} from './3d/locator'
+
+import {Locator as Locator2D} from './2d/locator'
+
+import {Locator as Locator3D} from './3d/locator'
 
 export class Map {
-  constructor(map) {
-    this.levels = _generateLevels(map);
-    this.locator = _genreateLocator();
+  constructor(type, map) {
+    this.type = type;
+    this.levels = _generateLevels(type, map);
+    this.locator = _genreateLocator(type);
   }
 
   getLevels() {
@@ -17,16 +21,21 @@ export class Map {
 }
 
 // Theese are class private functions
-function _generateLevels(map) {
+function _generateLevels(type, map) {
   var levels = {}
 
   for(const level in map.levels) {
-    levels[level] = new MapLevel(map.levels[level]);
+    levels[level] = new MapLevel(type, map.levels[level]);
   }
 
   return levels;
 }
 
-function _genreateLocator() {
-  return new Locator();
+function _genreateLocator(type) {
+  switch(type) {
+    case '2d':
+      return new Locator2D();
+    case '3d':
+      return new Locator3D();
+  }
 }

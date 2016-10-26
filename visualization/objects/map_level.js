@@ -1,12 +1,16 @@
-import {Floor} from './3d/floor'
-import {Wall} from './3d/wall'
-import {Router} from './3d/router'
+import {Floor as Floor2D} from './2d/floor'
+import {Wall as Wall2D} from './2d/wall'
+import {Router as Router2D} from './2d/router'
+
+import {Floor as Floor3D} from './3d/floor'
+import {Wall as Wall3D} from './3d/wall'
+import {Router as Router3D} from './3d/router'
 
 export class MapLevel {
-  constructor(level) {
-    this.floor   = _generateFloor(level.floor);
-    this.walls   = _generateWalls(level.walls);
-    this.routers = _generateRouters(level.routers);
+  constructor(type, level) {
+    this.floor   = _generateFloor(type, level.floor);
+    this.walls   = _generateWalls(type, level.walls);
+    this.routers = _generateRouters(type, level.routers);
   }
 
   getFloor() {
@@ -23,22 +27,45 @@ export class MapLevel {
 }
 
 // Theese are class private functions
-function _generateFloor(floor) {
-  return new Floor(floor);
+function _generateFloor(type, floor) {
+  switch(type) {
+    case '2d':
+      return new Floor2D(floor);
+    case '3d':
+      return new Floor3D(floor);
+  }
 }
 
-function _generateWalls(walls) {
+function _generateWall(type, wall) {
+  switch(type) {
+    case '2d':
+      return new Wall2D(wall);
+    case '3d':
+      return new Wall3D(wall);
+  }
+}
+
+function _generateRouter(type, router) {
+  switch(type) {
+    case '2d':
+      return new Router2D(router);
+    case '3d':
+      return new Router3D(router);
+  }
+}
+
+function _generateWalls(type, walls) {
   var res = [];
   for(const wall of walls) {
-    res.push(new Wall(wall));
+    res.push(_generateWall(type, wall));
   }
   return res;
 }
 
-function _generateRouters(routers) {
+function _generateRouters(type, routers) {
   var res = [];
   for(const router of routers) {
-    res.push(new Router(router));
+    res.push(_generateRouter(type, router));
   }
   return res;
 }

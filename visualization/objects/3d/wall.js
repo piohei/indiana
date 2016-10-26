@@ -1,10 +1,9 @@
-export class Wall {
+export class Wall extends THREE.Mesh {
   constructor(vertices, height=2.5, color="#5c018e") {
-    this.mesh = _generateMesh(vertices, height, color);
-  }
+    var geometry = _generateGeometry(vertices, height);
+    var material = _generateMaterial(color);
 
-  getMesh() {
-    return this.mesh;
+    super(geometry, material);
   }
 }
 
@@ -24,15 +23,8 @@ function _generateGeometry(vertices, height) {
 
 function _generateMaterial(color) {
   return new THREE.MeshLambertMaterial({
-      color: color,
-      emissive: color,
-      side: THREE.DoubleSide
+    color: color,
+    emissive: color,
+    side: THREE.DoubleSide
   });
-}
-
-function _generateMesh(vertices, height, color) {
-  var geometry = _generateGeometry(vertices, height);
-  var material = _generateMaterial(color);
-
-  return new THREE.Mesh(geometry, material);
 }

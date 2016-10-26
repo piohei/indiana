@@ -1,14 +1,19 @@
-import {Camera} from "./3d/camera"
-import {Light} from "./3d/light"
-import {Controls} from "./../utils/controls"
+import {Camera as Camera2D} from "./2d/camera"
+import {Controls as Controls2D} from "./../utils/2d/controls"
+
+import {Camera as Camera3D} from "./3d/camera"
+import {Controls as Controls3D} from "./../utils/3d/controls"
+import {Light as Light3D} from "./3d/light"
+
+import {Map} from "./../objects/map"
 
 export class Scene {
-  constructor(map) {
-    this.map = map;
+  constructor(type, map) {
+    this.map = _generateMap(type, map);
     this.renderer = _generateRenderer();
-    this.camera = _generateCamera();
-    this.light = _generateLight();
-    this.controls = _generateControls(this.camera);
+    this.camera = _generateCamera(type);
+    this.light = _generateLight(type);
+    this.controls = _generateControls(type, this.camera);
 
     // This must be initalized last
     this.scene = _genreateScene(this.map, this.light);
@@ -43,7 +48,9 @@ export class Scene {
 
     document.body.appendChild(this.renderer.domElement);
     window.addEventListener('resize', function() { _onWindowResize(scene) }, false);
-    this.controls.run(function() { _render(scene) })
+    if(this.controls != null) {
+      this.controls.run(function() { _render(scene) })
+    }
 
     _animate(scene);
   }
@@ -57,36 +64,57 @@ function _generateRenderer() {
   return renderer;
 }
 
-function _generateCamera() {
-  return new Camera();
+function _generateMap(type, map) {
+  return new Map(type, map);
 }
 
-function _generateLight() {
-  return new Light();
+function _generateCamera(type) {
+  switch(type) {
+    case '2d':
+      return new Camera2D();
+    case '3d':
+      return new Camera3D();
+  }
 }
 
-function _generateControls(camera) {
-  return new Controls(camera);
+function _generateLight(type) {
+  switch(type) {
+    case '2d':
+      return null;
+    case '3d':
+      return new Light3D();
+  }
+}
+
+function _generateControls(type, camera) {
+  switch(type) {
+    case '2d':
+      return new Controls2D(camera);
+    case '3d':
+      return new Controls3D(camera);
+  }
 }
 
 function _genreateScene(map, light) {
   var res = new THREE.Scene();
 
-  res.add(light.getDirectional());
-  res.add(light.getAmbient());
+  if(light != null) {
+    res.add(light.getDirectional());
+    res.add(light.getAmbient());
+  }
 
-  res.add(map.getLocator().getMesh());
+  res.add(map.getLocator());
 
   var levels = map.getLevels();
   for(const level in levels) {
-    res.add(levels[level].getFloor().getMesh());
+    res.add(levels[level].getFloor());
 
     for(const wall of levels[level].getWalls()) {
-      res.add(wall.getMesh());
+      res.add(wall);
     }
 
     for(const router of levels[level].getRouters()) {
-      res.add(router.getMesh());
+      res.add(router);
     }
   }
 
@@ -94,21 +122,25 @@ function _genreateScene(map, light) {
 }
 
 function _onWindowResize(scene) {
-  scene.getCamera().setAspect(window.innerWidth / window.innerHeight);
+  scene.getCamera().aspect = window.innerWidth / window.innerHeight;
   scene.getCamera().updateProjectionMatrix();
 
   scene.getRenderer().setSize(window.innerWidth, window.innerHeight);
-  scene.getControls().handleResize();
+  if(scene.getControls() != null) {
+    scene.getControls().handleResize();
+  }
 
   _render(scene);
 }
 
 function _animate(scene) {
   requestAnimationFrame(function() { _animate(scene) });
-  scene.getControls().update();
+  if(scene.getControls() != null) {
+    scene.getControls().update();
+  }
   _render(scene);
 }
 
 function _render(scene) {
-  scene.getRenderer().render(scene.getScene(), scene.getCamera().getCamera());
+  scene.getRenderer().render(scene.getScene(), scene.getCamera());
 }

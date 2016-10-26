@@ -9,14 +9,13 @@ export class Router extends THREE.Mesh {
 
 // Theese are class private functions
 function _generateGeometry(position, height) {
-  var geometry = new THREE.SphereGeometry(0.1, 16, 16);
-  geometry.translate(position.x, height - 0.1, position.y);
+  var geometry = new THREE.CircleGeometry(0.10, 32);
+  geometry.translate(position.x, -1 * position.y, 0.1);
   return geometry;
 }
 
 function _generateMaterial(color) {
   return new THREE.MeshLambertMaterial({
-    color: color,
-    emissive: color,
+      color: color,
   });
 }
