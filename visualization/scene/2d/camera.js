@@ -1,10 +1,10 @@
 export class Camera extends THREE.OrthographicCamera {
-  constructor() {
+  constructor(width, height) {
     super(
-      window.innerWidth / -2 / 30,
-      window.innerWidth / 2 / 30,
-      window.innerHeight / 2 / 30,
-      window.innerHeight / -2 / 30,
+      width / -2 / 30,
+      width / 2 / 30,
+      height / 2 / 30,
+      height / -2 / 30,
       -500,
       1000
     );

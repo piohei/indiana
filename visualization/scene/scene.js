@@ -8,59 +8,89 @@ import {Light as Light3D} from "./3d/light"
 import {Map} from "./../objects/map"
 
 export class Scene {
-  constructor(type, map) {
+  constructor(type, map, elementId=null, enableControls=true) {
+    this.elementId = elementId;
     this.map = _generateMap(type, map);
-    this.renderer = _generateRenderer();
-    this.camera = _generateCamera(type);
+    this.renderer = _generateRenderer(elementId);
+    this.camera = _generateCamera(type, elementId);
     this.light = _generateLight(type);
-    this.controls = _generateControls(type, this.camera);
+    if(enableControls) {
+      this.controls = _generateControls(type, this.camera);
+    } else {
+      this.controls = null;
+    }
 
     // This must be initalized last
     this.scene = _genreateScene(this.map, this.light);
   }
 
-  getMap() {
-    return this.map;
+  setLocatorPosition(x=0, y=0, z=0) {
+    var locator = this.map.getLocator();
+    locator.position.x = x;
+    locator.position.y = y;
+    locator.position.z = z;
   }
 
-  getRenderer() {
-    return this.renderer;
-  }
+  show(animate=true) {
+    var closureCopy = this;
 
-  getCamera() {
-    return this.camera;
-  }
-
-  getLight() {
-    return this.light;
-  }
-
-  getControls() {
-    return this.controls;
-  }
-
-  getScene() {
-    return this.scene;
-  }
-
-  show() {
-    var scene = this;
-
-    document.body.appendChild(this.renderer.domElement);
-    window.addEventListener('resize', function() { _onWindowResize(scene) }, false);
-    if(this.controls != null) {
-      this.controls.run(function() { _render(scene) })
+    if(this.elementId == null) {
+      document.body.appendChild(this.renderer.domElement);
+      window.addEventListener('resize', function() { closureCopy._onWindowResize() }, false);
     }
 
-    _animate(scene);
+    if(this.controls != null) {
+      this.controls.run(function() { closureCopy._render() })
+    }
+
+    if(animate) {
+      this._animate();
+    }
+  }
+
+  // Proteced functions
+  _onWindowResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    if(this.controls != null) {
+      this.controls.handleResize();
+    }
+
+    this._render();
+  }
+
+  _animate() {
+    var closureCopy = this;
+    requestAnimationFrame(function() { closureCopy._animate() });
+
+    if(this.controls != null) {
+      this.controls.update();
+    }
+
+    this._render();
+  }
+
+  _render() {
+    this.renderer.render(this.scene, this.camera);
   }
 }
 
 // Theese are class private functions
-function _generateRenderer() {
-  var renderer = new THREE.WebGLRenderer();
+function _generateRenderer(elementId) {
+  var renderer;
+
+  if(elementId == null) {
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  } else {
+    renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById(elementId)
+    });
+  }
+
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
   return renderer;
 }
 
@@ -68,12 +98,20 @@ function _generateMap(type, map) {
   return new Map(type, map);
 }
 
-function _generateCamera(type) {
+function _generateCamera(type, elementId) {
+  var width  = window.innerWidth;
+  var height = window.innerHeight;
+
+  if(elementId != null) {
+    width  = document.getElementById("map-canvas").width;
+    height = document.getElementById("map-canvas").height;
+  }
+
   switch(type) {
     case '2d':
-      return new Camera2D();
+      return new Camera2D(width, height);
     case '3d':
-      return new Camera3D();
+      return new Camera3D(width, height);
   }
 }
 
@@ -119,28 +157,4 @@ function _genreateScene(map, light) {
   }
 
   return res;
-}
-
-function _onWindowResize(scene) {
-  scene.getCamera().aspect = window.innerWidth / window.innerHeight;
-  scene.getCamera().updateProjectionMatrix();
-
-  scene.getRenderer().setSize(window.innerWidth, window.innerHeight);
-  if(scene.getControls() != null) {
-    scene.getControls().handleResize();
-  }
-
-  _render(scene);
-}
-
-function _animate(scene) {
-  requestAnimationFrame(function() { _animate(scene) });
-  if(scene.getControls() != null) {
-    scene.getControls().update();
-  }
-  _render(scene);
-}
-
-function _render(scene) {
-  scene.getRenderer().render(scene.getScene(), scene.getCamera());
 }

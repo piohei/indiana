@@ -1,8 +1,8 @@
 export class Camera extends THREE.PerspectiveCamera {
-  constructor() {
+  constructor(width, height) {
     super(
       60,
-      window.innerWidth / window.innerHeight,
+      width / height,
       1,
       2000
     );
