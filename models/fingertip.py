@@ -1,37 +1,18 @@
 # -*- coding: utf-8 -*-
+from .base.base_model import BaseModel
 
-from helpers.utils import millis
-from helpers import db
+from .primitives.location import Location
 
 
-class Fingertip(object):
-    VALIDITY_PERIOD = 300000
+class Fingertip(BaseModel):
+    def __init__(self, location, ap_data_by_mac_and_signal):
+        if type(location) != Location:
+            raise ValueError("Argument location must be type of models.Location")
 
-    def __init__(self, mac='', x=0, y=0, z=0, **kwargs):
-        self.mac = mac
-        self.location = kwargs['location'] if 'location' in kwargs \
-                        else {'x': float(x), 'y': float(y), 'z': float(z)}
-        self.start_time = millis()
-        self.end_time = None
+        self.location = location
+        self.ap_data_by_mac_and_signal = ap_data_by_mac_and_signal
 
-    def is_outdated(self):
-        return millis() > (self.start_time + self.VALIDITY_PERIOD)
-
-    def is_same(self, other):
-        return other is not None and self.location == other.location \
-                   and self.mac == other.mac
-
-    def to_dict(self):
-        return self.__dict__
-
-    def __str__(self):
-        return "Fingertip[mac={} location=[{}; {}; {}]]". \
-                   format(self.mac, self.location['x'],
-                          self.location['y'], self.location['z'])
-
-    @staticmethod
-    def collection_name():
-        return "fingertips"
-
-    def save(self):
-        db.insert_into(self.collection_name(), self.to_dict())
+    def __str__(self, *args, **kwargs):
+        return "Fingertip(location={}, ap_data_by_mac_and_signal={})".format(
+                    self.location, self.ap_data_by_mac_and_signal
+                )

@@ -109,5 +109,12 @@ crashlytics-build.properties
 **/bower_components/
 
 /config/*.yml
+/log/
 
 .DS_Store
+
+# node vendors
+node_modules
+
+# babel generated
+babel_generated

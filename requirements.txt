@@ -6,3 +6,4 @@ tornado-json==1.2.2
 wrapt==1.10.8
 py==1.4.31
 pytest==3.0.2
+pika==0.10.0

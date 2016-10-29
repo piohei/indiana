@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from .cleanup import CleanupJob
-from .status import StatusJob
+from .cleanup_job import CleanupJob
+from .status_job import StatusJob
