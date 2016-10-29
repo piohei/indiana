@@ -18,6 +18,10 @@ export class Map {
   getLocator() {
     return this.locator;
   }
+
+  setLocatorPosition(x=0, y=0, z=0) {
+    this.locator.setPosition(x, y, z);
+  }
 }
 
 // Theese are class private functions

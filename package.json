@@ -1,7 +1,7 @@
 {
   "name": "indiana",
   "scripts": {
-    "build": "./build_js.sh",
+    "build": "babel js -d babel_generated && browserify babel_generated/main.js -t babelify --outfile web/static/js/main.js",
     "watch": "onchange 'js/**/*.js' -- npm run build"
   },
   "browserify": {

@@ -25,10 +25,7 @@ export class Scene {
   }
 
   setLocatorPosition(x=0, y=0, z=0) {
-    var locator = this.map.getLocator();
-    locator.position.x = x;
-    locator.position.y = -y;
-    locator.position.z = z;
+    this.map.setLocatorPosition(x, y, z);
   }
 
   show(animate=true) {

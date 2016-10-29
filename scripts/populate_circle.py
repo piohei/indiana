@@ -30,7 +30,7 @@ for i in range(5):
     y = loc3.y + float(i) / 5 * (loc1.y - loc3.y)
     locations.append(Location(x, y, 0))
 
-mac = '11:12:13:14:15:16'
+mac = '99:af:00:12:12:12'
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(
         host='localhost'))
