@@ -20,3 +20,9 @@ window.fingertip = new Fingertip(
   8887,
   "fingertip"
 );
+
+window.path = new Path(
+  window.location.hostname,
+  8887,
+  "path"
+)

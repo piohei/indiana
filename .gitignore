@@ -120,5 +120,4 @@ node_modules
 babel_generated
 
 # browserify generated
-web/static/js/visualization.js
-web/static/js/fingertip.js
+web/static/js/main.js
