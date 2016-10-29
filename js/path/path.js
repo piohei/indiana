@@ -1,7 +1,7 @@
 import {CORS} from './../helpers/cors'
 import {Logger} from './../helpers/logger'
 
-export class Fingertip {
+export class Path {
   constructor(host, port, elementId) {
     switch(port) {
       case 80:

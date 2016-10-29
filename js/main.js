@@ -1,6 +1,7 @@
 import {Map} from './objects/map'
 import {Scene} from './scene/scene'
 import {Fingertip} from './fingertip/fingertip'
+import {Path} from './path/path'
 
 window.currentPosition = {
   x: 0, y: 0, z: 0
