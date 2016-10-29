@@ -27,7 +27,7 @@ export class Scene {
   setLocatorPosition(x=0, y=0, z=0) {
     var locator = this.map.getLocator();
     locator.position.x = x;
-    locator.position.y = y;
+    locator.position.y = -y;
     locator.position.z = z;
   }
 
@@ -64,6 +64,12 @@ export class Scene {
   _animate() {
     var closureCopy = this;
     requestAnimationFrame(function() { closureCopy._animate() });
+
+    this.setLocatorPosition(
+      window.currentPosition.x,
+      window.currentPosition.y,
+      window.currentPosition.z,
+    );
 
     if(this.controls != null) {
       this.controls.update();

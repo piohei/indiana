@@ -1,6 +1,6 @@
 import {Map} from './objects/map'
 import {Scene} from './scene/scene'
-import {WindowedScene} from './scene/windowed_scene'
+import {Fingertip} from './fingertip/fingertip'
 
 window.currentPosition = {
   x: 0, y: 0, z: 0
@@ -14,3 +14,9 @@ window.run = function(type, elementId=null, enableControls=true) {
     alert("Error while getting map!");
   });
 };
+
+window.fingertip = new Fingertip(
+  window.location.hostname,
+  8887,
+  "fingertip"
+);

@@ -13,11 +13,11 @@
                    autofocus="" value="99:AF:00:12:12:12">
             <h2>Location</h2>
             <label for="x" class="sr-only">X</label>
-            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="1" onchange="fingertip.reloadLocation()">
+            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="0" onchange="fingertip.reloadLocation()">
             <label for="y" class="sr-only">Y</label>
-            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="1.5" onchange="fingertip.reloadLocation()">
+            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="0" onchange="fingertip.reloadLocation()">
             <label for="z" class="sr-only">Z</label>
-            <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2" disabled="disabled" >
+            <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="0" disabled="disabled" >
             <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
                     onclick="fingertip.post()">Send fingertip
             </button>
@@ -52,6 +52,8 @@
 
 
 <script language="JavaScript">
-    run("2d", "map-canvas", enableControls=false);
+    $(document).ready(function() {
+        run("2d", "map-canvas", enableControls=false);
+    });
 </script>
 {% end %}
