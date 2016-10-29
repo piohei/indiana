@@ -3,7 +3,7 @@
 {% block subtitle %}FingerTip{% end %}
 
 {% block container %}
-<div class="clearfix">
+<div class="clearfix" id="fingertip">
     <div class="col-sm-6">
         <form class="centered control-holder">
             <h1>FingerTip</h1>
@@ -13,16 +13,16 @@
                    autofocus="" value="99:AF:00:12:12:12">
             <h2>Location</h2>
             <label for="x" class="sr-only">X</label>
-            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="1" onchange="FINGERTIP_VISUALIZATION.reload()">
+            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="1" onchange="fingertip.reloadLocation()">
             <label for="y" class="sr-only">Y</label>
-            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="1.5" onchange="FINGERTIP_VISUALIZATION.reload()">
+            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="1.5" onchange="fingertip.reloadLocation()">
             <label for="z" class="sr-only">Z</label>
             <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2" disabled="disabled" >
             <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
-                    onclick="FINGERTIP.postFingertip()">Send fingertip
+                    onclick="fingertip.post()">Send fingertip
             </button>
             <button id="delete_btn" type="button" class="btn btn-lg btn-danger btn-block"
-                    onclick="FINGERTIP.deleteFingertip()">Delete fingertip
+                    onclick="fingertip.delete()">Delete fingertip
             </button>
 
         </form>
@@ -31,14 +31,14 @@
     <div class="col-sm-6">
         <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
         <div class="control-holder centered">
-            <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="FINGERTIP.getStatus()">
+            <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="fingertip.getStatus()">
             Get status
             </button>
             <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block"
-                onclick="FINGERTIP.endStatus()" disabled="disabled">End status
+                onclick="fingertip.endStatus()" disabled="disabled">End status
             </button>
             <button id="clear_log_btn" type="button" class="btn btn-lg btn-warning btn-block"
-                onclick="clearLog()">Clear log
+                onclick="fingertip.clearLog()">Clear log
             </button>
         </div>
     </div>

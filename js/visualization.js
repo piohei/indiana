@@ -4,7 +4,7 @@ import {WindowedScene} from './scene/windowed_scene'
 
 window.currentPosition = {
   x: 0, y: 0, z: 0
-}
+};
 
 window.run = function(type, elementId=null, enableControls=true) {
   $.getJSON("/map").done(function (map) {
