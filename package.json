@@ -1,8 +1,8 @@
 {
   "name": "indiana",
   "scripts": {
-    "build": "babel visualization -d babel_generated && browserify babel_generated/main.js -t babelify --outfile web/static/js/visualization.js",
-    "watch": "onchange 'visualization/**/*.js' -- npm run build"
+    "build": "./build_js.sh",
+    "watch": "onchange 'js/**/*.js' -- npm run build"
   },
   "browserify": {
     "transform": [
