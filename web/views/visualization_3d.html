@@ -13,7 +13,9 @@
 
 {% block container %}
     <script language="JavaScript">
-        VISUALIZATION.init("3D");
-        VISUALIZATION.run();
+        $(document).ready(function() {
+            run("3d");
+            positionUpdater.run();
+        });
     </script>
 {% end %}
