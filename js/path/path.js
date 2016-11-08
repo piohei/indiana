@@ -25,22 +25,22 @@ export class Path {
     var data = _getData(this);
 
     if(data != null) {
-      var copyThis = this; // closure copy
+      var self = this; // closure copy
       this.cors.post({
-        url: copyThis.dataUrl,
+        url: self.dataUrl,
         data: data,
-        onSuccess: function(evt) { copyThis.logger.requestSuccess(evt); },
-        onError: function(xhr, err) { copyThis.logger.requestError(xhr, err); }
+        onSuccess: function(evt) { self.logger.requestSuccess(evt); },
+        onError: function(xhr, err) { self.logger.requestError(xhr, err); }
       });
     }
   }
 
   stopRecording() {
-    var copyThis = this; // closure copy
+    var self = this; // closure copy
     this.cors.delete({
-      url: copyThis.dataUrl,
-      onSuccess: function(evt) { copyThis.logger.requestSuccess(evt); },
-      onError: function(xhr, err) { copyThis.logger.requestError(xhr, err); }
+      url: self.dataUrl,
+      onSuccess: function(evt) { self.logger.requestSuccess(evt); },
+      onError: function(xhr, err) { self.logger.requestError(xhr, err); }
     });
   }
 
