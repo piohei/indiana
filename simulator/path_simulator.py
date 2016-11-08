@@ -1,13 +1,16 @@
 import requests
 from time import sleep
 from itertools import cycle
+from sys import argv
 
 from helpers.utils import raw_mac
 from models.primitives.time import Time
+from config import config
+from db import PathDAO
 
 
 class ApiJSON(object):
-    API_URL = "" #todo
+    API_URL = config["ap_data"]["endpoint"]
 
     def __init__(self, db_obj):
         self.__dict__.update({
@@ -79,6 +82,10 @@ class Simulator(object):
 
     def run(self):
         self.path.run_cycled()
+
+
+if __name__ == '__main__':
+    Simulator(PathDAO(), argv[1]).run()
 
 
 
