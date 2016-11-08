@@ -24,6 +24,6 @@ function _generateGeometry() {
 
 function _generateMaterial(color) {
   return new THREE.MeshBasicMaterial({
-      color: color,
+      color: color
   });
 }

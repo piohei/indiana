@@ -26,7 +26,7 @@ export class Map {
 
 // Theese are class private functions
 function _generateLevels(type, map) {
-  var levels = {}
+  var levels = {};
 
   for(const level in map.levels) {
     levels[level] = new MapLevel(type, map.levels[level]);

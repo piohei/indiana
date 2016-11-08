@@ -30,7 +30,7 @@ export class Path {
         url: copyThis.dataUrl,
         data: data,
         onSuccess: function(evt) { copyThis.logger.requestSuccess(evt); },
-        onError: function(xhr, err) { copyThis.logger.requestError(xhr, err); },
+        onError: function(xhr, err) { copyThis.logger.requestError(xhr, err); }
       });
     }
   }
@@ -40,7 +40,7 @@ export class Path {
     this.cors.delete({
       url: copyThis.dataUrl,
       onSuccess: function(evt) { copyThis.logger.requestSuccess(evt); },
-      onError: function(xhr, err) { copyThis.logger.requestError(xhr, err); },
+      onError: function(xhr, err) { copyThis.logger.requestError(xhr, err); }
     });
   }
 

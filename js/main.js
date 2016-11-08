@@ -27,10 +27,10 @@ window.path = new Path(
   window.location.hostname,
   8887,
   "path"
-)
+);
 
 window.positionUpdater = new PositionUpdater(
   window.location.hostname,
   8888,
   "99:AF:00:12:12:12"
-)
+);

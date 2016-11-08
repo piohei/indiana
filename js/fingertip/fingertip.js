@@ -101,7 +101,7 @@ function _createWebSocket(_this) {
   ws.onclose = function(evt) {
     $(`#${elementId} #end_status_btn`).prop("disabled", true);
     $(`#${elementId} #status_btn`).prop("disabled", false);
-  }
+  };
 
   return ws;
 }

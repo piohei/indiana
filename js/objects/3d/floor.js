@@ -29,6 +29,6 @@ function _generateGeometry(vertices) {
 function _generateMaterial(color) {
   return new THREE.MeshLambertMaterial({
     color: color,
-    emissive: color,
+    emissive: color
   });
 }

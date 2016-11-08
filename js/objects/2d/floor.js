@@ -20,7 +20,7 @@ function _generateGeometry(vertices) {
       floorShape.lineTo(vertex.x, -1 * vertex.y);
   });
 
-  var geometry = new THREE.ShapeGeometry(floorShape)
+  var geometry = new THREE.ShapeGeometry(floorShape);
   geometry.translate(0, 0, -0.1);
 
   return geometry;
@@ -28,6 +28,6 @@ function _generateGeometry(vertices) {
 
 function _generateMaterial(color) {
   return new THREE.MeshBasicMaterial({
-      color: color,
+      color: color
   });
 }

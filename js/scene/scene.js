@@ -65,7 +65,7 @@ export class Scene {
     this.setLocatorPosition(
       window.currentPosition.x,
       window.currentPosition.y,
-      window.currentPosition.z,
+      window.currentPosition.z
     );
 
     if(this.controls != null) {

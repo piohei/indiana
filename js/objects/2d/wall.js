@@ -24,6 +24,6 @@ function _generateGeometry(vertices, height) {
 function _generateMaterial(color) {
   return new THREE.LineBasicMaterial({
     color: color,
-    linewidth: 1,
+    linewidth: 1
   });
 }

@@ -16,7 +16,7 @@ function _createWebSocket(_this) {
 
   ws.onopen = function(evt) {
     ws.send("start");
-  }
+  };
 
   ws.onmessage = function(evt) {
     var received = evt.data.split(":").map( function (v) { return parseFloat(v) } );
