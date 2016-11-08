@@ -25,47 +25,58 @@ class ApiJSON(object):
         })
 
         for n, v in db_obj["rssis"].items():
-            self.__dict__["data"]["rss" + n] = v
+            self.__dict__["data"][0]["rss" + n] = v
 
     def __getattr__(self, item):
         return self.__dict__[item]
 
     def send(self):
         self.time = Time().millis
-        requests.post(self.API_URL, json=self.__dict__)
+        res = requests.post(self.API_URL, json=self.__dict__)
+        return res.status_code
 
 
 class SimulatorPathStep(object):
-    def __init__(self, api_json, break_millis):
+    def __init__(self, tup):
+        api_json, break_millis = tup
         self.break_millis = break_millis
         self.api_json = api_json
 
     def simulate_step(self):
-        self.api_json.send()
+        res = self.api_json.send()
         sleep(self.break_millis / 1000)
+        return res
         
 
 class SimulatorPath(object):
     def __init__(self, steps):
+        self.sent = 0
         self.steps = steps
 
     @classmethod
-    def create(cls, api_jsons):
-        there_and_back_again = cls.create_returning(api_jsons)
+    def create(cls, jsons):
+        there_and_back_again = cls.create_returning(jsons)
         intervals = cls.count_intervals(there_and_back_again)
         return cls(list(map(SimulatorPathStep, zip(there_and_back_again, intervals))))
 
     @classmethod
-    def create_returning(cls, api_jsons):
+    def create_returning(cls, jsons):
+        api_jsons = list(map(ApiJSON, jsons))
         return api_jsons + api_jsons[-2:0:-1]
 
     @classmethod
     def count_intervals(cls, path):
-        return list(map(lambda a, b: abs(a-b),  zip(path, reversed(path))))
+        times = [item.time for item in path]
+        return list(map(lambda t: abs(t[1] - t[0]),  zip(times, reversed(times))))
 
     def run_cycled(self):
         for step in cycle(self.steps):
-            step.simulate_step()
+            result = step.simulate_step()
+            if result == 200:
+                self.sent += 1
+                print(self.sent)
+            else:
+                print("error " + result)
 
 
 class Simulator(object):
@@ -73,6 +84,7 @@ class Simulator(object):
         self.path_name = collection_name
         self.path_dao = path_dao
         self.path = self.prepare()
+        print(ApiJSON.API_URL)
 
     def fetch(self):
         return self.path_dao.fetch_path(self.path_name)
@@ -85,7 +97,7 @@ class Simulator(object):
 
 
 if __name__ == '__main__':
-    Simulator(PathDAO(), argv[1]).run()
+    Simulator(argv[1], PathDAO()).run()
 
 
 
