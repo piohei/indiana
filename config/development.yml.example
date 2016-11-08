@@ -5,3 +5,11 @@ db:
 
 fingertip:
   url: http://localhost:8887
+
+ap_data:
+    endpoint: http://localhost:8887/
+
+rabbit:
+  host: 127.0.0.1
+  port: 5672
+  name: positions
