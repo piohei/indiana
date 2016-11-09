@@ -32,5 +32,5 @@ window.path = new Path(
 window.positionUpdater = new PositionUpdater(
   window.location.hostname,
   8888,
-  "99:AF:00:12:12:12"
+  "DC:EE:06:61:B0:3D"
 );
