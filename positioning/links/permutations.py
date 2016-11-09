@@ -14,10 +14,10 @@ class Permutations(Base):
         else:
             ap_mac, *tail = keys_left
             partial_results = self.permutate(source_dict, tail)
-            rssis = source_dict[ap_mac]
+            apdatas = source_dict[ap_mac]
             return [
-                (functional_add(ap_mac, rssi.to_rssi_measure(), partial)
-                for rssi in rssis)
+                functional_add(ap_mac, apdata.rssis, partial)
+                for apdata in apdatas
                 for partial in partial_results
             ]
 
@@ -25,14 +25,11 @@ class Permutations(Base):
         return self.permutate(macs_to_rssis, macs_to_rssis.keys())
 
     def calculate(self, samples):
-        return [
+        return [[
             Fingertip(
                 sample.location(),
-                {
-                    signal: self.permutations_for_macs(macs_to_rssis)
-                    for signal, macs_to_rssis in sample.ap_data_by_mac_and_signal.items()
-                }
+                self.permutations_for_macs(sample.ap_data_by_mac_and_signal)
             ) for sample in samples
-        ]
+        ]]
 
 

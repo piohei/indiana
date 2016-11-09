@@ -16,7 +16,7 @@ test:
 	INDIANA_ENV=test pytest ./test
 
 simulate:
-	python3 -m simulator.path_simulator path2
+	python3 -m simulator.path_simulator path3
 
 simulator_test:
 	INDIANA_ENV=test python3 -m simulator.simulator_manual_test

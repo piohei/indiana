@@ -12,8 +12,11 @@ class Sample(BaseModel):
         self.ap_data_by_mac_and_signal = ap_data_by_mac_and_signal
         self.stamp = stamp
 
-    def get_measure_for(self, mac, signal):
-        return self.ap_data_by_mac_and_signal[mac][signal]
+    def get_measure_for(self, mac, signal=None):
+        if signal is not None:
+            return self.ap_data_by_mac_and_signal[mac][signal]
+        else:
+            return self.ap_data_by_mac_and_signal.get(mac, [])
 
     def location(self):
         return self.stamp.location

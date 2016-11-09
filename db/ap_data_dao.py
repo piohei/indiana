@@ -89,3 +89,9 @@ class APDataDAO(BaseDAO):
                     }
 
         return res
+
+    def get_for_time_range(self, start_time, end_time, asc=True):
+        return self.find(
+                query={'created_at': {'$gte': start_time.millis, '$lte': end_time.millis}},
+                sort=[('created_at', 1 if asc else -1)]
+        )

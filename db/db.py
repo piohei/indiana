@@ -31,8 +31,8 @@ def replace_one(collection, filter, replacement, upsert=True):
            )
 
 
-def find(collection, query={}):
-    return db[collection].find(query)
+def find(collection, query={}, **kwargs):
+    return db[collection].find(query, **kwargs)
 
 
 def count(collection, query={}):

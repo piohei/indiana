@@ -67,7 +67,7 @@ class SimulatorPath(object):
     @classmethod
     def count_intervals(cls, path):
         times = [item.time for item in path]
-        return list(map(lambda t: abs(t[1] - t[0]),  zip(times, reversed(times))))
+        return list(map(lambda t: abs(t[1] - t[0])/10,  zip(times, reversed(times))))
 
     def run_cycled(self):
         for step in cycle(self.steps):

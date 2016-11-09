@@ -6,6 +6,7 @@ from .fetch.fetch_samples_stamps import FetchSamplesStamps
 from .fetch.to_full_samples import ToFullSamples
 
 from .best_match.alpha import BestMatchAlpha
+from .best_match.nearest_neighbour import NN
 
 from .pass_args import PassArgs
 from .permutations import Permutations

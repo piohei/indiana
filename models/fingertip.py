@@ -5,14 +5,14 @@ from .primitives.location import Location
 
 
 class Fingertip(BaseModel):
-    def __init__(self, location, ap_data_by_mac_and_signal):
+    def __init__(self, location, _list):
         if type(location) != Location:
             raise ValueError("Argument location must be type of models.Location")
 
         self.location = location
-        self.ap_data_by_mac_and_signal = ap_data_by_mac_and_signal
+        self.list = _list
 
     def __str__(self, *args, **kwargs):
-        return "Fingertip(location={}, ap_data_by_mac_and_signal={})".format(
-                    self.location, self.ap_data_by_mac_and_signal
+        return "Fingertip(location={}, ist={})".format(
+                    self.location, self.list
                 )

@@ -10,7 +10,6 @@ class BestMatchAlpha(Base):
         best_sample = samples[0]
         best_error = float("inf")
 
-
         for sample in samples:
             err = 0
             for mac in self.measures.keys():

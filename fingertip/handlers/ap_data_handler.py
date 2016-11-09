@@ -52,11 +52,11 @@ class APDataHandler(APIHandler):
             for item in self.body['data']:
                 device_mac = Mac(correct_mac(item['clientMac']))
                 rssis = {}
-                if item['rss1'] is not None:
+                if item.get('rss1') is not None:
                     rssis['1'] = RSSI(float(item['rss1']))
-                if item['rss2'] is not None:
+                if item.get('rss2') is not None:
                     rssis['2'] = RSSI(float(item['rss2']))
-                if item['rss3'] is not None:
+                if item.get('rss3') is not None:
                     rssis['3'] = RSSI(float(item['rss3']))
 
                 if len(rssis) > 0:
