@@ -36,23 +36,6 @@ class APDataDAO(BaseDAO):
             '_id': ap_data._id
         }
 
-    # Don't know why but doesn't work
-    # def group_by_mac_and_signal_for_range(self, start_time, end_time):
-    #     return db[self.collection_name()].group(
-    #         collection=self.collection_name(),
-    #         key=['router_mac', 'signal.band', 'signal.channel'],
-    #         condition={
-    #             'created_at': {
-    #                 '$gte': start_time.millis,
-    #                 '$lte': end_time.millis
-    #             }
-    #         },
-    #         initial={'ap_data': []},
-    #         reduce="""function(curr, result) {
-    #                   result.ap_data.push(curr);
-    #               }"""
-    #     )
-
     def group_by_mac_and_signal_for_range(self, start_time, end_time):
         selected = self.find({
             'created_at': {

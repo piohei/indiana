@@ -8,7 +8,7 @@ class BestMatchAlpha(Base):
 
     def calculate(self, samples):
         best_sample = samples[0]
-        best_error = math.inf
+        best_error = float("inf")
 
 
         for sample in samples:
