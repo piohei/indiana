@@ -15,9 +15,9 @@ production:
 test:
 	INDIANA_ENV=test pytest ./test
 
-simulator:
-    python3 -m simulator.path_simulator path2
+simulate:
+	python3 -m simulator.path_simulator path2
 
 simulator_test:
-    INDIANA_ENV=test python3 -m simulator.simulator_manual_test
+	INDIANA_ENV=test python3 -m simulator.simulator_manual_test
 
