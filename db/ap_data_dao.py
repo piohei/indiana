@@ -36,60 +36,6 @@ class APDataDAO(BaseDAO):
             '_id': ap_data._id
         }
 
-    def group_by_mac_and_signal_for_range(self, start_time, end_time):
-        selected = self.find({
-            'created_at': {
-                '$gte': start_time.millis,
-                '$lte': end_time.millis
-            }
-        })
-
-        res = {}
-        for ap_data in selected:
-            if ap_data.router_mac not in res.keys():
-                res[ap_data.router_mac] = {}
-            if ap_data.signal not in res[ap_data.router_mac].keys():
-                res[ap_data.router_mac][ap_data.signal] = []
-
-            res[ap_data.router_mac][ap_data.signal].append(ap_data)
-
-        return res
-
-    def stats_group_by_mac_and_signal_for_range(self, start_time, end_time):
-        selected = self.find({
-            'created_at': {
-                '$gte': start_time.millis,
-                '$lte': end_time.millis
-            }
-        })
-
-        grouped = {}
-        for ap_data in selected:
-            if ap_data.router_mac not in grouped.keys():
-                grouped[ap_data.router_mac] = {}
-            if ap_data.signal not in grouped[ap_data.router_mac].keys():
-                grouped[ap_data.router_mac][ap_data.signal] = {}
-
-            for k, v in ap_data.rssis.items():
-                if k not in grouped[ap_data.router_mac][ap_data.signal].keys():
-                    grouped[ap_data.router_mac][ap_data.signal][k] = []
-                grouped[ap_data.router_mac][ap_data.signal][k].append(v)
-
-        res = {}
-        for router_mac, v1 in grouped.items():
-            res[router_mac] = {}
-            for signal, v2 in v1.items():
-                res[router_mac][signal] = {}
-                for k, v3 in v2.items():
-                    values = list(map(lambda x: x.dBm, v3))
-                    res[router_mac][signal][k] = {
-                        'min': RSSI(min(values)),
-                        'max': RSSI(max(values)),
-                        'avg': RSSI(sum(values) / float(len(values)))
-                    }
-
-        return res
-
     def get_for_time_range(self, start_time, end_time, asc=True):
         return self.find(
                 query={'created_at': {'$gte': start_time.millis, '$lte': end_time.millis}},

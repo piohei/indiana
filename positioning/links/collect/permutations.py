@@ -1,13 +1,9 @@
-from positioning.links.base import Base
-
-from collections import defaultdict
-
 from helpers.utils import functional_add
 from models.fingertip import Fingertip
+from positioning.links.collect.collector import Collector
 
 
-class Permutations(Base):
-
+class Permutations(Collector):
     def permutate(self, source_dict, keys_left):
         if not keys_left:
             return [{}]
@@ -19,17 +15,11 @@ class Permutations(Base):
                 functional_add(ap_mac, apdata.rssis, partial)
                 for apdata in apdatas
                 for partial in partial_results
-            ]
+                ]
 
     def permutations_for_macs(self, macs_to_rssis):
         return self.permutate(macs_to_rssis, macs_to_rssis.keys())
 
-    def calculate(self, samples):
-        return [[
-            Fingertip(
-                sample.location(),
-                self.permutations_for_macs(sample.ap_data_by_mac_and_signal)
-            ) for sample in samples
-        ]]
-
-
+    def to_fingertip(self, sample):
+        permutations = self.permutations_for_macs(sample.ap_data_by_mac)
+        return Fingertip(sample.location(), permutations)

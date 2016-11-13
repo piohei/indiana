@@ -23,7 +23,7 @@ class App:
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
 
-        self.engine = Engine(chain='permutations', **{
+        self.engine = Engine(chain='beta', **{
             'ap_data_dao': self.ap_data_dao,
             'sample_stamp_dao': self.sample_stamp_dao,
             "n_of_random_ap_data_from_each_ap": 2

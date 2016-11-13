@@ -5,23 +5,18 @@ from .sample_stamp import SampleStamp
 
 
 class Sample(BaseModel):
-    def __init__(self, stamp, ap_data_by_mac_and_signal):
+    def __init__(self, stamp, ap_data_by_mac):
         if type(stamp) != SampleStamp:
             raise ValueError("Argument stamp must be type of models.SampleStamp")
 
-        self.ap_data_by_mac_and_signal = ap_data_by_mac_and_signal
+        self.ap_data_by_mac = ap_data_by_mac
         self.stamp = stamp
 
-    def get_measure_for(self, mac, signal=None):
-        if signal is not None:
-            return self.ap_data_by_mac_and_signal[mac][signal]
-        else:
-            return self.ap_data_by_mac_and_signal.get(mac, [])
+    def get_measure_for(self, mac):
+        return self.ap_data_by_mac.get(mac, [])
 
     def location(self):
         return self.stamp.location
 
     def __str__(self, *args, **kwargs):
-        return "Sample(stamp={}, ap_data_by_mac_and_signal={})".format(
-                    self.stamp, self.ap_data_by_mac_and_signal
-                )
+        return "Sample(stamp={}, ap_data_by_mac={})".format(self.stamp, self.ap_data_by_mac)

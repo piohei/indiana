@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import positioning.chains as chains
-from positioning.links.fingertips import Fingertips
+from positioning.engine.fingertips import Fingertips
 
 
 class EngineException(Exception):
