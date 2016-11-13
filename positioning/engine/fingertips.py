@@ -6,12 +6,11 @@ from models.primitives.rssi import RSSI
 
 
 class Fingertips(object):
-    def __init__(self, fingertip_list):
+    def __init__(self, ap_macs, fingertip_list):
         vectors = []
         classes = []
         counter = []
 
-        ap_macs = list(sorted(fingertip_list[0].list[0].keys()))
         self.order = ap_macs
 
         for ft in fingertip_list:

@@ -16,6 +16,7 @@ class Engine(object):
     }
 
     def __init__(self, chain='alpha', **kwargs):
+        self.access_point_dao = kwargs["access_point_dao"]
         if chain not in self.CHAINS.keys():
             raise EngineException("Unknown chain: {}".format(chain))
         self.chain = self.CHAINS[chain](**kwargs)
@@ -26,7 +27,9 @@ class Engine(object):
         return self.chain.calculate(**kwargs)
 
     def initialise(self, **kwargs):
-        self.fingertips = Fingertips(self.calculate(**kwargs)["fingertips"])
+        ap_macs_ordered = [ap.mac.mac for ap in self.access_point_dao.active()]
+        fingertips_list = self.calculate(**kwargs)["fingertips"]
+        self.fingertips = Fingertips(ap_macs_ordered, fingertips_list)
 
     def localise(self, measures):
         return self.fingertips.localise(measures)

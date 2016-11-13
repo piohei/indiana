@@ -6,6 +6,7 @@ import time
 from tornado import web, ioloop
 
 from config import env
+from db.access_point_dao import AccessPointDAO
 from positioning.engine import Engine
 from positioning.links.filter.random_n_for_each_ap import RandomNForEachAPInSample
 
@@ -22,10 +23,12 @@ class App:
 
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
+        self.access_point_dao = AccessPointDAO()
 
         self.engine = Engine(chain='permutations', **{
             'ap_data_dao': self.ap_data_dao,
             'sample_stamp_dao': self.sample_stamp_dao,
+            'access_point_dao': self.access_point_dao,
             "n_of_random_ap_data_from_each_ap": 2
         })
 
