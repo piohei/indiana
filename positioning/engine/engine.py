@@ -22,11 +22,11 @@ class Engine(object):
         self.fingertips = None
         self.specs = (chain, '1-nn')
 
-    def calculate(self, *args):
-        return self.chain.calculate(*args)
+    def calculate(self, **kwargs):
+        return self.chain.calculate(**kwargs)
 
-    def initialise(self, *args):
-        self.fingertips = Fingertips(self.calculate(*args)[0])
+    def initialise(self, **kwargs):
+        self.fingertips = Fingertips(self.calculate(**kwargs)["fingertips"])
 
     def localise(self, measures):
         return self.fingertips.localise(measures)

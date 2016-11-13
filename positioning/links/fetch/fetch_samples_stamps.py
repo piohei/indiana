@@ -5,4 +5,4 @@ class FetchSamplesStamps(Base):
         self.sample_stamp_dao = sample_stamp_dao
 
     def calculate(self):
-        return [self.sample_stamp_dao.all()]
+        return {"sample_stamps": self.sample_stamp_dao.all()}

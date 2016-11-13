@@ -8,5 +8,5 @@ class Collector(Base, metaclass=ABCMeta):
     def to_fingertip(self, sample):
         pass
 
-    def calculate(self, samples):
-        return [list(map(self.to_fingertip, samples))]
+    def calculate(self, samples, **kwargs):
+        return {"fingertips": list(map(self.to_fingertip, samples))}

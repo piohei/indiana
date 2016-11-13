@@ -1,14 +1,16 @@
 from positioning.chains.base import Base
 
-import positioning.links as links
-import positioning.links.filter.random_n_for_each_ap as filter
+import positioning.links.fetch as fetch
+import positioning.links.filter as filter
+import positioning.links.collect as collect
+import positioning.links.transform as transform
 
 
 class PermutationsChain(Base):
     def links(self):
         return [
-            links.FetchSamplesStamps,
-            links.ToFullSamples,
+            fetch.FetchSamplesStamps,
+            transform.ToFullSamples,
             filter.RandomNForEachAPInSample,
-            links.Permutations
+            collect.Permutations
         ]

@@ -17,5 +17,5 @@ class ToFullSamples(Base):
             grouped[ap_data.router_mac.mac].append(ap_data)
         return Sample(stamp, grouped)
 
-    def calculate(self, stamps):
-        return [list(map(self.to_sample, stamps))]
+    def calculate(self, sample_stamps, **kwargs):
+        return {"samples": list(map(self.to_sample, sample_stamps))}

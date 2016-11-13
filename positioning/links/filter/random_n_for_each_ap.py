@@ -19,5 +19,5 @@ class RandomNForEachAPInSample(Base):
         else:
             return sample
 
-    def calculate(self, samples):
-        return [list(map(self.filter, samples))]
+    def calculate(self, samples, **kwargs):
+        return {"samples": list(map(self.filter, samples))}
