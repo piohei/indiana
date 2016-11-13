@@ -21,3 +21,6 @@ simulate:
 simulator_test:
 	INDIANA_ENV=test python3 -m simulator.simulator_manual_test
 
+request_pos:
+	python3 -m scripts.request_position
+
