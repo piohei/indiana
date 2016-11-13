@@ -1,5 +1,4 @@
 import random
-from collections import defaultdict
 
 from models import Sample
 from positioning.links import Base
@@ -12,9 +11,8 @@ class RandomNForEachAPInSample(Base):
 
     def filter(self, sample):
         if self.n > 0:
-            grouped = {}
-            for mac, ap_datas in sample.ap_data_by_mac.items():
-                grouped[mac] = random.sample(ap_datas, min(self.n, len(ap_datas)))
+            grouped = {mac: random.sample(ap_datas, min(self.n, len(ap_datas)))
+                       for mac, ap_datas in sample.ap_data_by_mac.items()}
             return Sample(sample.stamp, grouped)
         else:
             return sample
