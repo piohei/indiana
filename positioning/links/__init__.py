@@ -7,5 +7,4 @@ from .fetch.to_full_samples import ToFullSamples
 
 from .best_match.alpha import BestMatchAlpha
 
-from .pass_args import PassArgs
 from .permutations import Permutations

@@ -3,8 +3,8 @@ from positioning.links.base import Base
 import math
 
 class BestMatchAlpha(Base):
-    def __init__(self, params={}):
-        self.measures = params['measures']
+    def __init__(self, measures, **kwargs):
+        self.measures = measures
 
     def calculate(self, samples):
         best_sample = samples[0]

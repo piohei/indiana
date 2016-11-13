@@ -22,6 +22,7 @@ def correct_dict():
         }
     }
 
+
 def error_dict():
     return {
         "mac": "DC:EE:06:61:B0:3D",
@@ -31,6 +32,7 @@ def error_dict():
             "z": -2
         }
     }
+
 
 def error_body(text):
     return ('{"status": "fail", "data": "' + text + '"}').encode('ascii')

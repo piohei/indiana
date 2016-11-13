@@ -11,15 +11,14 @@ class EngineException(Exception):
 
 class Engine(object):
     CHAINS = {
-        'alpha': chains.Alpha,
         'beta': chains.Beta,
         'permutations': chains.PermutationsChain
     }
 
-    def __init__(self, chain='alpha', params={}):
+    def __init__(self, chain='alpha', **kwargs):
         if chain not in self.CHAINS.keys():
             raise EngineException("Unknown chain: {}".format(chain))
-        self.chain = self.CHAINS[chain](params)
+        self.chain = self.CHAINS[chain](**kwargs)
         self.fingertips = None
         self.specs = (chain, '1-nn')
 

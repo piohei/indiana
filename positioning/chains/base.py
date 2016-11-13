@@ -1,6 +1,6 @@
 class Base(object):
-    def __init__(self, params={}):
-        self.params = params
+    def __init__(self, **kwargs):
+        self.params = kwargs
 
     def links(self):
         return []
@@ -8,6 +8,6 @@ class Base(object):
     def calculate(self, *args):
         res = args
         for link in self.links():
-            res = link(self.params).calculate(*res)
+            res = link(**self.params).calculate(*res)
 
         return res

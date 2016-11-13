@@ -23,10 +23,10 @@ class App:
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
 
-        self.engine = Engine(chain='permutations', params={
+        self.engine = Engine(chain='permutations', **{
             'ap_data_dao': self.ap_data_dao,
             'sample_stamp_dao': self.sample_stamp_dao,
-            RandomNForEachAPInSample.N: 2
+            "n_of_random_ap_data_from_each_ap": 2
         })
 
         self.app = web.Application(handlers=[

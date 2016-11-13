@@ -21,7 +21,7 @@ class Fingertips(object):
 
         self.vectors = np.array(vectors)
         self.classes = np.array(classes)
-        self.stats = self.preare_stats(counter)
+        self.stats = self.prepare_stats(counter)
 
     def vectorise(self, measures):
         return np.array([
@@ -35,7 +35,7 @@ class Fingertips(object):
         dists = np.array([euclidean(v, measures_vector) for v in self.vectors])
         return self.classes[dists.argmin()]
 
-    def preare_stats(self, counter):
+    def prepare_stats(self, counter):
         np_counter = np.array(counter)
         return {
             "locations": len(counter),

@@ -2,7 +2,23 @@
 import unittest
 from unittest.mock import patch
 from positioning.engine import Engine, EngineException
-from positioning.chains import Alpha
+from positioning.chains.base import Base
+
+
+class PassArgs(Base):
+    def calculate(self, *args):
+        return args
+
+
+class Alpha(Base):
+    def links(self):
+        return [
+            PassArgs,
+            PassArgs
+        ]
+
+Engine.CHAINS["alpha"] = Alpha
+
 
 class TestEngine(unittest.TestCase):
     def test_engine_creating_with_wrong_link(self):

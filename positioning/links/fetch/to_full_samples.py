@@ -7,8 +7,8 @@ from models.sample import Sample
 
 
 class ToFullSamples(Base):
-    def __init__(self, params={}):
-        self.ap_data_dao = params['ap_data_dao']
+    def __init__(self, ap_data_dao, **kwargs):
+        self.ap_data_dao = ap_data_dao
 
     def to_sample(self, stamp):
         ap_datas = self.ap_data_dao.get_for_time_range(stamp.start_time, stamp.end_time, asc=False)

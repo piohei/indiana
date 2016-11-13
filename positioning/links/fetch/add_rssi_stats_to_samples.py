@@ -4,8 +4,8 @@ from models.sample import Sample
 
 
 class AddRSSIStatsToSamples(Base):
-    def __init__(self, params={}):
-        self.ap_data_dao = params['ap_data_dao']
+    def __init__(self, ap_data_dao, **kwargs):
+        self.ap_data_dao = ap_data_dao
 
     def to_sample(self, stamp):
         measures = self.ap_data_dao.stats_group_by_mac_and_signal_for_range(
