@@ -7,6 +7,7 @@ from tornado import web, ioloop
 
 from config import env
 from positioning.engine import Engine
+from positioning.links.filter.random_n_for_each_ap import RandomNForEachAPInSample
 
 from .handlers import *
 
@@ -24,7 +25,8 @@ class App:
 
         self.engine = Engine(chain='permutations', params={
             'ap_data_dao': self.ap_data_dao,
-            'sample_stamp_dao': self.sample_stamp_dao
+            'sample_stamp_dao': self.sample_stamp_dao,
+            RandomNForEachAPInSample.N: 2
         })
 
         self.app = web.Application(handlers=[
