@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import euclidean
 
+from models import APData
 from models.primitives.rssi import RSSI
 
 
@@ -27,7 +28,7 @@ class Fingertips(object):
         return np.array([
             measures.get(ap, {}).get(rssi, RSSI(0)).dBm
             for ap in self.order
-            for rssi in ["1", "2", "3"]
+            for rssi in APData.RSSIS_KEYS
         ])
 
     def localise(self, measures):

@@ -15,7 +15,7 @@ class AverageRssis(Collector):
 
     def to_avg_ap_data_rssis(self, ap_datas):
         rssis = {}
-        for rssi in ["1", "2", "3"]:
+        for rssi in APData.RSSIS_KEYS:
             values = self.to_present_rssi_dbms(ap_datas, rssi)
             if len(values) > 0:
                 rssis[rssi] = RSSI(float(np.array(values).mean()))
