@@ -69,7 +69,7 @@ class APDataHandler(APIHandler):
                     ))
 
             for ap_data in ap_datas:
-                self.sample_service.save_ap_data_for_sample(ap_data)
+                self.sample_service.save_ap_data_for_sample(ap_data) # todo move from there
         except SampleException as e:
             raise APIError(400, e.message)
         except DBException as e:

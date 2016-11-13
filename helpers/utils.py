@@ -30,6 +30,10 @@ def correct_mac(mac):
     return ':'.join([mac[i:i+2].lower() for i in range(0, len(mac), 2)])
 
 
+def raw_mac(mac):
+    return mac.replace(":", "").upper()
+
+
 def generate_id():
     return ''.join(random.choice("abcdef0123456789") for _ in range(24))
 

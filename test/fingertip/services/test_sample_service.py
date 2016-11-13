@@ -102,30 +102,13 @@ class TestSampleService(unittest.TestCase):
 
     def test_save_ap_data_stamp_present_and_valid(self):
         old_stamp = Mock()
-        old_stamp.is_outdated = Mock(return_value=False)
         self.under_test.current_sample_stamp = old_stamp
 
         ap_data = Mock()
 
         self.under_test.save_ap_data_for_sample(ap_data)
 
-        old_stamp.is_outdated.assert_called_once_with()
         self.ap_data_dao.save.assert_called_once_with(ap_data)
-
-    def test_save_ap_data_stamp_present_and_outdated(self):
-        old_stamp = Mock()
-        old_stamp.is_outdated = Mock(return_value=True)
-        self.under_test.current_sample_stamp = old_stamp
-
-        self.assertRaises(SampleException, self.under_test.save_ap_data_for_sample, Mock())
-        old_stamp.is_outdated.assert_called_once_with()
-        self.ap_data_dao.save.assert_not_called()
-
-    def test_save_ap_data_stamp_absent(self):
-        self.assertIsNone(self.under_test.current_sample_stamp)
-
-        self.assertRaises(SampleException, self.under_test.save_ap_data_for_sample, Mock())
-        self.ap_data_dao.save.assert_not_called()
 
     def test_get_status_when_none(self):
         self.assertIsNone(self.under_test.current_sample_stamp)
