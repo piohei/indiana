@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import positioning.chains as chains
+from positioning.links.fingertips import Fingertips
 
 
 class EngineException(Exception):
@@ -26,4 +27,7 @@ class Engine(object):
         return self.chain.calculate(*args)
 
     def initialise(self, *args):
-        self.fingertips = self.calculate(*args)
+        self.fingertips = Fingertips(self.calculate(*args)[0])
+
+    def localise(self, measures):
+        return self.fingertips.localise(measures)

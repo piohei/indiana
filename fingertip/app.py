@@ -27,10 +27,6 @@ class App:
         self.path_service = PathService(self.path_dao, self.global_lock)
 
         self.app = web.Application(handlers=[
-            (r"/position/({})".format(mac_regexp_dashes()), PositionHandler, {
-                    "ap_data_dao": self.ap_data_dao,
-                    "sample_stamp_dao": self.sample_stamp_dao,
-                }),
             (r"/actual_location", SampleStampHandler, {
                     "sample_service": self.sample_service
                 }),

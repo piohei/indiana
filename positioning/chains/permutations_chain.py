@@ -8,6 +8,5 @@ class PermutationsChain(Base):
         return [
             links.FetchSamplesStamps,
             links.ToFullSamples,
-            links.Permutations,
-            links.NN
+            links.Permutations
         ]

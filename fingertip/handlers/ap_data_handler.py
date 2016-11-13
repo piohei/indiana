@@ -47,8 +47,6 @@ class APDataHandler(APIHandler):
             signal = Signal(band='2.4', channel=self.body['band'])
             created_at = Time(int(self.body['time']))
 
-            print(self.body)
-
             for item in self.body['data']:
                 device_mac = Mac(correct_mac(item['clientMac']))
                 rssis = {}
