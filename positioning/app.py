@@ -44,6 +44,15 @@ class App:
         self.engine.initialise()
         end = time.perf_counter()
         print("engine initialised in {}s".format(end-start))
+        self.print_engine_stats()
+
+    def print_engine_stats(self):
+        stats = self.engine.fingertips.stats
+        print("fingertips statistics:")
+        print("\tlocations\t\t\t\t\t{}".format(stats["locations"]))
+        print("\tnumber of fingertips\t\t{}".format(stats["all"]))
+        print("\tavg per location\t\t\t{}".format(stats["avg"]))
+        print("\tmin and max per location\t{} - {}".format(stats["min"], stats["max"]))
 
     def run(self):
         self.start_engine()
