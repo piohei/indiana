@@ -12,7 +12,8 @@ class EngineException(Exception):
 class Engine(object):
     CHAINS = {
         'beta': chains.Beta,
-        'permutations': chains.PermutationsChain
+        'permutations': chains.PermutationsChain,
+        'consecutive': chains.ConsecutiveChain
     }
 
     def __init__(self, chain='alpha', **kwargs):

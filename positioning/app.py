@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import time
 from threading import RLock
 
-import time
 from tornado import web, ioloop
 
 from config import env
-from db.access_point_dao import AccessPointDAO
-from positioning.engine import Engine
-from positioning.links.filter.random_n_for_each_ap import RandomNForEachAPInSample
-
-from .handlers import *
-
 from db import APDataDAO, SampleStampDAO
-
+from db.access_point_dao import AccessPointDAO
 from helpers.utils import mac_regexp_dashes
+from positioning.engine import Engine
+from .handlers import *
 
 
 class App:
@@ -25,7 +21,7 @@ class App:
         self.sample_stamp_dao = SampleStampDAO()
         self.access_point_dao = AccessPointDAO()
 
-        self.engine = Engine(chain='permutations', **{
+        self.engine = Engine(chain='consecutive', **{
             'ap_data_dao': self.ap_data_dao,
             'sample_stamp_dao': self.sample_stamp_dao,
             'access_point_dao': self.access_point_dao,
