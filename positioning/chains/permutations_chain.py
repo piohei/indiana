@@ -1,9 +1,8 @@
-from positioning.chains.base import Base
-
+import positioning.links.collect as collect
 import positioning.links.fetch as fetch
 import positioning.links.filter as filter
-import positioning.links.collect as collect
 import positioning.links.transform as transform
+from positioning.chains.base import Base
 
 
 class PermutationsChain(Base):
@@ -12,5 +11,6 @@ class PermutationsChain(Base):
             fetch.FetchSamplesStamps,
             transform.ToFullSamples,
             filter.RandomNForEachAPInSample,
-            collect.Permutations
+            collect.Permutations,
+            transform.ToVectorsWithStats
         ]

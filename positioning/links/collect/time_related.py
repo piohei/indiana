@@ -1,6 +1,6 @@
 import itertools
 
-from models import Fingertip
+from positioning.entities import Fingertip
 from positioning.links.collect.collector import Collector
 
 

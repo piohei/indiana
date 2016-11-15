@@ -1,8 +1,8 @@
 from scipy.spatial.distance import euclidean
 
+from exception import EngineException
 from models import APData
 from positioning import chains
-from positioning.engine import EngineException
 from positioning.vectorisation.by_mac_and_rssi import VectorisationByMacAndRssi
 
 
@@ -18,13 +18,12 @@ class NearestNeighbourStrategy(object):
         if chain not in self.CHAINS.keys():
             raise EngineException("Incompatible chain: {}".format(chain))
         self.chain = self.CHAINS[chain](vectorisation=self.vectorisation, **kwargs)
-        self.fingertip_vectors = None
-        self.specs = (chain, '1-nn')
+        self.fingertip_vectors = self.stats = None
 
     def initialise(self, **kwargs):
         result = self.chain.calculate(**kwargs)
         self.fingertip_vectors = result["fingertip_vectors"]
-        return result["fingertip_stats"]
+        self.stats = result["fingertip_stats"]
 
     def localise(self, measures):
         measures_vector = self.vectorisation.vectorise(measures)

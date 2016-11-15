@@ -1,7 +1,7 @@
 import numpy as np
 
+from positioning.entities.fingertip_vectors import FingertipVectors
 from positioning.links import Base
-from positioning.models.fingertip_vectors import FingertipVectors
 
 
 class ToVectorsWithStats(Base):

@@ -1,5 +1,5 @@
 from helpers.utils import functional_add
-from models.fingertip import Fingertip
+from positioning.entities import Fingertip
 from positioning.links.collect.collector import Collector
 
 

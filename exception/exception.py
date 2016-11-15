@@ -6,3 +6,8 @@ class DBException(Exception):
 class SampleException(Exception):
     def __init__(self, message):
         self.message = message
+
+
+class EngineException(Exception):
+    def __init__(self, message):
+        self.message = message

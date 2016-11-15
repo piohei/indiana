@@ -1,7 +1,5 @@
-from db.db import db
 from db.base_dao import BaseDAO
 
-from collections import defaultdict
 from models import APData, Mac, Time, RSSI, Signal
 
 

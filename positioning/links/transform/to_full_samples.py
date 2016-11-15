@@ -1,9 +1,7 @@
-import random
 from collections import defaultdict
 
+from positioning.entities import Sample
 from positioning.links.base import Base
-
-from models.sample import Sample
 
 
 class ToFullSamples(Base):

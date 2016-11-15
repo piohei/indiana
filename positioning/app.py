@@ -21,7 +21,7 @@ class App:
         self.sample_stamp_dao = SampleStampDAO()
         self.access_point_dao = AccessPointDAO()
 
-        self.engine = Engine(chain='consecutive', **{
+        self.engine = Engine(chain='beta', **{
             'ap_data_dao': self.ap_data_dao,
             'sample_stamp_dao': self.sample_stamp_dao,
             'access_point_dao': self.access_point_dao,
@@ -46,7 +46,7 @@ class App:
         self.print_engine_stats()
 
     def print_engine_stats(self):
-        stats = self.engine.fingertips.stats
+        stats = self.engine.stats()
         print("fingertips statistics:")
         print("\tlocations\t\t\t\t\t{}".format(stats["locations"]))
         print("\tnumber of fingertips\t\t{}".format(stats["all"]))

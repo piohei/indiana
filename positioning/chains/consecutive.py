@@ -9,5 +9,6 @@ class ConsecutiveChain(Base):
         return [
             fetch.FetchSamplesStamps,
             transform.ToFullSamples,
-            collect.TimeRelated
+            collect.TimeRelated,
+            transform.ToVectorsWithStats
         ]

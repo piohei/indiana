@@ -1,6 +1,7 @@
 import numpy as np
 
-from models import Fingertip, RSSI, APData
+from models import RSSI, APData
+from positioning.entities import Fingertip
 from positioning.links.collect.collector import Collector
 
 

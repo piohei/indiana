@@ -1,8 +1,7 @@
 import random
 
-from models import Sample
+from positioning.entities import Sample
 from positioning.links import Base
-
 
 
 class RandomNForEachAPInSample(Base):
