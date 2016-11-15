@@ -1,1 +1,1 @@
-from .exception import DBException, SampleException, EngineException
+from .exception import DBException, SampleException
