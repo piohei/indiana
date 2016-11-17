@@ -1,3 +1,4 @@
+scipy
 numpy
 flask==0.10.1
 pymongo==3.3.0
@@ -8,3 +9,4 @@ wrapt==1.10.8
 py==1.4.31
 pytest==3.0.2
 pika==0.10.0
+scikit-learn==0.18.1

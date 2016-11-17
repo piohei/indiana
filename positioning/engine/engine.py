@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from positioning.strategy.nearest_neighbour import NearestNeighbourStrategy
+from positioning.strategy.full_linear_regression import FullLinearRegressionStrategy
 
 
 class Engine(object):
     def __init__(self, **kwargs):
-        self.strategy = NearestNeighbourStrategy(**kwargs)
+        self.strategy = FullLinearRegressionStrategy(**kwargs)
+        # self.strategy = NearestNeighbourStrategy(**kwargs)
 
     def initialise(self, **kwargs):
         self.strategy.initialise(**kwargs)

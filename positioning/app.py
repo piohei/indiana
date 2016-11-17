@@ -43,7 +43,7 @@ class App:
         self.engine.initialise()
         end = time.perf_counter()
         print("engine initialised in {}s".format(end-start))
-        self.print_engine_stats()
+        # self.print_engine_stats()
 
     def print_engine_stats(self):
         stats = self.engine.stats()
