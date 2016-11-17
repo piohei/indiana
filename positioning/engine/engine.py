@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from positioning.strategy import FullLinearRegressionStrategy, NearestNeighbourStrategy
+from positioning.strategy import FullLinearRegressionStrategy, NearestNeighbourStrategy, NnWithLinearRegressionStrategy
 
 
 class Engine(object):
     STRATEGIES = {
         "FullLinearRegression": FullLinearRegressionStrategy,
         "1-NN": NearestNeighbourStrategy,
+        "1-NNWithLinearRegression": NnWithLinearRegressionStrategy
     }
 
     def __init__(self, strategy, daos,  strategy_config=()):
@@ -20,8 +21,8 @@ class Engine(object):
     def initialise(self, **kwargs):
         self.strategy.initialise(**kwargs)
 
-    def localise(self, measures):
-        return self.strategy.localise(measures)
+    def locate(self, measures):
+        return self.strategy.locate(measures)
 
     def stats(self):
         return self.strategy.stats

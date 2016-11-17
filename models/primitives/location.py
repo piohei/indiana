@@ -15,7 +15,7 @@ class Location(object):
         self.y = float(y)
         self.z = float(z)
 
-    def distnace_from(self, loc):
+    def distance_from(self, loc):
         return math.sqrt(
                    math.pow(self.x - loc.x, 2) + \
                    math.pow(self.y - loc.y, 2) + \

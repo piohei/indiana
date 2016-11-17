@@ -11,7 +11,7 @@ class ToLinRegData(Base):
     def to_lin_reg_datas(self, ap_mac, ap_datas, sample):
         res = {}
         ap_location = self.active_aps_locations[ap_mac]
-        distance_from_ap = ap_location.distnace_from(sample.location())
+        distance_from_ap = ap_location.distance_from(sample.location())
         return [LinRegData(distance_from_ap, ap_data.rssis) for ap_data in ap_datas]
 
     def calculate(self, samples, **kwargs):
@@ -19,7 +19,7 @@ class ToLinRegData(Base):
         for sample in samples:
             for ap_mac, ap_datas in sample.ap_data_by_mac.items():
                 ap_location = self.active_aps_locations[ap_mac]
-                distance_from_ap = ap_location.distnace_from(sample.location())
+                distance_from_ap = ap_location.distance_from(sample.location())
                 for ap_data in ap_datas:
                     for rssi in ap_data.rssis:
                         lin_reg_datas[ap_mac][rssi].append(LinRegData(distance_from_ap, ap_data.rssis[rssi].dBm))

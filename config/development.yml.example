@@ -33,3 +33,9 @@ rabbit:
 
 engine:
   strategy_name: FullLinearRegression
+
+#engine:
+#  strategy_name: 1-NNWithLinearRegression
+#  strategy_config:
+#    chain: consecutive
+#    cluster_n_closest: 8

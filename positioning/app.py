@@ -33,7 +33,7 @@ class App:
         # self.engine = Engine(strategy="1-NN", daos=daos, strategy_config={"chain": "permutations", "ap_data_per_ap": 2})
         # self.engine = Engine(strategy="1-NN", daos=daos, strategy_config={"chain": "consecutive"})
         strategy = config["engine"]["strategy_name"]
-        strategy_config = config["engine_config"].get("strategy_config", {})
+        strategy_config = config["engine"].get("strategy_config", {})
         self.engine = Engine(strategy, daos, strategy_config)
 
 

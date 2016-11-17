@@ -2,10 +2,11 @@ from scipy.spatial.distance import euclidean
 
 from models import APData
 from positioning import chains
+from positioning.strategy.abstract_location_strategy import AbstractLocationStrategy
 from positioning.vectorisation.by_mac_and_rssi import VectorisationByMacAndRssi
 
 
-class NearestNeighbourStrategy(object):
+class NearestNeighbourStrategy(AbstractLocationStrategy):
     CHAINS = {
         'beta': chains.Beta,
         'permutations': chains.PermutationsChain,
@@ -24,7 +25,7 @@ class NearestNeighbourStrategy(object):
         self.fingertip_vectors = result["fingertip_vectors"]
         self.stats = result["fingertip_stats"]
 
-    def localise(self, measures):
+    def locate(self, measures):
         measures_vector = self.vectorisation.vectorise(measures)
         distances = self.fingertip_vectors.map(euclidean, measures_vector)
         return self.fingertip_vectors.location(distances.argmin())

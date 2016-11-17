@@ -1,10 +1,9 @@
 import datetime
 import math
+import os
+import sys
 
 import requests
-
-import sys
-import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -29,7 +28,7 @@ class Router(Device):
         return -10*n*math.log(d, 10) + A
 
     def get_ap_data(self, device):
-        distance = self.location.distnace_from(device.location)
+        distance = self.location.distance_from(device.location)
         rssi = self.count_rssi(distance)
         timestamp = datetime.datetime.now().timestamp()
         return APData(device.MAC, self.MAC, timestamp, rssi, self.channel)

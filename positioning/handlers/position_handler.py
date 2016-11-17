@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import time
+
 from tornado_json import schema
 from tornado_json.requesthandlers import APIHandler
 
-from models import Time
-from positioning.engine import Engine
-
 from herald import Publisher
+from models import Time
 
 
 class PositionHandler(APIHandler):
@@ -49,7 +48,7 @@ class PositionHandler(APIHandler):
                 grouped[ap_data.router_mac.mac] = ap_data.rssis
 
         start = time.perf_counter()
-        res = self.engine.localise(grouped)
+        res = self.engine.locate(grouped)
         end = time.perf_counter()
         print("engine localised {} in {}s", mac, end-start)
 
