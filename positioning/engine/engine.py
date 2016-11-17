@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
-
-from positioning.strategy.full_linear_regression import FullLinearRegressionStrategy
+from positioning.strategy import FullLinearRegressionStrategy, NearestNeighbourStrategy
 
 
 class Engine(object):
-    def __init__(self, **kwargs):
-        self.strategy = FullLinearRegressionStrategy(**kwargs)
-        # self.strategy = NearestNeighbourStrategy(**kwargs)
+    STRATEGIES = {
+        "FullLinearRegression": FullLinearRegressionStrategy,
+        "1-NN": NearestNeighbourStrategy,
+    }
+
+    def __init__(self, strategy, daos,  strategy_config=()):
+        config_dict = dict(strategy_config)
+        if strategy not in self.STRATEGIES:
+            raise ValueError("strategy '{}' not recognised".format(strategy))
+        kwargs = daos.copy()
+        kwargs.update(config_dict)
+        self.specs = {"strategy": strategy, "config": config_dict}
+        self.strategy = self.STRATEGIES[strategy](**kwargs)
 
     def initialise(self, **kwargs):
         self.strategy.initialise(**kwargs)

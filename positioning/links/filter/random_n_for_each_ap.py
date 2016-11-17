@@ -5,8 +5,8 @@ from positioning.links import Base
 
 
 class RandomNForEachAPInSample(Base):
-    def __init__(self, n_of_random_ap_data_from_each_ap, **kwargs):
-        self.n = int(n_of_random_ap_data_from_each_ap)
+    def __init__(self, ap_data_per_ap, **kwargs):
+        self.n = int(ap_data_per_ap)
 
     def filter(self, sample):
         if self.n > 0:
