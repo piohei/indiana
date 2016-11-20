@@ -47,8 +47,7 @@ export class Scene {
 
   // Proteced functions
   _onWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
+    this.camera.updateWindowResize(window.innerWidth, window.innerHeight);
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     if(this.controls != null) {
@@ -156,6 +155,10 @@ function _genreateScene(map, light) {
 
     for(const router of levels[level].getRouters()) {
       res.add(router);
+    }
+
+    for(const sample of levels[level].getSamples()) {
+      res.add(sample);
     }
   }
 

@@ -15,4 +15,9 @@ export class Camera extends THREE.PerspectiveCamera {
     this.rotation.y = 0;
     this.rotation.z = 0;
   }
+
+  updateWindowResize(width, height) {
+    this.aspect = width / height;
+    this.updateProjectionMatrix();
+  }
 }

@@ -1,16 +1,19 @@
 import {Floor as Floor2D} from './2d/floor'
 import {Wall as Wall2D} from './2d/wall'
 import {Router as Router2D} from './2d/router'
+import {Sample as Sample2D} from './2d/sample'
 
 import {Floor as Floor3D} from './3d/floor'
 import {Wall as Wall3D} from './3d/wall'
 import {Router as Router3D} from './3d/router'
+import {Sample as Sample3D} from './3d/sample'
 
 export class MapLevel {
   constructor(type, level) {
     this.floor   = _generateFloor(type, level.floor);
     this.walls   = _generateWalls(type, level.walls);
     this.routers = _generateRouters(type, level.routers);
+    this.samples = _generateSamples(type, level.samples);
   }
 
   getFloor() {
@@ -23,6 +26,10 @@ export class MapLevel {
 
   getRouters() {
     return this.routers;
+  }
+
+  getSamples() {
+    return this.samples;
   }
 }
 
@@ -54,6 +61,15 @@ function _generateRouter(type, router) {
   }
 }
 
+function _generateSample(type, sample) {
+  switch(type) {
+    case '2d':
+      return new Sample2D(sample);
+    case '3d':
+      return new Sample3D(sample);
+  }
+}
+
 function _generateWalls(type, walls) {
   var res = [];
   for(const wall of walls) {
@@ -69,3 +85,12 @@ function _generateRouters(type, routers) {
   }
   return res;
 }
+
+function _generateSamples(type, samples) {
+  var res = [];
+  for(const sample of samples) {
+    res.push(_generateSample(type, sample));
+  }
+  return res;
+}
+

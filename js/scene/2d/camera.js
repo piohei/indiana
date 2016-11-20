@@ -17,4 +17,13 @@ export class Camera extends THREE.OrthographicCamera {
     this.rotation.y = 0;
     this.rotation.z = 0;
   }
+
+  updateWindowResize(width, height) {
+    this.left   = width / -2 / 30;
+    this.right  = width / 2 / 30;
+    this.top    = height / 2 / 30;
+    this.bottom = height / -2 / 30;
+
+    this.updateProjectionMatrix();
+  }
 }

@@ -1,5 +1,5 @@
-export class Router extends THREE.Mesh {
-  constructor(position, height=2.5, color="#239123") {
+export class Sample extends THREE.Mesh {
+  constructor(position, height=0, color="#2760bc") {
     var geometry = _generateGeometry(position, height);
     var material = _generateMaterial(color);
 
@@ -9,13 +9,14 @@ export class Router extends THREE.Mesh {
 
 // Theese are class private functions
 function _generateGeometry(position, height) {
-  var geometry = new THREE.CircleGeometry(0.10, 32);
-  geometry.translate(position.x, -1 * position.y, 0.1);
+  var geometry = new THREE.SphereGeometry(0.1, 16, 16);
+  geometry.translate(position.x, height, position.y);
   return geometry;
 }
 
 function _generateMaterial(color) {
-  return new THREE.MeshBasicMaterial({
-      color: color
+  return new THREE.MeshLambertMaterial({
+    color: color,
+    emissive: color
   });
 }
