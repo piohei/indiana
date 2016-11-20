@@ -6,10 +6,15 @@ import os
 from config import env
 from helpers.utils import mac_regexp_dashes
 
+from db import AccessPointDAO, SampleStampDAO
+
 from .handlers import *
 
 class App:
     def __init__(self):
+        self.access_point_dao = AccessPointDAO()
+        self.sample_stamp_dao = SampleStampDAO()
+
         self.app = web.Application(
             handlers=[
                 (r"/position/({})".format(mac_regexp_dashes()), PositionHandler),
@@ -17,7 +22,10 @@ class App:
                 (r"/visualization/2d", Visualization2DHandler),
                 (r"/fingertip", FingerTipHandler),
                 (r"/path", PathHandler),
-                (r"/map", MapHandler),
+                (r"/map", MapHandler, {
+                    'access_point_dao': self.access_point_dao,
+                    'sample_stamp_dao': self.sample_stamp_dao
+                }),
                 (r"/", RootHandler),
             ],
             static_path=os.path.join(os.path.dirname(__file__), "static"),
