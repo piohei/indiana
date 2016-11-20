@@ -5,7 +5,7 @@ from models import Position, Mac, Location, Time
 class PositionDAO(BaseDAO):
     @staticmethod
     def collection_name():
-        return 'sample_stamps'
+        return 'positions'
 
     def from_db_object(self, db_object):
         return Position(

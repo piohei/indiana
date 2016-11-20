@@ -1,4 +1,5 @@
 from .ap_data import APData
+from .map import Map
 from .path_stamp import PathStamp
 from .position import Position
 from .primitives.location import Location

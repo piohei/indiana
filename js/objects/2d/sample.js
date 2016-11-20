@@ -1,5 +1,5 @@
-export class Router extends THREE.Mesh {
-  constructor(position, height=2.5, color="#239123") {
+export class Sample extends THREE.Mesh {
+  constructor(position, height=0, color="#2760bc") {
     var geometry = _generateGeometry(position, height);
     var material = _generateMaterial(color);
 

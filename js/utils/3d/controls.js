@@ -6,4 +6,8 @@ export class Controls extends THREE.OrbitControls {
   run(render) {
     this.addEventListener('change', render);
   }
+
+  handleResize() {
+    // Do nothing
+  }
 }
