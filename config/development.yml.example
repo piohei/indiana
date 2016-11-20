@@ -14,6 +14,8 @@ rabbit:
   port: 5672
   name: positions
 
+map:
+  name: floor_1
 
 #engine:
 #  strategy_name: 1-NN
