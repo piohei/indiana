@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from threading import RLock
+
 from tornado import web, ioloop
 
 from config import env
-
+from db import APDataDAO, PathDAO
+from db.benchmark_stamp_dao import BenchmarkStampDAO
 from .handlers import *
-from .services import *
 from .jobs import *
-
-from db import APDataDAO, SampleStampDAO, PathDAO
-
-from helpers.utils import mac_regexp_dashes
+from .services import *
 
 
 class App:
@@ -19,8 +17,10 @@ class App:
         self.global_lock = RLock()
 
         self.ap_data_dao = APDataDAO()
-        self.sample_stamp_dao = SampleStampDAO()
+        # self.sample_stamp_dao = SampleStampDAO()
+        self.sample_stamp_dao = BenchmarkStampDAO()
         self.path_dao = PathDAO()
+
 
         self.sample_service = SampleService(self.ap_data_dao, self.sample_stamp_dao, self.global_lock)
         self.web_socket_service = WebSocketService(self.global_lock)
