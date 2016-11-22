@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import time
+from collections import defaultdict
 from threading import RLock
 
-from tornado import web, ioloop
-
 from config import config
-from config import env
-from db import APDataDAO, SampleStampDAO
-from db.access_point_dao import AccessPointDAO
-from helpers.utils import mac_regexp_dashes
+from db import APDataDAO, SampleStampDAO, AccessPointDAO, PositionDAO
+from herald import Publisher
+from models import Time, Position, Mac
 from positioning.engine import Engine
-from .handlers import *
 
 
 class App:
@@ -21,6 +18,7 @@ class App:
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
         self.access_point_dao = AccessPointDAO()
+        self.position_dao = PositionDAO()
 
         daos = {
             "ap_data_dao": self.ap_data_dao,
@@ -28,41 +26,51 @@ class App:
             "access_point_dao": self.access_point_dao
         }
 
-        # self.engine = Engine(strategy="FullLinearRegression", daos=daos)
-        # self.engine = Engine(strategy="1-NN", daos=daos, strategy_config={"chain": "beta"})
-        # self.engine = Engine(strategy="1-NN", daos=daos, strategy_config={"chain": "permutations", "ap_data_per_ap": 2})
-        # self.engine = Engine(strategy="1-NN", daos=daos, strategy_config={"chain": "consecutive"})
         strategy = config["engine"]["strategy_name"]
         strategy_config = config["engine"].get("strategy_config", {})
         self.engine = Engine(strategy, daos, strategy_config)
-
-
-        self.app = web.Application(handlers=[
-            (r"/position/({})".format(mac_regexp_dashes()), PositionHandler, {
-                    "ap_data_dao": self.ap_data_dao,
-                    "engine": self.engine
-                })
-        ], debug=(env == 'development'))
-
-    def get_app(self):
-        return self.app
 
     def start_engine(self):
         start = time.perf_counter()
         self.engine.initialise()
         end = time.perf_counter()
         print("engine initialised in {}s".format(end-start))
-        # self.print_engine_stats()
 
-    def print_engine_stats(self):
-        stats = self.engine.stats()
-        print("fingertips statistics:")
-        print("\tlocations\t\t\t\t\t{}".format(stats["locations"]))
-        print("\tnumber of fingertips\t\t{}".format(stats["all"]))
-        print("\tavg per location\t\t\t{}".format(stats["avg"]))
-        print("\tmin and max per location\t{} - {}".format(stats["min"], stats["max"]))
+    def make_measures(self, apdatas):
+        measures = defaultdict(dict)
+
+        for apdata in apdatas:
+            grouped = measures[apdata.device_mac.mac]
+            if apdata.router_mac.mac not in grouped:
+                grouped[apdata.router_mac.mac] = apdata.rssis
+
+        return measures
+
+    def locate(self):
+        start = time.perf_counter()
+        measures = self.fetch_measures()
+        end = time.perf_counter()
+        print("{} measures fetched in {}s".format(len(measures), end-start))
+        for device_mac, measure in measures.items():
+            if len(measure) >= 3:
+                start = time.perf_counter()
+                res = self.engine.locate(measure)
+                end = time.perf_counter()
+                print("engine localised {} in {}s".format(device_mac, end-start))
+                publisher = Publisher("positions.{}".format(device_mac.replace(':', '_')))
+                publisher.publish(res.to_db_object())
+                publisher.destroy()
+                self.position_dao.save(Position(Mac(device_mac), res))
+
+    def fetch_measures(self):
+        end = Time()
+        start = Time(end.millis - 30 * 1000)
+        apdatas = self.ap_data_dao.get_for_time_range(start, end, asc=False)
+        measures = self.make_measures(apdatas)
+        return measures
 
     def run(self):
         self.start_engine()
-        self.app.listen(8886, address="0.0.0.0")
-        ioloop.IOLoop.instance().start()
+        while True:
+            time.sleep(5)
+            self.locate()
