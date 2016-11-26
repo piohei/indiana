@@ -10,8 +10,8 @@ from models import APData, Mac, RSSI, Time, Signal
 
 
 class APDataHandler(APIHandler):
-    def initialize(self, sample_service):
-        self.sample_service = sample_service
+    def initialize(self, ap_data_dao):
+        self.ap_data_dao = ap_data_dao
 
     @schema.validate(input_schema={
         'type': 'object',
@@ -67,7 +67,7 @@ class APDataHandler(APIHandler):
                     ))
 
             for ap_data in ap_datas:
-                self.sample_service.save_ap_data_for_sample(ap_data) # todo move from there
+                self.ap_data_dao.save(ap_data)
         except SampleException as e:
             raise APIError(400, e.message)
         except DBException as e:

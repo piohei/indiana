@@ -35,9 +35,6 @@ class App:
                 }),
             (r"/path", PathHandler, {
                     "path_service": self.path_service
-                }),
-            (r"/", APDataHandler, {
-                    "sample_service": self.sample_service
                 })
         ], debug=(env == 'development'))
 
