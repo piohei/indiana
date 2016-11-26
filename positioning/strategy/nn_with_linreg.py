@@ -28,4 +28,4 @@ class NnWithLinearRegressionStrategy(AbstractLocationStrategy):
         dists = self.linregs_per_location[str(loc)].predict(measures)
         sorted_dists = list(sorted(dists.items(), key=lambda t: t[1]))
         closest = dict(sorted_dists[:min(100, len(sorted_dists))])
-        return self.trilateration.locate(closest, self.locations)
+        return self.trilateration.locate(closest, self.locations, start_pos=(loc.x, loc.y))

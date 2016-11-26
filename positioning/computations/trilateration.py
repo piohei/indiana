@@ -5,9 +5,10 @@ from models import Location
 
 
 class Trilateration(object):
-    def locate(self, dists, positions):
+    def locate(self, dists, positions, start_pos=(3, 5)):
         pos_mtrx, dists_squared = self.matrices(dists, positions)
         size = len(dists_squared)
+        start_pos = np.array(start_pos)
 
         def fun(xs):
             xys = np.array([[xs[0], xs[1], -2]] * size)
@@ -15,7 +16,7 @@ class Trilateration(object):
             squared_sum = np.square(dif).sum(1)
             return np.abs((squared_sum - dists_squared)).sum()
 
-        res = minimize(fun, [3, 5], bounds=[(0, 33), (0, 12)])
+        res = minimize(fun, start_pos, bounds=[(0, 33), (0, 12)])
         print(res)
         return Location(float(res.x[0]), float(res.x[1]), -2.0)
 
