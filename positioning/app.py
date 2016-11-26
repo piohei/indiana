@@ -4,7 +4,6 @@ import time
 from collections import defaultdict
 from threading import RLock
 
-from config import config
 from db import APDataDAO, SampleStampDAO, AccessPointDAO, PositionDAO
 from herald import Publisher
 from models import Time, Position, Mac
@@ -12,7 +11,7 @@ from positioning.engine import Engine
 
 
 class App:
-    def __init__(self):
+    def __init__(self, engine_config):
         self.global_lock = RLock()
 
         self.ap_data_dao = APDataDAO()
@@ -26,8 +25,8 @@ class App:
             "access_point_dao": self.access_point_dao
         }
 
-        strategy = config["engine"]["strategy_name"]
-        strategy_config = config["engine"].get("strategy_config", {})
+        strategy = engine_config["strategy_name"]
+        strategy_config = engine_config.get("strategy_config", {})
         self.engine = Engine(strategy, daos, strategy_config)
 
     def start_engine(self):
@@ -70,7 +69,6 @@ class App:
         return measures
 
     def run(self):
-        self.start_engine()
         while True:
             time.sleep(5)
             self.locate()
