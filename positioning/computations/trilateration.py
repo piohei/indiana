@@ -17,7 +17,6 @@ class Trilateration(object):
             return np.abs((squared_sum - dists_squared)).sum()
 
         res = minimize(fun, start_pos, bounds=[(0, 33), (0, 12)])
-        print(res)
         return Location(float(res.x[0]), float(res.x[1]), -2.0)
 
     def matrices(self, dists, positions):

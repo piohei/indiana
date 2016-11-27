@@ -17,7 +17,7 @@ class SimpleSimulator(object):
     @classmethod
     def create_intervals(cls, jsons):
         times = [item.time for item in jsons]
-        next_times = times[1:] + times[-1]
+        next_times = times[1:] + times[-1:]
         return list(map(lambda t: t[1] - t[0], zip(times, next_times)))
 
     def run(self):
@@ -30,4 +30,4 @@ class SimpleSimulator(object):
                 print("error " + result)
         end = Time()
         print("simulator sent {} jsons successfully".format(self.sent))
-        return start.millis, end.millis
+        return start, end
