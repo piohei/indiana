@@ -4,7 +4,7 @@ from threading import RLock
 
 from tornado import web, ioloop
 
-from config import env
+from config import env, config
 from db import APDataDAO, PathDAO, SampleStampDAO
 from db.benchmark_stamp_dao import BenchmarkStampDAO
 from .handlers import *
@@ -27,16 +27,16 @@ class App:
         self.path_service = PathService(self.path_dao, self.global_lock)
 
         self.app = web.Application(handlers=[
-            (r"/sample_stamp", SampleStampHandler, {
+            (config["fingertip"]["endpoints"]["sample_stamp"], SampleStampHandler, {
                     "sample_service": self.sample_service
                 }),
-            (r"/benchmark_stamp", BenchmarkStampHandler, {
+            (config["fingertip"]["endpoints"]["benchmark_stamp"], BenchmarkStampHandler, {
                     "sample_service": self.sample_service
                 }),
-            (r"/status", SocketHandler, {
+            (config["fingertip"]["endpoints"]["status"], SocketHandler, {
                     "web_socket_service": self.web_socket_service
                 }),
-            (r"/path", PathHandler, {
+            (config["fingertip"]["endpoints"]["path"], PathHandler, {
                     "path_service": self.path_service
                 })
         ], debug=(env == 'development'))
@@ -54,6 +54,6 @@ class App:
             job.start()
 
     def run(self):
-        self.app.listen(8887, address="0.0.0.0")
+        self.app.listen(int(config["fingertip"]["port"]), address="0.0.0.0")
         self.start_jobs()
         ioloop.IOLoop.instance().start()

@@ -4,18 +4,35 @@ db:
   name: indiana_db
 
 fingertip:
-  url: http://localhost:8887
+  host: http://localhost
+  port: 8887
+  endpoints:
+    sample_stamp: /sample_stamp
+    benchmark_stamp: /benchmark_stamp
+    status: /status
+    path: /path
 
-ap_data:
-    endpoint: http://localhost:8887/
+web:
+  host: http://localhost
+  port: 8888
+  endpoints:
+    position: /position/([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})
+    visualisation2d: /visualization/2d
+    visualisation3d: /visualization/3d
+    fingertip: /fingertip
+    path: /path
+    map: /map
+    root: /
 
 rabbit:
   host: 127.0.0.1
   port: 5672
   name: positions
 
-map:
-  name: floor_1
+ap_data:
+  host: http://localhost
+  port: 8889
+  endpoint: /
 
 #engine:
 #  strategy_name: 1-NN
@@ -28,16 +45,18 @@ map:
 #  strategy_config:
 #    chain: beta
 
-#engine:
-#  strategy_name: 1-NN
-#  strategy_config:
-#    chain: consecutive
-
 engine:
-  strategy_name: FullLinearRegression
+  strategy_name: 1-NN
+  strategy_config:
+    chain: consecutive
 
+#engine:
+#  strategy_name: FullLinearRegression
 #engine:
 #  strategy_name: 1-NNWithLinearRegression
 #  strategy_config:
 #    chain: consecutive
 #    cluster_n_closest: 8
+
+map:
+  name: floor_1
