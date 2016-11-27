@@ -2,6 +2,13 @@ db:
   host: 127.0.0.1
   port: 27017
   name: indiana_db
+  collections:
+    access_point: access_points
+    ap_data: ap_datas
+    benchmark_stamp: benchmark_stamps
+    position: positions
+    sample_stamp: sample_stamps
+    benchmark_report: benchmark_reports
 
 fingertip:
   host: http://localhost
