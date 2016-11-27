@@ -1,13 +1,12 @@
-from db.base_dao import BaseDAO
+from db.base import BaseDAO
 from models.access_point import AccessPoint
 from models.primitives.location import Location
 from models.primitives.mac import Mac
 
 
 class AccessPointDAO(BaseDAO):
-    @staticmethod
-    def collection_name():
-        return 'access_points'
+    def entity(self):
+        return 'access_point'
 
     def from_db_object(self, db_object):
         return AccessPoint(
@@ -37,7 +36,7 @@ class AccessPointDAO(BaseDAO):
             '_id': ap._id
         }
 
-    def find(self, query={}, **kwargs):
+    def find(self, query=None, **kwargs):
         if 'sort' not in kwargs:
             return super().find(query, sort=[("number", 1)], **kwargs)
         return super().find(query, **kwargs)

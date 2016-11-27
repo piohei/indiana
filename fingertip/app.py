@@ -19,7 +19,7 @@ class App:
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
         self.benchmark_stamp_dao = BenchmarkStampDAO()
-        self.path_dao = PathDAO()
+        self.path_dao = PathDAO(self.ap_data_dao)
 
         self.sample_service = SampleService(self.ap_data_dao, self.sample_stamp_dao,
                                             self.benchmark_stamp_dao, self.global_lock)

@@ -6,7 +6,7 @@ from models import Time
 
 
 class ApiJSON(object):
-    API_URL = config["ap_data"]["host"] + ":" + config["ap_data"]["port"] + str(config["ap_data"]["endpoint"])
+    API_URL = config["ap_data"]["host"] + ":" + str(config["ap_data"]["port"]) + str(config["ap_data"]["endpoint"])
 
     def __init__(self, db_obj):
         self.__dict__.update({

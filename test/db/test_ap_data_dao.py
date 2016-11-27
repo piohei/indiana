@@ -1,9 +1,8 @@
 import unittest
 
 from config import config
-from db import db, APDataDAO
-
-from models import *
+from db import APDataDAO
+from db.base import collection
 from test.factory import *
 
 
@@ -33,7 +32,7 @@ class TestAPDataDao(unittest.TestCase):
     ]
 
     def setUp(self):
-        db.client.drop_database(config["db"]["name"])
+        collection.client.drop_database(config["db"]["name"])
         self.under_test = APDataDAO()
 
     def load_fixtures(self):

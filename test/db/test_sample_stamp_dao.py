@@ -1,15 +1,14 @@
 import unittest
 
 from config import config
-from db import db, SampleStampDAO
-
-from models import *
+from db import SampleStampDAO
+from db.base import collection
 from test.factory import *
 
 
 class TestSampleStampDao(unittest.TestCase):
     def setUp(self):
-        db.client.drop_database(config['db']['name'])
+        collection.client.drop_database(config['db']['name'])
         self.under_test = SampleStampDAO()
         self.sample_stamps = {
             '1': create_sample_stamp(location=Location(1, 0, 0)),
@@ -35,7 +34,7 @@ class TestSampleStampDao(unittest.TestCase):
         self.assertIsNone(result.upserted_id)
 
     def assertStartTimeForLocation(self, x, time):
-        cursor = db.db[self.coll_name].find({'location': loc(x)})
+        cursor = collection.db[self.coll_name].find({'location': loc(x)})
         self.assertEqual(1, cursor.count())
         self.assertEqual(time, cursor[0]['start_time'])
 

@@ -1,11 +1,11 @@
-from db.base_dao import BaseDAO
+from db.base import TimedDAO
+
 from models import Position, Mac, Location, Time
 
 
-class PositionDAO(BaseDAO):
-    @staticmethod
-    def collection_name():
-        return 'positions'
+class PositionDAO(TimedDAO):
+    def entity(self):
+        return "position"
 
     def from_db_object(self, db_object):
         return Position(
@@ -30,9 +30,3 @@ class PositionDAO(BaseDAO):
             'created_at': position.created_at.millis,
             '_id': position._id
         }
-
-    def get_for_time_range(self, start_time, end_time, asc=True):
-        return self.find(
-                query={'created_at': {'$gte': start_time.millis, '$lte': end_time.millis}},
-                sort=[('created_at', 1 if asc else -1)]
-        )

@@ -1,11 +1,8 @@
-from db import APDataDAO
-from models import APData, Mac, Time, Signal, RSSI
-
 from pymongo import MongoClient
 
 from config import config
-from exception import DBException
-
+from db import APDataDAO
+from models import APData, Mac, Time, Signal, RSSI
 
 client = MongoClient(config['db']['host'], config['db']['port'])
 print('Connection to MongoDB {} created'.format(client.address))

@@ -6,8 +6,9 @@ import numpy as np
 
 from ap_data_listener.app import App as ApDataListenerApp
 from benchmark.engine_configs import configs
+from config import config
 from db import BenchmarkStampDAO, APDataDAO, PositionDAO
-from db.db import db
+from db.base import Collection
 from models import Time
 from positioning.app import App as PositioningApp
 from simulator import SimpleSimulator
@@ -22,6 +23,7 @@ def start_ap_listener():
 ap_data_dao = APDataDAO()
 position_dao = PositionDAO()
 benchmark_stamp_dao = BenchmarkStampDAO()
+benchmark_reports_collection = Collection(config["db"]["collections"]["benchmark_report"])
 
 benchmark_stamps = benchmark_stamp_dao.find()
 samples = [(stamp, list(map(ap_data_dao.to_db_object, ap_data_dao.get_for_time_range(stamp.start_time, stamp.end_time)))) for stamp in benchmark_stamps]
@@ -92,7 +94,8 @@ for engine_config in configs:
                   "std_error": float(np_errors.std())
               },
               "partial_reports": partial_reports}
-    db["benchmark_reports"].save(report)
+
+    benchmark_reports_collection.insert(report)
     copy = report.copy()
     copy.pop("partial_reports")
     pprint.pprint(copy)
