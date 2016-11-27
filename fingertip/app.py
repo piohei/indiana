@@ -5,7 +5,7 @@ from threading import RLock
 from tornado import web, ioloop
 
 from config import env
-from db import APDataDAO, PathDAO
+from db import APDataDAO, PathDAO, SampleStampDAO
 from db.benchmark_stamp_dao import BenchmarkStampDAO
 from .handlers import *
 from .jobs import *
@@ -17,17 +17,20 @@ class App:
         self.global_lock = RLock()
 
         self.ap_data_dao = APDataDAO()
-        # self.sample_stamp_dao = SampleStampDAO()
-        self.sample_stamp_dao = BenchmarkStampDAO()
+        self.sample_stamp_dao = SampleStampDAO()
+        self.benchmark_stamp_dao = BenchmarkStampDAO()
         self.path_dao = PathDAO()
 
-
-        self.sample_service = SampleService(self.ap_data_dao, self.sample_stamp_dao, self.global_lock)
+        self.sample_service = SampleService(self.ap_data_dao, self.sample_stamp_dao,
+                                            self.benchmark_stamp_dao, self.global_lock)
         self.web_socket_service = WebSocketService(self.global_lock)
         self.path_service = PathService(self.path_dao, self.global_lock)
 
         self.app = web.Application(handlers=[
-            (r"/actual_location", SampleStampHandler, {
+            (r"/sample_stamp", SampleStampHandler, {
+                    "sample_service": self.sample_service
+                }),
+            (r"/benchmark_stamp", BenchmarkStampHandler, {
                     "sample_service": self.sample_service
                 }),
             (r"/status", SocketHandler, {
