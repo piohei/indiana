@@ -8,11 +8,11 @@ from models import Time
 class ApiJSON(object):
     API_URL = config["ap_data"]["host"] + ":" + str(config["ap_data"]["port"]) + str(config["ap_data"]["endpoint"])
 
-    def __init__(self, db_obj):
+    def __init__(self, db_obj, mac=None):
         self.__dict__.update({
             "data": [
                 {
-                    "clientMac": raw_mac(db_obj["device_mac"])
+                    "clientMac": raw_mac(db_obj["device_mac"]) if mac is None else raw_mac(mac)
                 }
             ],
             "apMac": raw_mac(db_obj["router_mac"]),
