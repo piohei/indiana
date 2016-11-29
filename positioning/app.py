@@ -28,6 +28,7 @@ class App:
         strategy = engine_config["strategy_name"]
         strategy_config = engine_config.get("strategy_config", {})
         self.engine = Engine(strategy, daos, strategy_config)
+        self.publisher = Publisher("positions")
 
     def start_engine(self):
         start = time.perf_counter()
@@ -56,9 +57,7 @@ class App:
                 res = self.engine.locate(measure)
                 end = time.perf_counter()
                 print("engine localised {} in {}s".format(device_mac, end-start))
-                publisher = Publisher("positions.{}".format(device_mac.replace(':', '_')))
-                publisher.publish(res.to_db_object())
-                publisher.destroy()
+                self.publisher.publish({"mac": device_mac, "location": res.to_db_object()})
                 self.position_dao.save(Position(Mac(device_mac), res))
 
     def fetch_measures(self):

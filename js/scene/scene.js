@@ -24,8 +24,8 @@ export class Scene {
     this.scene = _genreateScene(this.map, this.light);
   }
 
-  setLocatorPosition(x=0, y=0, z=0) {
-    this.map.setLocatorPosition(x, y, z);
+  setLocatorPosition(locatorName, position) {
+    this.map.setLocatorPosition(locatorName, position, locator => this.scene.add(locator));
   }
 
   show(animate=true) {
@@ -59,13 +59,11 @@ export class Scene {
 
   _animate() {
     var closureCopy = this;
+    if (window.stopAnimation) return;
     requestAnimationFrame(function() { closureCopy._animate() });
-
-    this.setLocatorPosition(
-      window.currentPosition.x,
-      window.currentPosition.y,
-      window.currentPosition.z
-    );
+    Object.keys(window.currentPositions).forEach(locatorName => {
+      this.setLocatorPosition(locatorName, window.currentPositions[locatorName])
+    });
 
     if(this.controls != null) {
       this.controls.update();
@@ -143,7 +141,10 @@ function _genreateScene(map, light) {
     res.add(light.getAmbient());
   }
 
-  res.add(map.getLocator());
+  var locators = map.getLocators();
+  Object.keys(locators).forEach(locatorName => {
+    res.add(locators[locatorName]);
+  });
 
   var levels = map.getLevels();
   for(const level in levels) {

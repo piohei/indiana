@@ -4,9 +4,7 @@ import {Fingertip} from './fingertip/fingertip'
 import {Path} from './path/path'
 import {PositionUpdater} from './updaters/position'
 
-window.currentPosition = {
-  x: 0, y: 0, z: 0
-};
+window.currentPositions = {};
 
 window.run = function(type, elementId=null, enableControls=true) {
   $.getJSON("/map").done(function (map) {
@@ -31,6 +29,5 @@ window.path = new Path(
 
 window.positionUpdater = new PositionUpdater(
   window.location.hostname,
-  8888,
-  "DC:EE:06:61:B0:3D"
+  8888
 );

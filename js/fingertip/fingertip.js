@@ -63,7 +63,7 @@ export class Fingertip {
     var data = _getData(this);
 
     if(data != null) {
-      window.currentPosition = data.location;
+      window.currentPositions["marker"] = data.location;
     }
   }
 }

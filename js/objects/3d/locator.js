@@ -6,10 +6,10 @@ export class Locator extends THREE.Mesh {
     super(geometry, material);
   }
 
-  setPosition(x=0, y=0, z=0) {
-    this.position.x = x;
-    this.position.y = -z;
-    this.position.z = y;
+  setPosition(position) {
+    this.position.x = position.x;
+    this.position.y = -(position.z);
+    this.position.z = position.y;
   }
 }
 
