@@ -18,6 +18,9 @@ test:
 simulate:
 	python3 -m simulator.path_simulator path6 00:00:00:00:00:01 1
 
+simulate2:
+	python3 -m simulator.path_simulator path6 00:00:00:00:00:02 1
+
 simulator_test:
 	INDIANA_ENV=test python3 -m simulator.simulator_manual_test
 

@@ -1,7 +1,7 @@
 db:
   host: 127.0.0.1
   port: 27017
-  name: indiana_db
+  name: indiana_db_production_copy
   collections:
     access_point: access_points
     ap_data: ap_datas
@@ -23,7 +23,7 @@ web:
   host: http://localhost
   port: 8888
   endpoints:
-    position: /position/([a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2})
+    position: /position
     visualisation2d: /visualization/2d
     visualisation3d: /visualization/3d
     fingertip: /fingertip
@@ -52,18 +52,18 @@ ap_data:
 #  strategy_config:
 #    chain: beta
 
-engine:
-  strategy_name: 1-NN
-  strategy_config:
-    chain: consecutive
+#engine:
+#  strategy_name: 1-NN
+#  strategy_config:
+#    chain: consecutive
 
 #engine:
 #  strategy_name: FullLinearRegression
-#engine:
-#  strategy_name: 1-NNWithLinearRegression
-#  strategy_config:
-#    chain: consecutive
-#    cluster_n_closest: 8
+engine:
+  strategy_name: 1-NNWithLinearRegression
+  strategy_config:
+    chain: consecutive
+    cluster_n_closest: 8
 
 map:
   name: floor_1
