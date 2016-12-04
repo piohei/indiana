@@ -6,6 +6,7 @@ import {Controls as Controls3D} from "./../utils/3d/controls"
 import {Light as Light3D} from "./3d/light"
 
 import {Map} from "./../objects/map"
+import {ReportMap} from "./../objects/report_map"
 
 export class Scene {
   constructor(type, map, elementId=null, enableControls=true) {
@@ -21,7 +22,7 @@ export class Scene {
     }
 
     // This must be initalized last
-    this.scene = _genreateScene(this.map, this.light);
+    this.scene = _genreateScene(type, this.map, this.light);
   }
 
   setLocatorPosition(locatorName, position) {
@@ -95,7 +96,14 @@ function _generateRenderer(elementId) {
 }
 
 function _generateMap(type, map) {
-  return new Map(type, map);
+  switch(type) {
+    case '2d':
+      return new Map(type, map);
+    case 'report':
+      return new ReportMap(map);
+    case '3d':
+      return new Map(type, map);
+  }
 }
 
 function _generateCamera(type, elementId) {
@@ -110,6 +118,8 @@ function _generateCamera(type, elementId) {
   switch(type) {
     case '2d':
       return new Camera2D(width, height);
+    case 'report':
+      return new Camera2D(width, height);
     case '3d':
       return new Camera3D(width, height);
   }
@@ -118,6 +128,8 @@ function _generateCamera(type, elementId) {
 function _generateLight(type) {
   switch(type) {
     case '2d':
+      return null;
+    case 'report':
       return null;
     case '3d':
       return new Light3D();
@@ -128,12 +140,14 @@ function _generateControls(type, camera) {
   switch(type) {
     case '2d':
       return new Controls2D(camera);
+    case 'report':
+      return new Controls2D(camera);
     case '3d':
       return new Controls3D(camera);
   }
 }
 
-function _genreateScene(map, light) {
+function _genreateScene(type, map, light) {
   var res = new THREE.Scene();
 
   if(light != null) {
@@ -141,10 +155,12 @@ function _genreateScene(map, light) {
     res.add(light.getAmbient());
   }
 
-  var locators = map.getLocators();
-  Object.keys(locators).forEach(locatorName => {
-    res.add(locators[locatorName]);
-  });
+  if(type !== 'report') {
+    var locators = map.getLocators();
+    Object.keys(locators).forEach(locatorName => {
+      res.add(locators[locatorName]);
+    });
+  }
 
   var levels = map.getLevels();
   for(const level in levels) {
@@ -160,6 +176,12 @@ function _genreateScene(map, light) {
 
     for(const sample of levels[level].getSamples()) {
       res.add(sample);
+    }
+
+    if(type === 'report') {
+      for(const point of levels[level].getCalculatedPoints()) {
+        res.add(point);
+      }
     }
   }
 

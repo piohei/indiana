@@ -5,15 +5,16 @@ import os
 from tornado import web, ioloop
 
 from config import env, config
-from db import AccessPointDAO, SampleStampDAO
+from db import AccessPointDAO, BenchmarkReportDAO, SampleStampDAO
 from models import Map
 from .handlers import *
 
 
 class App:
     def __init__(self):
-        self.access_point_dao = AccessPointDAO()
-        self.sample_stamp_dao = SampleStampDAO()
+        self.access_point_dao    = AccessPointDAO()
+        self.sample_stamp_dao    = SampleStampDAO()
+        self.benchmark_report_dao = BenchmarkReportDAO()
 
         self.map_data = Map(config['map']['name'])
 
@@ -24,6 +25,12 @@ class App:
                 (config["web"]["endpoints"]["visualisation2d"], Visualization2DHandler),
                 (config["web"]["endpoints"]["fingertip"], FingerTipHandler),
                 (config["web"]["endpoints"]["path"], PathHandler),
+                (config["web"]["endpoints"]["report2d"] + "/([^/]+)", Report2DHandler),
+                (config["web"]["endpoints"]["report_map"] + "/([^/]+)", ReportMapHandler, {
+                    'access_point_dao': self.access_point_dao,
+                    'benchmark_report_dao': self.benchmark_report_dao,
+                    'map_data': self.map_data
+                }),
                 (config["web"]["endpoints"]["map"], MapHandler, {
                     'access_point_dao': self.access_point_dao,
                     'sample_stamp_dao': self.sample_stamp_dao,

@@ -10,3 +10,4 @@ py==1.4.31
 pytest==3.0.2
 pika==0.10.0
 scikit-learn==0.18.1
+pyyaml==3.12

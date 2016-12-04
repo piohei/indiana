@@ -29,6 +29,8 @@ web:
     fingertip: /fingertip
     path: /path
     map: /map
+    report2d: /report
+    report_map: /report_map
     root: /
 
 rabbit:

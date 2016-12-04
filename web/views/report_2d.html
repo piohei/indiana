@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Report{% end %}
+
+{% block additional_styles %}
+    body {
+        margin: 0px;
+        padding: 0px;
+        background-color: #000000;
+        overflow: hidden;
+    }
+{% end %}
+
+{% block container %}
+    <script language="JavaScript">
+        $(document).ready(function() {
+            run("report");
+            positionUpdater.run();
+        });
+    </script>
+{% end %}

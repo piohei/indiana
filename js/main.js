@@ -7,7 +7,17 @@ import {PositionUpdater} from './updaters/position'
 window.currentPositions = {};
 
 window.run = function(type, elementId=null, enableControls=true) {
-  $.getJSON("/map").done(function (map) {
+  var url;
+  
+  if(type === 'report') {
+    var report_num = window.location.pathname.split("/");
+    report_num = report_num[report_num.length - 1];
+    url = "/report_map/" + report_num;
+  } else {
+    url = "/map";
+  }
+
+  $.getJSON(url).done(function (map) {
     var scene = new Scene(type, map, elementId, enableControls)
     scene.show();
   }).fail(function (data) {
