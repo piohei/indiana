@@ -4,7 +4,7 @@ init:
 	pip3 install -r requirements.txt
 	npm install
 	npm run build
-	cd web && bower install && cd ..
+	cd web && $(npm bin)/bower install && cd ..
 
 run:
 	foreman start
