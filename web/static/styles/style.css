@@ -49,3 +49,19 @@ form input[id="z"] {
   width: 960px;
   height: 360px;
 }
+
+ul.menu {
+  display: block;
+  position: absolute;
+  top: 0;
+  z-index: 9999;
+  background-color: #eee;
+  height: 40px;
+  width: 100%;
+  line-height: 40px;
+}
+
+ul.menu li {
+  display: inline-block;
+  padding: 0px 15px;
+}

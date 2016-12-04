@@ -51,3 +51,8 @@ def deep_eq_dict(a, b):
                 return False
 
     return True
+
+def generate_color(i, n):
+  rng = (0.3 * float(0xffffff), 0.7 * float(0xffffff))
+  res = float(i) * (rng[1] - rng[0]) / float(n)
+  return ("0x%0.6X" % int(res)).replace("0x", "#")

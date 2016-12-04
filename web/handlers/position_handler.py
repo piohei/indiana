@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
-from tornado import gen, websocket, ioloop
-from threading import Thread
+from tornado import gen, websocket
 
 from herald import AsynchronousSubscriber
 
 class PositionHandler(websocket.WebSocketHandler):
 
     @gen.engine
-    def open(self, mac):
-        print("Starting websocket for {}".format(mac))
-        self.mac = mac
-        self.sub = AsynchronousSubscriber("positions." + mac.replace("-", "_"), callback=self.send_position)
+    def open(self):
+        print("Starting websocket")
+        self.sub = AsynchronousSubscriber("positions", callback=self.send_position)
         self.sub.start()
 
     def send_position(self, data):
-        message = "{}:{}:{}".format(data['x'], data['y'], 0)
+        message = "{}:{}:{}:{}".format(data["mac"].replace(":", "_"), data["location"]['x'], data["location"]['y'], 0)
         print(message)
         self.write_message(message)
 
@@ -22,5 +20,5 @@ class PositionHandler(websocket.WebSocketHandler):
         pass
 
     def on_close(self):
-        print("Stopping websocket for {}".format(self.mac))
+        print("Stopping websocket")
         self.sub.stop()

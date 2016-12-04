@@ -1,30 +1,30 @@
 import {Logger} from './../helpers/logger'
 
 export class PositionUpdater {
-  constructor(host, port, mac) {
-    this.dataUrl = `ws://${host}:${port}/position/${mac.toLowerCase().replace(/:/g,'-')}`;
-    this.logger = new Logger("result");
-  }
+    constructor(host, port) {
+        this.dataUrl = `ws://${host}:${port}/position`;
+        this.logger = new Logger("result");
+    }
 
-  run() {
-    this.ws = _createWebSocket(this);
-  }
+    run() {
+        this.ws = _createWebSocket(this);
+    }
 }
 
 function _createWebSocket(_this) {
-  var ws = new WebSocket(_this.dataUrl);
+    var ws = new WebSocket(_this.dataUrl);
 
-  ws.onopen = function(evt) {
-    ws.send("start");
-  };
+    ws.onopen = function(evt) {
+        ws.send("start");
+    };
 
-  ws.onmessage = function(evt) {
-    var received = evt.data.split(":").map( function (v) { return parseFloat(v) } );
-    window.currentPosition.x = received[0];
-    window.currentPosition.y = received[1];
-    window.currentPosition.z = received[2];
-    console.log("New postiion: ", window.currentPosition);
-  };
+    ws.onmessage = function(evt) {
+        var received = evt.data.split(":");
+        var mac = received[0].replace(/_/g, ":");
+        var location = received.slice(1).map( function (v) { return parseFloat(v) } );
+        window.currentPositions[mac] = {x: location[0], y: location[1], z: location[2]};
+        console.log(`New postiion of ${mac} =`, window.currentPositions[mac]);
+    };
 
-  return ws;
+    return ws;
 }

@@ -1,10 +1,11 @@
-from tornado_json import schema
-from tornado import web, ioloop
-from tornado_json.requesthandlers import APIHandler
 import os
 
+from tornado import web, ioloop
+from tornado_json import schema
+from tornado_json.requesthandlers import APIHandler
+
 from models.primitives.time import Time
-from simulator.path_simulator import Simulator
+from simulator.path_simulator import CycledPathSimulator
 
 TEST_DATA = [
     {"rssis": {"1": 1, "3": -78}, "router_mac": "2c:5d:93:0c:8a:60", "created_at": 0,
@@ -76,17 +77,13 @@ class TestLoggingHandler(APIHandler):
                 TestLoggingHandler.RECEIVED, timestamps_dif, real_time_dif, self.body["data"][0]["rss1"]))
 
 
-
 app = web.Application(handlers=[
     (r"/", TestLoggingHandler)
 ])
 
 newpid = os.fork()
 if newpid == 0:
-    Simulator("path1", MockPathDao()).run()
+    CycledPathSimulator("path1", MockPathDao()).run()
 else:
-    app.listen(9000, address="0.0.0.0")
+    app.listen(8889, address="0.0.0.0")
     ioloop.IOLoop.instance().start()
-
-
-

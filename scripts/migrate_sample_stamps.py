@@ -1,11 +1,8 @@
-from db import SampleStampDAO
-from models import SampleStamp, Mac, Time, Location
-
 from pymongo import MongoClient
 
 from config import config
-from exception import DBException
-
+from db import SampleStampDAO
+from models import SampleStamp, Mac, Time, Location
 
 client = MongoClient(config['db']['host'], config['db']['port'])
 print('Connection to MongoDB {} created'.format(client.address))

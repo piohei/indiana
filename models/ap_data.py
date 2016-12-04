@@ -8,6 +8,8 @@ from .primitives.signal import Signal
 
 
 class APData(BaseDBModel):
+    RSSIS_KEYS = ["1", "2", "3"]
+
     def __init__(self, router_mac, device_mac, created_at, rssis, signal, _id=None):
         BaseDBModel.__init__(self, _id)
         if type(router_mac) != Mac:

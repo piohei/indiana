@@ -17,12 +17,12 @@
             <label for="y" class="sr-only">Y</label>
             <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="0" onchange="fingertip.reloadLocation()">
             <label for="z" class="sr-only">Z</label>
-            <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="0" disabled="disabled" >
+            <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2" disabled="disabled" >
             <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
                     onclick="fingertip.post()">Send fingertip
             </button>
             <button id="delete_btn" type="button" class="btn btn-lg btn-danger btn-block"
-                    onclick="fingertip.delete()">Delete fingertip
+                    onclick="fingertip.delete()">End fingertip
             </button>
 
         </form>

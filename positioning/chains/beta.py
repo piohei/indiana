@@ -1,12 +1,14 @@
+import positioning.links.collect as collect
+import positioning.links.fetch as fetch
+import positioning.links.transform as transform
 from positioning.chains.base import Base
-
-import positioning.links as links
 
 
 class Beta(Base):
     def links(self):
         return [
-            links.FetchSamplesStamps,
-            links.AddRSSIStatsToSamples,
-            links.BestMatchAlpha
+            fetch.FetchSamplesStamps,
+            transform.ToFullSamples,
+            collect.AverageRssis,
+            transform.ToVectorsWithStats
         ]

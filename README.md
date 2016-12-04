@@ -16,7 +16,7 @@ You need to install python3 and bower (npm install -g bower) first. Then run:
 1. `pip3 install -r requirements.txt`
 1. `npm install`
 1. `npm run build`
-1. `cd web && bower install`
+1. `cd web && $(npm bin)/bower install`
 
 or just run `make init`
 

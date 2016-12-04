@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from threading import RLock
+
 from tornado import web, ioloop
 
-from config import env
-
+from config import env, config
+from db import APDataDAO, PathDAO, SampleStampDAO
+from db.benchmark_stamp_dao import BenchmarkStampDAO
 from .handlers import *
-from .services import *
 from .jobs import *
-
-from db import APDataDAO, SampleStampDAO, PathDAO
-
-from helpers.utils import mac_regexp_dashes
+from .services import *
 
 
 class App:
@@ -20,28 +18,26 @@ class App:
 
         self.ap_data_dao = APDataDAO()
         self.sample_stamp_dao = SampleStampDAO()
-        self.path_dao = PathDAO()
+        self.benchmark_stamp_dao = BenchmarkStampDAO()
+        self.path_dao = PathDAO(self.ap_data_dao)
 
-        self.sample_service = SampleService(self.ap_data_dao, self.sample_stamp_dao, self.global_lock)
+        self.sample_service = SampleService(self.ap_data_dao, self.sample_stamp_dao,
+                                            self.benchmark_stamp_dao, self.global_lock)
         self.web_socket_service = WebSocketService(self.global_lock)
         self.path_service = PathService(self.path_dao, self.global_lock)
 
         self.app = web.Application(handlers=[
-            (r"/position/({})".format(mac_regexp_dashes()), PositionHandler, {
-                    "ap_data_dao": self.ap_data_dao,
-                    "sample_stamp_dao": self.sample_stamp_dao,
-                }),
-            (r"/actual_location", SampleStampHandler, {
+            (config["fingertip"]["endpoints"]["sample_stamp"], SampleStampHandler, {
                     "sample_service": self.sample_service
                 }),
-            (r"/status", SocketHandler, {
+            (config["fingertip"]["endpoints"]["benchmark_stamp"], BenchmarkStampHandler, {
+                    "sample_service": self.sample_service
+                }),
+            (config["fingertip"]["endpoints"]["status"], SocketHandler, {
                     "web_socket_service": self.web_socket_service
                 }),
-            (r"/path", PathHandler, {
+            (config["fingertip"]["endpoints"]["path"], PathHandler, {
                     "path_service": self.path_service
-                }),
-            (r"/", APDataHandler, {
-                    "sample_service": self.sample_service
                 })
         ], debug=(env == 'development'))
 
@@ -58,6 +54,6 @@ class App:
             job.start()
 
     def run(self):
-        self.app.listen(8887, address="0.0.0.0")
+        self.app.listen(int(config["fingertip"]["port"]), address="0.0.0.0")
         self.start_jobs()
         ioloop.IOLoop.instance().start()

@@ -1,9 +1,8 @@
 import unittest
 
 from config import config
-from db import db, APDataDAO
-
-from models import *
+from db import APDataDAO
+from db.base import collection
 from test.factory import *
 
 
@@ -33,7 +32,7 @@ class TestAPDataDao(unittest.TestCase):
     ]
 
     def setUp(self):
-        db.client.drop_database(config["db"]["name"])
+        collection.client.drop_database(config["db"]["name"])
         self.under_test = APDataDAO()
 
     def load_fixtures(self):
@@ -71,54 +70,4 @@ class TestAPDataDao(unittest.TestCase):
         self.assertEqual(1, self.under_test.count({"created_at" : { "$gte": 7 }}))
         self.assertEqual(4, self.under_test.count({"created_at" : { "$gte": 3 }}))
         self.assertEqual(6, self.under_test.count({"created_at" : { "$gte": 0 }}))
-
-    def test_group_by_mac_and_signal_for_range(self):
-        self.load_fixtures()
-
-        res = self.under_test.group_by_mac_and_signal_for_range(Time(1), Time(4))
-
-        for ap_mac in self.ap_macs:
-            for signal in self.signals:
-                self.assertEqual(4 * len(self.rssis), len(res[ap_mac][signal]))
-
-
-        res = self.under_test.group_by_mac_and_signal_for_range(Time(1), Time(2))
-
-        for ap_mac in self.ap_macs:
-            for signal in self.signals:
-                self.assertEqual(2 * len(self.rssis), len(res[ap_mac][signal]))
-
-        res = self.under_test.group_by_mac_and_signal_for_range(Time(2), Time(4))
-
-        for ap_mac in self.ap_macs:
-            for signal in self.signals:
-                self.assertEqual(3 * len(self.rssis), len(res[ap_mac][signal]))
-
-    def test_stats_group_by_mac_and_signal_for_range(self):
-        self.load_fixtures()
-
-        res = self.under_test.stats_group_by_mac_and_signal_for_range(Time(1), Time(4))
-
-        for ap_mac in self.ap_macs:
-            for signal in self.signals:
-                self.assertEqual(RSSI(-40), res[ap_mac][signal]['1']['min'])
-                self.assertEqual(RSSI(-10), res[ap_mac][signal]['1']['max'])
-                self.assertEqual(RSSI(-25), res[ap_mac][signal]['1']['avg'])
-
-
-        res = self.under_test.stats_group_by_mac_and_signal_for_range(Time(1), Time(2))
-
-        for ap_mac in self.ap_macs:
-            for signal in self.signals:
-                self.assertEqual(RSSI(-40), res[ap_mac][signal]['1']['min'])
-                self.assertEqual(RSSI(-10), res[ap_mac][signal]['1']['max'])
-                self.assertEqual(RSSI(-25), res[ap_mac][signal]['1']['avg'])
-
-        res = self.under_test.stats_group_by_mac_and_signal_for_range(Time(2), Time(4))
-
-        for ap_mac in self.ap_macs:
-            for signal in self.signals:
-                self.assertEqual(RSSI(-40), res[ap_mac][signal]['1']['min'])
-                self.assertEqual(RSSI(-10), res[ap_mac][signal]['1']['max'])
-                self.assertEqual(RSSI(-25), res[ap_mac][signal]['1']['avg'])
 

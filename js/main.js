@@ -4,12 +4,20 @@ import {Fingertip} from './fingertip/fingertip'
 import {Path} from './path/path'
 import {PositionUpdater} from './updaters/position'
 
-window.currentPosition = {
-  x: 0, y: 0, z: 0
-};
+window.currentPositions = {};
 
 window.run = function(type, elementId=null, enableControls=true) {
-  $.getJSON("/map").done(function (map) {
+  var url;
+  
+  if(type === 'report') {
+    var report_num = window.location.pathname.split("/");
+    report_num = report_num[report_num.length - 1];
+    url = "/report_map/" + report_num;
+  } else {
+    url = "/map";
+  }
+
+  $.getJSON(url).done(function (map) {
     var scene = new Scene(type, map, elementId, enableControls)
     scene.show();
   }).fail(function (data) {
@@ -31,6 +39,5 @@ window.path = new Path(
 
 window.positionUpdater = new PositionUpdater(
   window.location.hostname,
-  8888,
-  "DC:EE:06:61:B0:3D"
+  8888
 );

@@ -8,19 +8,25 @@ export class Map {
   constructor(type, map) {
     this.type = type;
     this.levels = _generateLevels(type, map);
-    this.locator = _genreateLocator(type);
+    this.locators = {}
   }
 
   getLevels() {
     return this.levels;
   }
 
-  getLocator() {
-    return this.locator;
+  getLocators() {
+    return this.locators;
   }
 
-  setLocatorPosition(x=0, y=0, z=0) {
-    this.locator.setPosition(x, y, z);
+  setLocatorPosition(name, position, whenNewCallback) {
+    var locator = this.locators[name];
+    if (!locator) {
+      locator = _genreateLocator(this.type);
+      this.locators[name] = locator;
+      whenNewCallback(locator)
+    }
+    locator.setPosition(position);
   }
 }
 

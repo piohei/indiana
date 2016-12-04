@@ -15,7 +15,7 @@ export class Fingertip {
     }
     this.elementId = elementId;
 
-    this.dataUrl = `${this.url}/actual_location`;
+    this.dataUrl = `${this.url}/sample_stamp`;
     this.statusUrl = `ws://${host}:${port}/status`;
 
     this.cors = new CORS();
@@ -63,7 +63,7 @@ export class Fingertip {
     var data = _getData(this);
 
     if(data != null) {
-      window.currentPosition = data.location;
+      window.currentPositions["marker"] = data.location;
     }
   }
 }

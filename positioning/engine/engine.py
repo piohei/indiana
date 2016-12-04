@@ -1,24 +1,28 @@
 # -*- coding: utf-8 -*-
-
-import positioning.chains as chains
-
-
-class EngineException(Exception):
-    def __init__(self, message):
-        self.message = message
+from positioning.strategy import FullLinearRegressionStrategy, NearestNeighbourStrategy, NnWithLinearRegressionStrategy
 
 
 class Engine(object):
-    CHAINS = {
-        'alpha': chains.Alpha,
-        'beta': chains.Beta,
-        'permutations': chains.PermutationsChain
+    STRATEGIES = {
+        "FullLinearRegression": FullLinearRegressionStrategy,
+        "1-NN": NearestNeighbourStrategy,
+        "1-NNWithLinearRegression": NnWithLinearRegressionStrategy
     }
 
-    def __init__(self, chain='alpha', params={}):
-        if chain not in self.CHAINS.keys():
-            raise EngineException("Unknown chain: {}".format(chain))
-        self.chain = self.CHAINS[chain](params)
+    def __init__(self, strategy, daos,  strategy_config=()):
+        config_dict = dict(strategy_config)
+        if strategy not in self.STRATEGIES:
+            raise ValueError("strategy '{}' not recognised".format(strategy))
+        kwargs = daos.copy()
+        kwargs.update(config_dict)
+        self.specs = {"strategy": strategy, "config": config_dict}
+        self.strategy = self.STRATEGIES[strategy](**kwargs)
 
-    def calculate(self, *args):
-        return self.chain.calculate(*args)
+    def initialise(self, **kwargs):
+        self.strategy.initialise(**kwargs)
+
+    def locate(self, measures):
+        return self.strategy.locate(measures)
+
+    def stats(self):
+        return self.strategy.stats

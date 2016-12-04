@@ -15,7 +15,7 @@ function _generateGeometry(position, height) {
 }
 
 function _generateMaterial(color) {
-  return new THREE.MeshLambertMaterial({
+  return new THREE.MeshBasicMaterial({
       color: color
   });
 }
