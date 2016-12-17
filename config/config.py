@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import yaml
 
 env = None
@@ -14,10 +15,9 @@ if env not in ['development', 'test', 'production']:
 
 config_path = os.path.abspath(
                 os.path.join(
-                  os.path.dirname(__file__), "{}.yml".format(env)
+                  os.getcwd(), "config_files", "running_config", "{}.yml".format(env)
                 )
               )
 
-config = None
 with open(config_path, 'r') as ymlfile:
     config = yaml.load(ymlfile)

@@ -1,0 +1,4 @@
+db:
+  host: 52.42.120.42
+  port: 27017
+  name: indiana_db

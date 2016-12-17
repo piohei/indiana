@@ -1,7 +1,9 @@
 import os
+
 import yaml
 
 from .primitives.location import Location
+
 
 class Map(object):
     def __init__(self, name):
@@ -11,7 +13,7 @@ class Map(object):
     def load(self):
         map_path = os.path.abspath(
             os.path.join(
-                os.path.dirname(__file__), "../maps/{}.yml".format(self.name)
+                os.getcwd(), "config_files", "static_data", "maps", "{}.yml".format(self.name)
             )
         )
 
