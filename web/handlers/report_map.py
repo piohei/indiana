@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from tornado import web
 import json
 
-from helpers.utils import generate_color
+from tornado import web
+
 
 class ReportMapHandler(web.RequestHandler):
     def initialize(self, access_point_dao, benchmark_report_dao, map_data):
         self.access_point_dao = access_point_dao
         self.benchmark_report_dao = benchmark_report_dao
         self.map_data = map_data
+
+    def generate_color(self, i, n):
+        rng = (0.3 * float(0xffffff), 0.7 * float(0xffffff))
+        res = float(i) * (rng[1] - rng[0]) / float(n)
+        return ("0x%0.6X" % int(res)).replace("0x", "#")
 
     def get(self, num):
         floor = list(map(
@@ -35,7 +40,7 @@ class ReportMapHandler(web.RequestHandler):
         for i in range(points):
             real_location = report["partial_reports"][i]["real_location"]
             engine_positions = report["partial_reports"][i]["engine_positions"]
-            color = generate_color(i, points)
+            color = self.generate_color(i, points)
 
             samples.append({ 'x': real_location["x"], 'y': real_location["y"], 'color': color })
             for position in engine_positions:

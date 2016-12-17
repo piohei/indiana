@@ -1,8 +1,7 @@
 import requests
 
 from config import config
-from helpers.utils import raw_mac
-from models import Time
+from models import Time, Mac
 
 
 class ApiJSON(object):
@@ -12,10 +11,10 @@ class ApiJSON(object):
         self.__dict__.update({
             "data": [
                 {
-                    "clientMac": raw_mac(db_obj["device_mac"]) if mac is None else raw_mac(mac)
+                    "clientMac": Mac.raw(db_obj["device_mac"] if mac is None else mac)
                 }
             ],
-            "apMac": raw_mac(db_obj["router_mac"]),
+            "apMac": Mac.raw(db_obj["router_mac"]),
             "time": db_obj["created_at"],
             "band": db_obj["signal"]["channel"]
         })
