@@ -2,8 +2,7 @@
 
 from threading import RLock
 
-from exception import SampleException
-from models import APData, Mac, Time, RSSI, Signal
+from fingertip.exception.sample_exception import SampleException
 
 
 class PathService(object):

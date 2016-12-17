@@ -3,7 +3,7 @@
 from pymongo import MongoClient
 
 from config import config
-from exception import DBException
+from db.base.db_exception import DBException
 
 
 class Collection(object):

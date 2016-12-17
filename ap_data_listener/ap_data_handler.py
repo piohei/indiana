@@ -4,7 +4,7 @@ from tornado_json import schema
 from tornado_json.exceptions import APIError, api_assert
 from tornado_json.requesthandlers import APIHandler
 
-from exception import DBException, SampleException
+from db.base.db_exception import DBException
 from helpers.utils import correct_mac
 from models import APData, Mac, RSSI, Time, Signal
 
@@ -68,8 +68,6 @@ class APDataHandler(APIHandler):
 
             for ap_data in ap_datas:
                 self.ap_data_dao.save(ap_data)
-        except SampleException as e:
-            raise APIError(400, e.message)
         except DBException as e:
             raise APIError(500, e.message)
         return 'ok'

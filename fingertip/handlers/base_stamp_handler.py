@@ -4,7 +4,8 @@ from tornado_json import schema
 from tornado_json.exceptions import APIError
 from tornado_json.requesthandlers import APIHandler
 
-from exception import SampleException, DBException
+from db.base.db_exception import DBException
+from fingertip.exception.sample_exception import SampleException
 from models import SampleStamp, Mac, Location
 
 
