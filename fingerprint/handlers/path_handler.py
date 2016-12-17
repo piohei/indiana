@@ -5,7 +5,7 @@ from tornado_json.exceptions import APIError
 from tornado_json.requesthandlers import APIHandler
 
 from db.base.db_exception import DBException
-from fingertip.exception.sample_exception import SampleException
+from fingerprint.exception.sample_exception import SampleException
 from models import PathStamp, Mac
 
 

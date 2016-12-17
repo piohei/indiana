@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from fingertip.handlers.base_stamp_handler import BaseStampHandler
+from fingerprint.handlers.base_stamp_handler import BaseStampHandler
 
 
 class SampleStampHandler(BaseStampHandler):

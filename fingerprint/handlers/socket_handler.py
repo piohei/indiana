@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wrapt import synchronized
-from tornado import websocket, gen
+from tornado import websocket
 
 
 class SocketHandler(websocket.WebSocketHandler):

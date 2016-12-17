@@ -2,7 +2,7 @@
 
 from threading import RLock
 
-from fingertip.exception.sample_exception import SampleException
+from fingerprint.exception.sample_exception import SampleException
 
 
 class SampleService(object):

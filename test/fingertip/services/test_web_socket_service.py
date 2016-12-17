@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from tornado.websocket import WebSocketClosedError
-
-from fingertip.services import WebSocketService
-
 import unittest
 from unittest.mock import Mock
+
+from tornado.websocket import WebSocketClosedError
+
+from fingerprint.services import WebSocketService
 
 MESSAGE = "message"
 
