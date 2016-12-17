@@ -1,14 +1,14 @@
 import numpy as np
 
 from models import RSSI, APData
-from positioning.entities import Fingertip
+from positioning.entities import Fingerprint
 from positioning.links.collect.collector import Collector
 
 
 class AverageRssis(Collector):
-    def to_fingertip(self, sample):
+    def to_fingerprint(self, sample):
         averages = self.get_averages(sample.ap_data_by_mac)
-        return Fingertip(sample.location(), [averages])
+        return Fingerprint(sample.location(), [averages])
 
     def get_averages(self, ap_data_by_mac):
         return {mac: self.to_avg_ap_data_rssis(ap_datas)

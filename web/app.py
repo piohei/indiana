@@ -23,7 +23,7 @@ class App:
                 (config["web"]["endpoints"]["position"], PositionHandler),
                 (config["web"]["endpoints"]["visualisation3d"], Visualization3DHandler),
                 (config["web"]["endpoints"]["visualisation2d"], Visualization2DHandler),
-                (config["web"]["endpoints"]["fingertip"], FingerTipHandler),
+                (config["web"]["endpoints"]["fingerprint"], FingerprintHandler),
                 (config["web"]["endpoints"]["path"], PathHandler),
                 (config["web"]["endpoints"]["report2d"] + "/([^/]+)", Report2DHandler),
                 (config["web"]["endpoints"]["report_map"] + "/([^/]+)", ReportMapHandler, {

@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block subtitle %}FingerTip{% end %}
+{% block subtitle %}Fingerprint{% end %}
 
 {% block container %}
-<div class="clearfix" id="fingertip">
+<div class="clearfix" id="fingerprint">
     <div class="col-sm-6">
         <form class="centered control-holder">
-            <h1>FingerTip</h1>
+            <h1>Fingerprint</h1>
             <h2>MAC</h2>
             <label for="mac" class="sr-only">MAC Address</label>
             <input type="text" id="mac" name="mac" class="form-control" placeholder="MAC Address" required=""
                    autofocus="" value="99:AF:00:12:12:12">
             <h2>Location</h2>
             <label for="x" class="sr-only">X</label>
-            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="0" onchange="fingertip.reloadLocation()">
+            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="0" onchange="fingerprint.reloadLocation()">
             <label for="y" class="sr-only">Y</label>
-            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="0" onchange="fingertip.reloadLocation()">
+            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="0" onchange="fingerprint.reloadLocation()">
             <label for="z" class="sr-only">Z</label>
             <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2" disabled="disabled" >
             <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
-                    onclick="fingertip.post()">Send fingertip
+                    onclick="fingerprint.post()">Send fingerprint
             </button>
             <button id="delete_btn" type="button" class="btn btn-lg btn-danger btn-block"
-                    onclick="fingertip.delete()">End fingertip
+                    onclick="fingerprint.delete()">End fingerprint
             </button>
 
         </form>
@@ -31,14 +31,14 @@
     <div class="col-sm-6">
         <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
         <div class="control-holder centered">
-            <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="fingertip.getStatus()">
+            <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="fingerprint.getStatus()">
             Get status
             </button>
             <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block"
-                onclick="fingertip.endStatus()" disabled="disabled">End status
+                onclick="fingerprint.endStatus()" disabled="disabled">End status
             </button>
             <button id="clear_log_btn" type="button" class="btn btn-lg btn-warning btn-block"
-                onclick="fingertip.clearLog()">Clear log
+                onclick="fingerprint.clearLog()">Clear log
             </button>
         </div>
     </div>

@@ -1,6 +1,6 @@
 import {Map} from './objects/map'
 import {Scene} from './scene/scene'
-import {Fingertip} from './fingertip/fingertip'
+import {Fingerprint} from './fingerprint/fingerprint'
 import {Path} from './path/path'
 import {PositionUpdater} from './updaters/position'
 
@@ -25,10 +25,10 @@ window.run = function(type, elementId=null, enableControls=true) {
   });
 };
 
-window.fingertip = new Fingertip(
+window.fingerprint = new Fingerprint(
   window.location.hostname,
   8887,
-  "fingertip"
+  "fingerprint"
 );
 
 window.path = new Path(

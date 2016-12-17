@@ -2,7 +2,7 @@
 from models.primitives.location import Location
 
 
-class Fingertip(object):
+class Fingerprint(object):
     def __init__(self, location, _list):
         if type(location) != Location:
             raise ValueError("Argument location must be type of models.Location")
@@ -10,6 +10,6 @@ class Fingertip(object):
         self.list = _list
 
     def __str__(self, *args, **kwargs):
-        return "Fingertip(location={}, list={})".format(
+        return "Fingerprint(location={}, list={})".format(
                 self.location, self.list
         )

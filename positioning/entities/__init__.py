@@ -1,3 +1,3 @@
-from .fingertip import Fingertip
-from .fingertip_vectors import FingertipVectors
+from .fingerprint import Fingerprint
+from .fingerprint_data import FingerprintData
 from .sample import Sample

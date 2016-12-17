@@ -1,5 +1,5 @@
 from helpers.utils import functional_add
-from positioning.entities import Fingertip
+from positioning.entities import Fingerprint
 from positioning.links.collect.collector import Collector
 
 
@@ -20,6 +20,6 @@ class Permutations(Collector):
     def permutations_for_macs(self, macs_to_rssis):
         return self.permutate(macs_to_rssis, macs_to_rssis.keys())
 
-    def to_fingertip(self, sample):
+    def to_fingerprint(self, sample):
         permutations = self.permutations_for_macs(sample.ap_data_by_mac)
-        return Fingertip(sample.location(), permutations)
+        return Fingerprint(sample.location(), permutations)

@@ -2,7 +2,7 @@
 
 from threading import RLock
 
-from fingerprint.exception.sample_exception import SampleException
+from models.exception import SampleException
 
 
 class SampleService(object):
@@ -42,7 +42,7 @@ class SampleService(object):
                     self.current_stamp = None
                     self.current_stamp_dao = None
             else:
-                raise SampleException("no current fingertip")
+                raise SampleException("no stamp")
 
     def end_if_outdated(self):
         with self.lock:

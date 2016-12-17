@@ -18,17 +18,17 @@ class NearestNeighbourStrategy(AbstractLocationStrategy):
         if chain not in self.CHAINS.keys():
             raise ValueError("Incompatible chain: {}".format(chain))
         self.chain = self.CHAINS[chain](vectorisation=self.vectorisation, **kwargs)
-        self.fingertip_vectors = self.stats = None
+        self.fingerprint_data = self.stats = None
 
     def initialise(self, **kwargs):
         result = self.chain.calculate(**kwargs)
-        self.fingertip_vectors = result["fingertip_vectors"]
-        self.stats = result["fingertip_stats"]
+        self.fingerprint_data = result["fingerprint_data"]
+        self.stats = result["fingerprint_stats"]
 
     def locate(self, measures):
         measures_vector = self.vectorisation.vectorise(measures)
-        distances = self.fingertip_vectors.map(euclidean, measures_vector)
-        return self.fingertip_vectors.location(distances.argmin())
+        distances = self.fingerprint_data.map(euclidean, measures_vector)
+        return self.fingerprint_data.location(distances.argmin())
 
     @staticmethod
     def create_vectorisation(access_point_dao, **kwargs):

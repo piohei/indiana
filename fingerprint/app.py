@@ -27,16 +27,16 @@ class App:
         self.path_service = PathService(self.path_dao, self.global_lock)
 
         self.app = web.Application(handlers=[
-            (config["fingertip"]["endpoints"]["sample_stamp"], SampleStampHandler, {
+            (config["fingerprint"]["endpoints"]["sample_stamp"], SampleStampHandler, {
                     "sample_service": self.sample_service
                 }),
-            (config["fingertip"]["endpoints"]["benchmark_stamp"], BenchmarkStampHandler, {
+            (config["fingerprint"]["endpoints"]["benchmark_stamp"], BenchmarkStampHandler, {
                     "sample_service": self.sample_service
                 }),
-            (config["fingertip"]["endpoints"]["status"], SocketHandler, {
+            (config["fingerprint"]["endpoints"]["status"], SocketHandler, {
                     "web_socket_service": self.web_socket_service
                 }),
-            (config["fingertip"]["endpoints"]["path"], PathHandler, {
+            (config["fingerprint"]["endpoints"]["path"], PathHandler, {
                     "path_service": self.path_service
                 })
         ], debug=(env == 'development'))
@@ -54,6 +54,6 @@ class App:
             job.start()
 
     def run(self):
-        self.app.listen(int(config["fingertip"]["port"]), address="0.0.0.0")
+        self.app.listen(int(config["fingerprint"]["port"]), address="0.0.0.0")
         self.start_jobs()
         ioloop.IOLoop.instance().start()

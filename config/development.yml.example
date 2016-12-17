@@ -10,7 +10,7 @@ db:
     sample_stamp: sample_stamps
     benchmark_report: benchmark_reports
 
-fingertip:
+fingerprint:
   host: http://localhost
   port: 8887
   endpoints:
@@ -26,7 +26,7 @@ web:
     position: /position
     visualisation2d: /visualization/2d
     visualisation3d: /visualization/3d
-    fingertip: /fingertip
+    fingerprint: /fingerprint
     path: /path
     map: /map
     report2d: /report

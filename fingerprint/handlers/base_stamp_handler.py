@@ -5,8 +5,8 @@ from tornado_json.exceptions import APIError
 from tornado_json.requesthandlers import APIHandler
 
 from db.base.db_exception import DBException
-from fingerprint.exception.sample_exception import SampleException
 from models import SampleStamp, Mac, Location
+from models.exception import SampleException
 
 
 class BaseStampHandler(APIHandler, metaclass=ABCMeta):

@@ -2,7 +2,7 @@
 
 from threading import RLock
 
-from fingerprint.exception.sample_exception import SampleException
+from models.exception import SampleException
 
 
 class PathService(object):

@@ -1,6 +1,6 @@
 import numpy as np
 
-from positioning.entities.fingertip_vectors import FingertipVectors
+from positioning.entities.fingerprint_data import FingerprintData
 from positioning.links import Base
 
 
@@ -8,21 +8,21 @@ class ToVectorsWithStats(Base):
     def __init__(self, vectorisation, **kwargs):
         self.vectorisation = vectorisation
 
-    def calculate(self, fingertips, **kwargs):
-        fingertip_vectors = []
+    def calculate(self, fingerprints, **kwargs):
+        fingerprint_vectors = []
         locations = []
         counter = []
 
-        for ft in fingertips:
+        for ft in fingerprints:
             counter.append(len(ft.list))
             for record in ft.list:
-                fingertip_vectors.append(self.vectorise(record))
+                fingerprint_vectors.append(self.vectorise(record))
                 locations.append(ft.location)
 
         stats = self.prepare_stats(counter)
-        matrix = FingertipVectors(fingertip_vectors, locations)
+        matrix = FingerprintData(fingerprint_vectors, locations)
 
-        return {"fingertip_vectors": matrix, "fingertip_stats": stats}
+        return {"fingerprint_data": matrix, "fingerprint_stats": stats}
 
     def vectorise(self, record):
         return self.vectorisation.vectorise(record)
