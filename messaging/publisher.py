@@ -1,8 +1,6 @@
-import pika
 import json
 
 from config import config
-
 from .rabbit import connection
 
 

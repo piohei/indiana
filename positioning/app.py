@@ -5,7 +5,7 @@ from collections import defaultdict
 from threading import RLock
 
 from db import APDataDAO, SampleStampDAO, AccessPointDAO, PositionDAO
-from herald import Publisher
+from messaging import Publisher
 from models import Time, Position, Mac
 from positioning.engine import Engine
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from tornado import gen, websocket
 
-from herald import AsynchronousSubscriber
+from messaging import AsynchronousSubscriber
 
 class PositionHandler(websocket.WebSocketHandler):
 

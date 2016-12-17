@@ -1,10 +1,7 @@
-import pika
 import json
-from queue import Queue, Empty
 from threading import Thread
 
 from config import config
-
 from .rabbit import connection
 
 
