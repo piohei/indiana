@@ -1,73 +1,72 @@
-access_points:
-  - number: 1
-    name: blue toddler
-    location:
-      x: 32.5
-      y: 0.5
-      z: 0
-    mac: 94:f6:65:04:e6:10
-    active: True
-  - number: 2
-    name: miss molly
-    location:
-      x: 32.5
-      y: 11.75
-      z: 0
-    mac: 94:f6:65:08:7b:60
-    active: True
-  - number: 3
-    name: big wilson
-    location:
-      x: 26.65
-      y: 11.75
-      z: 0
-    mac: f8:e7:1e:29:08:f0
-    active: True
-  - number: 4
-    name: dirty genius
-    location:
-      x: 20.75
-      y: 6.75
-      z: 0
-    mac: 2c:5d:93:0c:8a:60
-    active: True
-  - number: 5
-    name: fast mandy
-    location:
-      x: 12.25
-      y: 11.75
-      z: 0
-    mac: f8:e7:1e:29:0e:e0
-    active: True
-  - number: 6
-    name: koko brutal
-    location:
-      x: 10.9
-      y: 6.75
-      z: 0
-    mac: 94:f6:65:04:f9:40
-    active: True
-  - number: 7
-    name: mister sun
-    location:
-      x: 4
-      y: 11.75
-      z: 0
-    mac: 94:f6:65:05:c0:d0
-    active: True
-  - number: 8
-    name: miss dino
-    location:
-      x: 9.1
-      y: 0.5
-      z: 0
-    mac: f8:e7:1e:29:05:00
-    active: False
-  - number: 9
-    name: black megan
-    location:
-      x: 0.5
-      y: 0.5
-      z: 0
-    mac: 94:f6:65:04:ff:d0
-    active: True
+- number: 1
+  name: blue toddler
+  location:
+    x: 32.5
+    y: 0.5
+    z: 0
+  mac: 94:f6:65:04:e6:10
+  active: True
+- number: 2
+  name: miss molly
+  location:
+    x: 32.5
+    y: 11.75
+    z: 0
+  mac: 94:f6:65:08:7b:60
+  active: True
+- number: 3
+  name: big wilson
+  location:
+    x: 26.65
+    y: 11.75
+    z: 0
+  mac: f8:e7:1e:29:08:f0
+  active: True
+- number: 4
+  name: dirty genius
+  location:
+    x: 20.75
+    y: 6.75
+    z: 0
+  mac: 2c:5d:93:0c:8a:60
+  active: True
+- number: 5
+  name: fast mandy
+  location:
+    x: 12.25
+    y: 11.75
+    z: 0
+  mac: f8:e7:1e:29:0e:e0
+  active: True
+- number: 6
+  name: koko brutal
+  location:
+    x: 10.9
+    y: 6.75
+    z: 0
+  mac: 94:f6:65:04:f9:40
+  active: True
+- number: 7
+  name: mister sun
+  location:
+    x: 4
+    y: 11.75
+    z: 0
+  mac: 94:f6:65:05:c0:d0
+  active: True
+- number: 8
+  name: miss dino
+  location:
+    x: 9.1
+    y: 0.5
+    z: 0
+  mac: f8:e7:1e:29:05:00
+  active: False
+- number: 9
+  name: black megan
+  location:
+    x: 0.5
+    y: 0.5
+    z: 0
+  mac: 94:f6:65:04:ff:d0
+  active: True
