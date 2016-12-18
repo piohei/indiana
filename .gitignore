@@ -108,7 +108,7 @@ crashlytics-build.properties
 
 **/bower_components/
 
-/config_files/**/*.yml
+/config_files/running_config/*.yml
 /log/
 
 .DS_Store
