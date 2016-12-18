@@ -40,9 +40,12 @@ rabbit:
   name: positions
 
 ap_data:
-  host: http://localhost
-  port: 8889
-  endpoint: /
+  - host: http://localhost
+    port: 8889
+    endpoint: /
+  - host: http://localhost
+    port: 8890
+    endpoint: /
 
 #engine:
 #  strategy_name: 1-NN

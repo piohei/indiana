@@ -5,7 +5,11 @@ from models import Time, Mac
 
 
 class ApiJSON(object):
-    API_URL = config["ap_data"]["host"] + ":" + str(config["ap_data"]["port"]) + str(config["ap_data"]["endpoint"])
+    AP_DATA_LISTENER_IDX = config["simulator"]["ap_data_listener_index"]
+    HOST = config["ap_data"][AP_DATA_LISTENER_IDX]["host"]
+    PORT = str(config["ap_data"][AP_DATA_LISTENER_IDX]["port"])
+    ENDPOINT = str(config["ap_data"][AP_DATA_LISTENER_IDX]["endpoint"])
+    API_URL = HOST + ":" + PORT + ENDPOINT
 
     def __init__(self, db_obj, mac=None):
         self.__dict__.update({
