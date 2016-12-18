@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from tornado import web
 import json
+
+from tornado import web
+
 
 class MapHandler(web.RequestHandler):
     def initialize(self, access_point_dao, sample_stamp_dao, map_data):

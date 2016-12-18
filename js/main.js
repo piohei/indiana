@@ -12,15 +12,15 @@ window.run = function(type, elementId=null, enableControls=true) {
   if(type === 'report') {
     var report_num = window.location.pathname.split("/");
     report_num = report_num[report_num.length - 1];
-    url = "/report_map/" + report_num;
+    url = "/api/report_map/" + report_num;
   } else {
-    url = "/map";
+    url = "/api/map";
   }
 
   $.getJSON(url).done(function (map) {
-    var scene = new Scene(type, map, elementId, enableControls)
+    var scene = new Scene(type, map, elementId, enableControls);
     scene.show();
-  }).fail(function (data) {
+  }).fail(function () {
     alert("Error while getting map!");
   });
 };
