@@ -34,3 +34,8 @@ class Collection(object):
         return self.assert_acknowledged(
                 self.collection.insert_one(obj_dictionary)
         )
+
+    def clear(self):
+        return self.assert_acknowledged(
+            self.collection.delete_many({})
+        )

@@ -6,7 +6,7 @@ from tornado import web, ioloop
 
 from config import env, config
 from db import AccessPointDAO, BenchmarkReportDAO, SampleStampDAO
-from models import Map
+from db.map_dao import MapDAO
 from .handlers import *
 
 
@@ -15,8 +15,9 @@ class App:
         self.access_point_dao    = AccessPointDAO()
         self.sample_stamp_dao    = SampleStampDAO()
         self.benchmark_report_dao = BenchmarkReportDAO()
+        self.map_dao = MapDAO()
 
-        self.map_data = Map(config['map']['name'])
+        self.map_data = self.map_dao.find_by_name(config['map']['name'])
 
         self.app = web.Application(
             handlers=[

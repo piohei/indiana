@@ -9,6 +9,7 @@ db:
     position: positions
     sample_stamp: sample_stamps
     benchmark_report: benchmark_reports
+    map: maps
 
 fingerprint:
   host: http://localhost
