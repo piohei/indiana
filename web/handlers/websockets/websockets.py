@@ -11,10 +11,10 @@ class Websockets(HandlersModule):
     def module(self):
         return "websockets"
 
-    def get_handlers(self, config):
+    def handlers_specs(self):
         return [
-            (self.prefix + self.endpoints["position"], PositionHandler),
-            (self.prefix + self.endpoints["status"], StatusHandler, {
+            ("position", PositionHandler),
+            ("status", StatusHandler, {
                 "web_socket_service": self.log_socket_service
             })
         ]

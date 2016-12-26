@@ -30,9 +30,9 @@ class App:
             debug=(env == 'development')
         )
 
-        self.app.add_handlers(".*$", self.api.get_handlers(config))
-        self.app.add_handlers(".*$", self.websockets.get_handlers(config))
-        self.app.add_handlers(".*$", self.view.get_handlers(config))
+        self.app.add_handlers(".*$", self.api.get_handlers())
+        self.app.add_handlers(".*$", self.websockets.get_handlers())
+        self.app.add_handlers(".*$", self.view.get_handlers())
 
         self.jobs = [
             CleanupJob(self.sample_service),

@@ -25,25 +25,25 @@ class API(HandlersModule):
 
         self.map_data = self.map_dao.find_by_name(config['map']['name'])
 
-    def get_handlers(self, config):
+    def handlers_specs(self):
         return [
-            (self.prefix + self.endpoints["report_map"] + "/([^/]+)", handlers.ReportMapHandler, {
+            ("report_map", handlers.ReportMapHandler, {
                 'access_point_dao': self.access_point_dao,
                 'benchmark_report_dao': self.benchmark_report_dao,
                 'map_data': self.map_data
             }),
-            (self.prefix + self.endpoints["map"], handlers.MapHandler, {
+            ("map", handlers.MapHandler, {
                 'access_point_dao': self.access_point_dao,
                 'sample_stamp_dao': self.sample_stamp_dao,
                 'map_data': self.map_data
             }),
-            (self.prefix + self.endpoints["sample_stamp"], SampleStampHandler, {
+            ("sample_stamp", SampleStampHandler, {
                 "sample_service": self.sample_service
             }),
-            (self.prefix + self.endpoints["benchmark_stamp"], BenchmarkStampHandler, {
+            ("benchmark_stamp", BenchmarkStampHandler, {
                 "sample_service": self.sample_service
             }),
-            (self.prefix + self.endpoints["path"], PathHandler, {
+            ("path", PathHandler, {
                 "path_service": self.path_service
             })
         ]

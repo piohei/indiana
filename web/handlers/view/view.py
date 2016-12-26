@@ -13,12 +13,12 @@ class View(HandlersModule):
                 self.render(view + ".html")
         return Handler
 
-    def get_handlers(self, config):
+    def handlers_specs(self):
         return [
-            (self.prefix + self.endpoints["visualisation3d"], self.rendering_handler("visualization_3d")),
-            (self.prefix + self.endpoints["visualisation2d"], self.rendering_handler("visualization_2d")),
-            (self.prefix + self.endpoints["fingerprint"], self.rendering_handler("fingerprint")),
-            (self.prefix + self.endpoints["path"], self.rendering_handler("path")),
-            (self.prefix + self.endpoints["report2d"] + "/([^/]+)", self.rendering_handler("report_2d")),
-            (self.prefix + self.endpoints["root"], self.rendering_handler("index"))
+            ("visualisation3d", self.rendering_handler("visualization_3d")),
+            ("visualisation2d", self.rendering_handler("visualization_2d")),
+            ("fingerprint", self.rendering_handler("fingerprint")),
+            ("path", self.rendering_handler("path")),
+            ("report2d", self.rendering_handler("report_2d")),
+            ("root", self.rendering_handler("index"))
         ]
