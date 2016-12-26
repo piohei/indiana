@@ -7,6 +7,7 @@ import {Light as Light3D} from "./3d/light"
 
 import {Map} from "./../objects/map"
 import {ReportMap} from "./../objects/report_map"
+import {Heatmap} from "./../objects/heatmap"
 
 export class Scene {
   constructor(type, map, elementId=null, enableControls=true, zoom=1.0) {
@@ -101,6 +102,8 @@ function _generateMap(type, map) {
       return new Map(type, map);
     case 'report':
       return new ReportMap(map);
+    case 'heatmap':
+      return new Heatmap(map);
     case '3d':
       return new Map(type, map);
   }
@@ -120,6 +123,8 @@ function _generateCamera(type, elementId, zoom=1.0) {
       return new Camera2D(width, height, zoom);
     case 'report':
       return new Camera2D(width, height, zoom);
+    case 'heatmap':
+      return new Camera2D(width, height, zoom);
     case '3d':
       return new Camera3D(width, height, zoom);
   }
@@ -131,6 +136,8 @@ function _generateLight(type) {
       return null;
     case 'report':
       return null;
+    case 'heatmap':
+      return null;
     case '3d':
       return new Light3D();
   }
@@ -141,6 +148,8 @@ function _generateControls(type, camera) {
     case '2d':
       return new Controls2D(camera);
     case 'report':
+      return new Controls2D(camera);
+    case 'heatmap':
       return new Controls2D(camera);
     case '3d':
       return new Controls3D(camera);
@@ -155,7 +164,7 @@ function _genreateScene(type, map, light) {
     res.add(light.getAmbient());
   }
 
-  if(type !== 'report') {
+  if(type !== 'report' && type != 'heatmap') {
     var locators = map.getLocators();
     Object.keys(locators).forEach(locatorName => {
       res.add(locators[locatorName]);
@@ -164,7 +173,13 @@ function _genreateScene(type, map, light) {
 
   var levels = map.getLevels();
   for(const level in levels) {
-    res.add(levels[level].getFloor());
+    if(type != 'heatmap') {
+      res.add(levels[level].getFloor());
+    } else {
+      for (const polygon of levels[level].getFloor().getPolygons()) {
+        res.add(polygon);
+      }
+    }
 
     for(const wall of levels[level].getWalls()) {
       res.add(wall);
@@ -174,9 +189,11 @@ function _genreateScene(type, map, light) {
       res.add(router);
     }
 
-    for(const sample of levels[level].getSamples()) {
-      res.add(sample);
-    }
+    if (type != 'heatmap') {
+          for (const sample of levels[level].getSamples()) {
+            res.add(sample);
+              }
+          }
 
     if(type === 'report') {
       for(const point of levels[level].getCalculatedPoints()) {

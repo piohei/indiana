@@ -1,4 +1,5 @@
 from web.handlers.api import handlers
+from web.handlers.api.handlers.heatmap import HeatmapHandler
 from web.handlers.api.handlers.path_handler import PathHandler
 from web.handlers.api.handlers.reports import ReportsHandler
 from web.handlers.api.handlers.stamp.benchmark_stamp_handler import BenchmarkStampHandler
@@ -19,6 +20,7 @@ class API(HandlersModule):
         self.map_dao = daos["map_dao"]
         self.path_dao = daos["path_dao"]
         self.ap_data_dao = daos["ap_data_dao"]
+        self.position_dao = daos["position_dao"]
 
         self.sample_service = services["sample_service"]
         self.log_socket_service = services["log_socket_service"]
@@ -34,6 +36,11 @@ class API(HandlersModule):
             ("report_map", handlers.ReportMapHandler, {
                 'access_point_dao': self.access_point_dao,
                 'benchmark_report_dao': self.benchmark_report_dao,
+                'map_data': self.map_data
+            }),
+            ("heatmap", HeatmapHandler, {
+                'access_point_dao': self.access_point_dao,
+                'position_dao': self.position_dao,
                 'map_data': self.map_data
             }),
             ("map", handlers.MapHandler, {

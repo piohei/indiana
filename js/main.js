@@ -15,6 +15,8 @@ window.run = function(type, elementId=null, enableControls=true, zoom=1.0) {
     var report_num = window.location.pathname.split("/");
     report_num = report_num[report_num.length - 1];
     url = "/api/report_map/" + report_num;
+  } else if (type === 'heatmap') {
+    url = "/api/heatmap"
   } else {
     url = "/api/map";
   }

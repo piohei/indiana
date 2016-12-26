@@ -30,3 +30,8 @@ class PositionDAO(TimedDAO):
             'created_at': position.created_at.millis,
             '_id': position._id
         }
+
+    def count_in_rectangle(self, top_left, size):
+        x, y = top_left
+        return self.count({"location.x": {"$gte": x, "$lte": x+size},
+                           "location.y": {"$gte": y, "$lte": y+size}})
