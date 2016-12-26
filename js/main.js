@@ -4,6 +4,7 @@ import {Fingerprint} from './fingerprint/fingerprint'
 import {Path} from './path/path'
 import {PositionUpdater} from './updaters/position'
 import {Benchmark} from './benchmark/benchmark'
+import {Reports} from './reports/reports'
 
 window.currentPositions = {};
 
@@ -48,3 +49,5 @@ window.positionUpdater = new PositionUpdater(
   window.location.hostname,
   8888
 );
+
+window.reports = new Reports();

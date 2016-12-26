@@ -1,5 +1,6 @@
 from web.handlers.api import handlers
 from web.handlers.api.handlers.path_handler import PathHandler
+from web.handlers.api.handlers.reports import ReportsHandler
 from web.handlers.api.handlers.stamp.benchmark_stamp_handler import BenchmarkStampHandler
 from web.handlers.api.handlers.stamp.sample_stamp_handler import SampleStampHandler
 from web.handlers.handlers_module import HandlersModule
@@ -27,6 +28,9 @@ class API(HandlersModule):
 
     def handlers_specs(self):
         return [
+            ("reports", ReportsHandler, {
+                'benchmark_report_dao': self.benchmark_report_dao
+            }),
             ("report_map", handlers.ReportMapHandler, {
                 'access_point_dao': self.access_point_dao,
                 'benchmark_report_dao': self.benchmark_report_dao,

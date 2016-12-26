@@ -9,6 +9,11 @@ body {
   max-width: 330px;
 }
 
+.text-holder {
+  padding: 15px;
+  max-width: 500px;
+}
+
 
 .centered {
   margin: 0 auto;
