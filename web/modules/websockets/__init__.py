@@ -1,1 +1,0 @@
-from web.modules.websockets.handlers.position_handler import PositionHandler

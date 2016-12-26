@@ -27,13 +27,13 @@ window.run = function(type, elementId=null, enableControls=true) {
 
 window.fingerprint = new Fingerprint(
   window.location.hostname,
-  8887,
+  8888,
   "fingerprint"
 );
 
 window.path = new Path(
   window.location.hostname,
-  8887,
+  8888,
   "path"
 );
 

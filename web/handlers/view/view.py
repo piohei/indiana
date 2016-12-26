@@ -1,6 +1,6 @@
 from tornado.web import RequestHandler
 
-from web.modules.handlers_module import HandlersModule
+from web.handlers.handlers_module import HandlersModule
 
 
 class View(HandlersModule):

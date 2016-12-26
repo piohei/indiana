@@ -15,8 +15,8 @@ export class Fingerprint {
     }
     this.elementId = elementId;
 
-    this.dataUrl = `${this.url}/sample_stamp`;
-    this.statusUrl = `ws://${host}:${port}/status`;
+    this.dataUrl = `${this.url}/api/sample_stamp`;
+    this.statusUrl = `ws://${host}:${port}/ws/status`;
 
     this.cors = new CORS();
     this.logger = new Logger("result");
@@ -31,7 +31,7 @@ export class Fingerprint {
         url: self.dataUrl,
         data: data,
         onSuccess: function(evt) { self.logger.requestSuccess(evt); },
-        onError: function(xhr, err) { self.logger.requestError(xhr, err); },
+        onError: function(xhr, err) { self.logger.requestError(xhr, err); }
       });
     }
   }

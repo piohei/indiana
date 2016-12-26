@@ -15,7 +15,7 @@ export class Path {
     }
     this.elementId = elementId;
 
-    this.dataUrl = `${this.url}/path`;
+    this.dataUrl = `${this.url}/api/path`;
 
     this.cors = new CORS();
     this.logger = new Logger("result");

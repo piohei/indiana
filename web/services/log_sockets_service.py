@@ -5,7 +5,7 @@ from threading import RLock
 from tornado.websocket import WebSocketClosedError
 
 
-class WebSocketService(object):
+class LogSocketsService(object):
     def __init__(self, lock=RLock()):
         self.list = []
         self.lock = lock

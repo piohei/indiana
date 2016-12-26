@@ -3,7 +3,7 @@
 from tornado import websocket
 
 
-class SocketHandler(websocket.WebSocketHandler):
+class StatusHandler(websocket.WebSocketHandler):
     def initialize(self, web_socket_service):
         self.web_socket_service = web_socket_service
 
