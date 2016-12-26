@@ -1,5 +1,5 @@
 export class Camera extends THREE.PerspectiveCamera {
-  constructor(width, height) {
+  constructor(width, height, zoom) {
     super(
       60,
       width / height,
@@ -14,6 +14,9 @@ export class Camera extends THREE.PerspectiveCamera {
     this.rotation.x = 0;
     this.rotation.y = 0;
     this.rotation.z = 0;
+
+    this.zoom = zoom;
+    this.updateProjectionMatrix();
   }
 
   updateWindowResize(width, height) {

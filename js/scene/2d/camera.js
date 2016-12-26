@@ -1,5 +1,5 @@
 export class Camera extends THREE.OrthographicCamera {
-  constructor(width, height) {
+  constructor(width, height, zoom) {
     super(
       width / -2 / 30,
       width / 2 / 30,
@@ -16,6 +16,9 @@ export class Camera extends THREE.OrthographicCamera {
     this.rotation.x = 0;
     this.rotation.y = 0;
     this.rotation.z = 0;
+
+    this.zoom = zoom;
+    this.updateProjectionMatrix();
   }
 
   updateWindowResize(width, height) {

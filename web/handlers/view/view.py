@@ -18,6 +18,7 @@ class View(HandlersModule):
             ("visualisation3d", self.rendering_handler("visualization_3d")),
             ("visualisation2d", self.rendering_handler("visualization_2d")),
             ("fingerprint", self.rendering_handler("fingerprint")),
+            ("benchmark", self.rendering_handler("benchmark")),
             ("path", self.rendering_handler("path")),
             ("report2d", self.rendering_handler("report_2d")),
             ("root", self.rendering_handler("index"))

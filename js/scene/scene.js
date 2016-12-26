@@ -9,11 +9,11 @@ import {Map} from "./../objects/map"
 import {ReportMap} from "./../objects/report_map"
 
 export class Scene {
-  constructor(type, map, elementId=null, enableControls=true) {
+  constructor(type, map, elementId=null, enableControls=true, zoom=1.0) {
     this.elementId = elementId;
     this.map = _generateMap(type, map);
     this.renderer = _generateRenderer(elementId);
-    this.camera = _generateCamera(type, elementId);
+    this.camera = _generateCamera(type, elementId, zoom);
     this.light = _generateLight(type);
     if(enableControls) {
       this.controls = _generateControls(type, this.camera);
@@ -106,7 +106,7 @@ function _generateMap(type, map) {
   }
 }
 
-function _generateCamera(type, elementId) {
+function _generateCamera(type, elementId, zoom=1.0) {
   var width  = window.innerWidth;
   var height = window.innerHeight;
 
@@ -117,11 +117,11 @@ function _generateCamera(type, elementId) {
 
   switch(type) {
     case '2d':
-      return new Camera2D(width, height);
+      return new Camera2D(width, height, zoom);
     case 'report':
-      return new Camera2D(width, height);
+      return new Camera2D(width, height, zoom);
     case '3d':
-      return new Camera3D(width, height);
+      return new Camera3D(width, height, zoom);
   }
 }
 

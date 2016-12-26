@@ -3,10 +3,11 @@ import {Scene} from './scene/scene'
 import {Fingerprint} from './fingerprint/fingerprint'
 import {Path} from './path/path'
 import {PositionUpdater} from './updaters/position'
+import {Benchmark} from './benchmark/benchmark'
 
 window.currentPositions = {};
 
-window.run = function(type, elementId=null, enableControls=true) {
+window.run = function(type, elementId=null, enableControls=true, zoom=1.0) {
   var url;
   
   if(type === 'report') {
@@ -18,7 +19,7 @@ window.run = function(type, elementId=null, enableControls=true) {
   }
 
   $.getJSON(url).done(function (map) {
-    var scene = new Scene(type, map, elementId, enableControls);
+    var scene = new Scene(type, map, elementId, enableControls, zoom);
     scene.show();
   }).fail(function () {
     alert("Error while getting map!");
@@ -29,6 +30,12 @@ window.fingerprint = new Fingerprint(
   window.location.hostname,
   8888,
   "fingerprint"
+);
+
+window.benchmark = new Benchmark(
+    window.location.hostname,
+    8888,
+    "benchmark"
 );
 
 window.path = new Path(
