@@ -3,7 +3,7 @@ from threading import RLock
 
 import requests
 
-from benchmark.runner import run as run_benchmark
+from benchmark.runner import run as run_benchmark, kill as kill_benchmark
 from config import config
 from models import Time
 
@@ -34,10 +34,12 @@ class BenchmarkService(object):
             if self.check_current_benchmark_inactive():
                 raise BenchmarkException("no current benchmark")
             try:
-                self.current_benchmark.terminate()
+                res = kill_benchmark(self.current_benchmark)
+                if not res:
+                    raise BenchmarkException("pid error")
                 self.current_benchmark.join(2)
                 if self.current_benchmark.is_alive():
-                    raise BenchmarkException("Benchmark terminated unsuccesfully")
+                    raise BenchmarkException("Benchmark not terminated")
             finally:
                 self.current_benchmark = None
 
@@ -51,9 +53,12 @@ class BenchmarkService(object):
             self.benchmark_start_time = Time()
 
     def ping_listener(self):
-        res = requests.options(self.apdata_listener_url)
-        if res.status_code != 204:
+        try:
+            res = requests.options(self.apdata_listener_url)
+        except requests.ConnectionError:
             raise BenchmarkException("APData Listener for benchmark unavailable")
+        if res.status_code != 204:
+            raise BenchmarkException("APData Listener returning error code")
 
     def get_status(self):
         if not self.check_current_benchmark_inactive():

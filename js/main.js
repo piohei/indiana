@@ -4,6 +4,7 @@ import {Fingerprint} from './fingerprint/fingerprint'
 import {Path} from './path/path'
 import {PositionUpdater} from './updaters/position'
 import {Benchmark} from './benchmark/benchmark'
+import {Runner} from './benchmark/runner'
 import {Reports} from './reports/reports'
 
 window.currentPositions = {};
@@ -36,15 +37,20 @@ window.fingerprint = new Fingerprint(
 );
 
 window.benchmark = new Benchmark(
-    window.location.hostname,
-    8888,
-    "benchmark"
+  window.location.hostname,
+  8888,
+  "benchmark"
 );
 
 window.path = new Path(
   window.location.hostname,
   8888,
   "path"
+);
+
+window.runner = new Runner(
+  window.location.hostname,
+  8888
 );
 
 window.positionUpdater = new PositionUpdater(

@@ -9,6 +9,10 @@ export class CORS {
   delete(params) {
     _doRequest("DELETE", params);
   }
+
+  get(params) {
+    _doRequest("GET", params);
+  }
 }
 
 // Private functions
