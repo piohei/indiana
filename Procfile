@@ -1,9 +1,4 @@
-# Required services
-#rabbit: rabbitmq-server
-#mongo: mongod --config /etc/mongod.conf
-
 # Applications
-ap_data_listener: sleep 5 && python3 -B -m ap_data_listener.runner 2>&1
-web:       sleep 5 && python3 -B -m web.runner 2>&1
-fingerprint: sleep 5 && python3 -B -m fingerprint.runner 2>&1
-positioning: sleep 5 && python3 -B -m positioning.runner 2>&1
+ap_data_listener: python3 -m runner.runner --run-apdata-listeners 2>&1
+web:              python3 -m runner.runner --run-web 2>&1
+positioning:      python3 -m runner.runner --run-positioning 2>&1
