@@ -1,4 +1,5 @@
 from web.handlers.api import handlers
+from web.handlers.api.handlers.benchmark_handler import BenchmarkHandler
 from web.handlers.api.handlers.heatmap import HeatmapHandler
 from web.handlers.api.handlers.path_handler import PathHandler
 from web.handlers.api.handlers.reports import ReportsHandler
@@ -24,7 +25,8 @@ class API(HandlersModule):
 
         self.sample_service = services["sample_service"]
         self.log_socket_service = services["log_socket_service"]
-        self.path_service = services["path_sefvice"]
+        self.path_service = services["path_service"]
+        self.benchmark_service = services["benchmark_service"]
 
         self.map_data = self.map_dao.find_by_name(config['map']['name'])
 
@@ -50,6 +52,9 @@ class API(HandlersModule):
             }),
             ("sample_stamp", SampleStampHandler, {
                 "sample_service": self.sample_service
+            }),
+            ("benchmark_runner", BenchmarkHandler, {
+                "benchmark_service": self.benchmark_service
             }),
             ("benchmark_stamp", BenchmarkStampHandler, {
                 "sample_service": self.sample_service

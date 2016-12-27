@@ -49,7 +49,7 @@ class App:
         self.benchmark_service = BenchmarkService()
         return {"sample_service": self.sample_service,
                 "log_socket_service": self.log_socket_service,
-                "path_sefvice": self.path_service,
+                "path_service": self.path_service,
                 "benchmark_service": self.benchmark_service}
 
     def init_daos(self):

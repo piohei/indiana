@@ -12,11 +12,11 @@ from simulator import SimpleSimulator
 
 
 class StrategyBenchmark(object):
-    def __init__(self):
+    def __init__(self, verbose):
         self.benchmark_stamp_dao = BenchmarkStampDAO()
         self.benchmark_report_dao = BenchmarkReportDAO()
         self.position_dao = PositionDAO()
-        self.logger = BenchmarkLogger()
+        self.logger = BenchmarkLogger(verbose)
         self.configs = self.create_configs()
         self.samples = self.create_samples()
         self.partial_reports = None

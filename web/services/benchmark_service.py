@@ -5,6 +5,7 @@ import requests
 
 from benchmark.runner import run as run_benchmark
 from config import config
+from models import Time
 
 
 class BenchmarkException(Exception):
@@ -14,9 +15,10 @@ class BenchmarkException(Exception):
 
 class BenchmarkService(object):
     def __init__(self):
-        self.current_benchmark = Process().join()
+        self.current_benchmark = None
         self.lock = RLock()
         self.apdata_listener_url = self.get_url_from_config()
+        self.benchmark_start_time = None
 
     def get_url_from_config(self):
         idx = config["simulator"]["ap_data_listener_index"]
@@ -46,8 +48,15 @@ class BenchmarkService(object):
             self.ping_listener()
             self.current_benchmark = Process(target=run_benchmark)
             self.current_benchmark.start()
+            self.benchmark_start_time = Time()
 
     def ping_listener(self):
         res = requests.options(self.apdata_listener_url)
         if res.status_code != 204:
             raise BenchmarkException("APData Listener for benchmark unavailable")
+
+    def get_status(self):
+        if not self.check_current_benchmark_inactive():
+            return "Benchmark runnung since {}".format(self.benchmark_start_time)
+        else:
+            return "no current benchmark"

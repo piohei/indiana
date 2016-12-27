@@ -2,25 +2,30 @@ import pprint
 
 
 class BenchmarkLogger(object):
-    @staticmethod
-    def big_separator():
-        print("=" * 65)
+    def __init__(self, verbose):
+        self.verbose = verbose
 
-    @staticmethod
-    def small_separator():
-        print("-" * 65)
+    def big_separator(self):
+        if self.verbose:
+            print("=" * 65)
+
+    def small_separator(self):
+        if self.verbose:
+            print("-" * 65)
 
     def print_engine_config(self, cfg):
-        self.big_separator()
-        pprint.pprint(cfg)
-        self.small_separator()
+        if self.verbose:
+            self.big_separator()
+            pprint.pprint(cfg)
+            self.small_separator()
 
     def print_stamp_location(self, stamp):
-        print(stamp.location)
-        self.small_separator()
+        if self.verbose:
+            print(stamp.location)
+            self.small_separator()
 
-    @staticmethod
-    def print_report(report):
-        copy = report.copy()
-        copy.pop("partial_reports")
-        pprint.pprint(copy)
+    def print_report(self, report):
+        if self.verbose:
+            copy = report.copy()
+            copy.pop("partial_reports")
+            pprint.pprint(copy)
