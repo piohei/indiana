@@ -12,3 +12,4 @@ pika==0.10.0
 scikit-learn==0.18.1
 pyyaml==3.12
 shapely==1.5.17
+matplotlib

@@ -6,6 +6,7 @@ from matplotlib.pyplot import get_cmap
 from tornado import web
 from shapely.geometry import Polygon
 import numpy as np
+from config import config
 
 
 def clamp(x):
@@ -19,20 +20,17 @@ def to_hex(r, g, b, *args):
 def xy(x, y):
     return {"x": x, "y": y}
 
-def xy_tuple(xy_dict):
-    return xy_dict["x"], xy_dict["y"]
-
 
 class HeatmapHandler(web.RequestHandler):
     def initialize(self, access_point_dao, position_dao, map_data):
         self.map_data = map_data
         self.access_point_dao = access_point_dao
         self.position_dao = position_dao
-        self.step = 0.8
+        self.step = config["heatmap"]["granularity"]
         xmax = 33
         ymax = 12
         self.mesh = [(x, y) for x in np.arange(0, xmax, self.step) for y in np.arange(0, ymax, self.step)]
-        cmap = get_cmap("jet")
+        cmap = get_cmap(config["heatmap"]["cmap"])
         cmap._init()
         self.cmap = [to_hex(*color) for color in cmap._lut]
 
