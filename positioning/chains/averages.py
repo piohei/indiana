@@ -4,7 +4,7 @@ import positioning.links.transform as transform
 from positioning.chains.base import Base
 
 
-class Beta(Base):
+class Averages(Base):
     def links(self):
         return [
             fetch.FetchSamplesStamps,

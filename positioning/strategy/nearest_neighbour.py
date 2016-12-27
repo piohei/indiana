@@ -8,7 +8,7 @@ from positioning.vectorisation.by_mac_and_rssi import VectorisationByMacAndRssi
 
 class NearestNeighbourStrategy(AbstractLocationStrategy):
     CHAINS = {
-        'beta': chains.Beta,
+        'averages': chains.Averages,
         'permutations': chains.PermutationsChain,
         'consecutive': chains.ConsecutiveChain
     }

@@ -1,7 +1,7 @@
 db:
   host: 127.0.0.1
   port: 27017
-  name: indiana_db_production_copy
+  name: indiana_db
   collections:
     access_point: access_points
     ap_data: ap_datas
@@ -11,28 +11,39 @@ db:
     benchmark_report: benchmark_reports
     map: maps
 
-fingerprint:
-  host: http://localhost
-  port: 8887
-  endpoints:
-    sample_stamp: /sample_stamp
-    benchmark_stamp: /benchmark_stamp
-    status: /status
-    path: /path
-
 web:
   host: http://localhost
   port: 8888
-  endpoints:
-    position: /position
-    visualisation2d: /visualization/2d
-    visualisation3d: /visualization/3d
-    fingerprint: /fingerprint
-    path: /path
-    map: /map
-    report2d: /report
-    report_map: /report_map
-    root: /
+  routes:
+    api:
+      prefix: /api
+      endpoints:
+        reports: /reports
+        report_map: /report_map/([^/]+)
+        map: /map
+        sample_stamp: /sample_stamp
+        benchmark_runner: /benchmark_runner
+        benchmark_stamp: /benchmark_stamp
+        path: /path
+        heatmap: /heatmap
+    view:
+      prefix: ""
+      endpoints:
+        visualisation2d: /visualization/2d
+        visualisation3d: /visualization/3d
+        fingerprint: /fingerprint
+        benchmark: /benchmark
+        runner: /runner
+        reports: /reports
+        heatmap: /heatmap
+        path: /path
+        report2d: /report/([^/]+)
+        root: /
+    websockets:
+      prefix: /ws
+      endpoints:
+        position: /position
+        status: /status
 
 rabbit:
   host: 127.0.0.1
@@ -43,9 +54,9 @@ ap_data:
   - host: http://localhost
     port: 8889
     endpoint: /
-  - host: http://localhost
-    port: 8890
-    endpoint: /
+#  - host: http://localhost
+#    port: 8890
+#    endpoint: /
 
 #engine:
 #  strategy_name: 1-NN
@@ -56,20 +67,63 @@ ap_data:
 #engine:
 #  strategy_name: 1-NN
 #  strategy_config:
-#    chain: beta
+#    chain: averages
 
 #engine:
 #  strategy_name: 1-NN
 #  strategy_config:
 #    chain: consecutive
 
-#engine:
-#  strategy_name: FullLinearRegression
 engine:
-  strategy_name: 1-NNWithLinearRegression
-  strategy_config:
-    chain: consecutive
-    cluster_n_closest: 8
+  strategy_name: FullLinearRegression
+#engine:
+#  strategy_name: 1-NNWithLinearRegression
+#  strategy_config:
+#    chain: consecutive
+#    cluster_n_closest: 8
+  interval: 2
+  fetch_seconds: 15
+  instances:
+    - filter: "" #catch all
 
 map:
   name: floor_1
+
+simulator:
+  ap_data_listener_index: 0
+
+heatmap:
+  granularity: 0.5
+  cmap: jet
+
+benchmark:
+  configs:
+    - strategy_name: FullLinearRegression
+    - strategy_name: 1-NN
+      strategy_config:
+        chain: permutations
+        ap_data_per_ap: 2
+    - strategy_name: 1-NN
+      strategy_config:
+        chain: averages
+    - strategy_name: 1-NN
+      strategy_config:
+        chain: consecutive
+    - strategy_name: 1-NNWithLinearRegression
+      strategy_config:
+        chain: permutations
+        ap_data_per_ap: 2
+        cluster_n_closest: 8
+    - strategy_name: 1-NNWithLinearRegression
+      strategy_config:
+        chain: averages
+        cluster_n_closest: 8
+    - strategy_name: 1-NNWithLinearRegression
+      strategy_config:
+        chain: consecutive
+        cluster_n_closest: 8
+  common_config:
+    interval: 5
+    fetch_seconds: 15
+    instances:
+      - filter: ""
