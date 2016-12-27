@@ -9,6 +9,9 @@ init:
 run:
 	foreman start
 
+watch:
+	npm run watch
+
 production:
 	INDIANA_ENV=production foreman start
 
