@@ -10,10 +10,10 @@ def add_flag(flag, help):
     parser.add_argument("--" + flag, dest=flag.replace("-", "_"), action="store_const",
                         help=help, const=True, default=False)
 
-add_flag("load-static", "load static data from files")
-add_flag("run-apdata-listeners", "run APData listeners")
-add_flag("run-web", "run web management and visualisation")
-add_flag("run-positioning", "run positioning engine(s)")
+add_flag("load-static", "Load static data from files")
+add_flag("run-apdata-listeners", "Run APData listeners")
+add_flag("run-web", "Run web management and visualisation")
+add_flag("run-positioning", "Run positioning engine(s)")
 
 
 args = parser.parse_args()
@@ -41,7 +41,7 @@ engines = []
 if args.run_positioning:
     from positioning.runner import run as run_engine
     for engine_id in range(len(config["engine"]["instances"])):
-        proc = Process(target=run_engine, args=(engine_id,))
+        proc = Process(target=run_engine, args=(config["engine"], engine_id))
         engines.append(proc)
         proc.start()
 
