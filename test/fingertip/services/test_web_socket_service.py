@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from tornado.websocket import WebSocketClosedError
-
-from fingertip.services import WebSocketService
-
 import unittest
 from unittest.mock import Mock
+
+from tornado.websocket import WebSocketClosedError
+
+from web.services import LogSocketsService
 
 MESSAGE = "message"
 
@@ -18,7 +18,7 @@ class TestWebSocketService(unittest.TestCase):
         self.assertListEqual(expected, self.under_test.list)
 
     def setUp(self):
-        self.under_test = WebSocketService()
+        self.under_test = LogSocketsService()
         self.sock1 = Mock()
         self.sock2 = Mock()
 

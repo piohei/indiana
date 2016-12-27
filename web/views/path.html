@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block subtitle %}Path{% end %}
+{% block subtitle %}Record Path{% end %}
 
 {% block container %}
 <div class="clearfix" id="path">
     <div class="col-sm-6">
         <form class="centered control-holder">
-            <h1>Path</h1>
+            <h1>Record Path</h1>
             <label for="mac" class="sr-only">MAC Address</label>
             <input type="text" id="mac" name="mac" class="form-control" placeholder="MAC Address" required=""
                    autofocus="" value="99:AF:00:12:12:12">
@@ -33,16 +33,4 @@
         </div>
     </div>
 </div>
-
-<div class="clearfix">
-    <div class="centered">
-        <canvas id="map-canvas" width="960" height="360" class="map-canvas centered"></canvas>
-    </div>
-</div>
-
-<script language="JavaScript">
-    $(document).ready(function() {
-        run("2d", "map-canvas", enableControls=false);
-    });
-</script>
 {% end %}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .beta import Beta
+from .averages import Averages
 from .consecutive import ConsecutiveChain
 from .full_lin_reg_data import FullLinRegDataChain
 from .local_lin_reg_data import LocalLinRegDataChain

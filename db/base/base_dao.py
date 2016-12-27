@@ -25,8 +25,8 @@ class BaseDAO(object, metaclass=ABCMeta):
     def find(self, query=None, **kwargs):
         return list(map(self.from_db_object, self.collection.find(query, **kwargs)))
 
-    def all(self):
-        return self.find(query={})
+    def all(self, **kwargs):
+        return self.find(query={}, **kwargs)
 
     def count(self, query=None):
         return self.collection.count(query)

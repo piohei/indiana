@@ -9,6 +9,11 @@ body {
   max-width: 330px;
 }
 
+.text-holder {
+  padding: 15px;
+  max-width: 500px;
+}
+
 
 .centered {
   margin: 0 auto;
@@ -63,5 +68,5 @@ ul.menu {
 
 ul.menu li {
   display: inline-block;
-  padding: 0px 15px;
+  padding: 0px 10px;
 }

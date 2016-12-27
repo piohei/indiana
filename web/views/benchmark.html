@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Benchmark: Collect Data{% end %}
+
+{% block container %}
+<div class="clearfix" id="benchmark">
+    <div class="col-sm-6">
+        <form class="centered control-holder">
+            <h1>Benchmark: Collect Data</h1>
+            <h2>MAC</h2>
+            <label for="mac" class="sr-only">MAC Address</label>
+            <input type="text" id="mac" name="mac" class="form-control" placeholder="MAC Address" required=""
+                   autofocus="" value="99:AF:00:12:12:12">
+            <h2>Location</h2>
+            <label for="x" class="sr-only">X</label>
+            <input type="text" id="x" name="x" class="form-control" placeholder="X" required="" value="0" onchange="benchmark.reloadLocation()">
+            <label for="y" class="sr-only">Y</label>
+            <input type="text" id="y" name="y" class="form-control" placeholder="Y" required="" value="0" onchange="benchmark.reloadLocation()">
+            <label for="z" class="sr-only">Z</label>
+            <input type="text" id="z" name="z" class="form-control" placeholder="Z" required="" value="-2" disabled="disabled" >
+            <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
+                    onclick="benchmark.post()">Send benchmark
+            </button>
+            <button id="delete_btn" type="button" class="btn btn-lg btn-danger btn-block"
+                    onclick="benchmark.delete()">End benchmark
+            </button>
+
+        </form>
+    </div>
+
+    <div class="col-sm-6">
+        <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
+        <div class="control-holder centered">
+            <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="benchmark.getStatus()">
+            Get status
+            </button>
+            <button id="end_status_btn" type="button" class="btn btn-lg btn-danger btn-block"
+                onclick="benchmark.endStatus()" disabled="disabled">End status
+            </button>
+            <button id="clear_log_btn" type="button" class="btn btn-lg btn-warning btn-block"
+                onclick="benchmark.clearLog()">Clear log
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix">
+    <div class="centered">
+        <canvas id="map-canvas" width="960" height="360" class="map-canvas centered"></canvas>
+    </div>
+</div>
+
+
+<script language="JavaScript">
+    $(document).ready(function() {
+        run("2d", "map-canvas", enableControls=false, zoom=0.9);
+    });
+</script>
+{% end %}

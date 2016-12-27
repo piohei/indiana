@@ -2,7 +2,7 @@ import {Logger} from './../helpers/logger'
 
 export class PositionUpdater {
     constructor(host, port) {
-        this.dataUrl = `ws://${host}:${port}/position`;
+        this.dataUrl = `ws://${host}:${port}/ws/position`;
         this.logger = new Logger("result");
     }
 

@@ -5,8 +5,8 @@ from positioning.links.base import Base
 
 class Collector(Base, metaclass=ABCMeta):
     @abstractmethod
-    def to_fingertip(self, sample):
+    def to_fingerprint(self, sample):
         pass
 
     def calculate(self, samples, **kwargs):
-        return {"fingertips": list(map(self.to_fingertip, samples))}
+        return {"fingerprints": list(map(self.to_fingerprint, samples))}

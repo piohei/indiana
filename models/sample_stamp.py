@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from exception import SampleException
+from models.exception import SampleException
 
 from .base.base_db_model import BaseModel
 

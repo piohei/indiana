@@ -4,14 +4,17 @@ from tornado_json import schema
 from tornado_json.exceptions import APIError, api_assert
 from tornado_json.requesthandlers import APIHandler
 
-from exception import DBException, SampleException
-from helpers.utils import correct_mac
+from db.base.db_exception import DBException
 from models import APData, Mac, RSSI, Time, Signal
 
 
 class APDataHandler(APIHandler):
     def initialize(self, ap_data_dao):
         self.ap_data_dao = ap_data_dao
+
+    def options(self):
+        self.set_status(204)
+        self.finish()
 
     @schema.validate(input_schema={
         'type': 'object',
@@ -43,12 +46,12 @@ class APDataHandler(APIHandler):
         try:
             ap_datas = []
 
-            router_mac = Mac(correct_mac(self.body['apMac']))
+            router_mac = Mac.correct(self.body['apMac'])
             signal = Signal(band='2.4', channel=self.body['band'])
             created_at = Time(int(self.body['time']))
 
             for item in self.body['data']:
-                device_mac = Mac(correct_mac(item['clientMac']))
+                device_mac = Mac.correct(item['clientMac'])
                 rssis = {}
                 if item.get('rss1') is not None:
                     rssis['1'] = RSSI(float(item['rss1']))
@@ -68,8 +71,6 @@ class APDataHandler(APIHandler):
 
             for ap_data in ap_datas:
                 self.ap_data_dao.save(ap_data)
-        except SampleException as e:
-            raise APIError(400, e.message)
         except DBException as e:
             raise APIError(500, e.message)
         return 'ok'

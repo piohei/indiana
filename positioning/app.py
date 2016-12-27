@@ -5,13 +5,14 @@ from collections import defaultdict
 from threading import RLock
 
 from db import APDataDAO, SampleStampDAO, AccessPointDAO, PositionDAO
-from herald import Publisher
+from messaging import Publisher
 from models import Time, Position, Mac
 from positioning.engine import Engine
 
 
 class App:
-    def __init__(self, engine_config):
+    def __init__(self, engine_config, engine_id):
+        self.id = engine_id
         self.global_lock = RLock()
 
         self.ap_data_dao = APDataDAO()
@@ -29,6 +30,10 @@ class App:
         strategy_config = engine_config.get("strategy_config", {})
         self.engine = Engine(strategy, daos, strategy_config)
         self.publisher = Publisher("positions")
+
+        self.query = {"device_mac": {"$regex": engine_config["instances"][self.id]["filter"]}}
+        self.interval = engine_config["interval"]
+        self.fetch_seconds = engine_config["fetch_seconds"]
 
     def start_engine(self):
         start = time.perf_counter()
@@ -62,12 +67,12 @@ class App:
 
     def fetch_measures(self):
         end = Time()
-        start = Time(end.millis - 30 * 1000)
-        apdatas = self.ap_data_dao.get_for_time_range(start, end, asc=False)
+        start = Time(end.millis - self.fetch_seconds * 1000)
+        apdatas = self.ap_data_dao.get_for_time_range(start, end, asc=False, query=self.query)
         measures = self.make_measures(apdatas)
         return measures
 
     def run(self):
         while True:
-            time.sleep(5)
+            time.sleep(self.interval)
             self.locate()

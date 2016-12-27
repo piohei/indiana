@@ -1,21 +1,24 @@
 import requests
 
 from config import config
-from helpers.utils import raw_mac
-from models import Time
+from models import Time, Mac
 
 
 class ApiJSON(object):
-    API_URL = config["ap_data"]["host"] + ":" + str(config["ap_data"]["port"]) + str(config["ap_data"]["endpoint"])
+    AP_DATA_LISTENER_IDX = config["simulator"]["ap_data_listener_index"]
+    HOST = config["ap_data"][AP_DATA_LISTENER_IDX]["host"]
+    PORT = str(config["ap_data"][AP_DATA_LISTENER_IDX]["port"])
+    ENDPOINT = str(config["ap_data"][AP_DATA_LISTENER_IDX]["endpoint"])
+    API_URL = HOST + ":" + PORT + ENDPOINT
 
     def __init__(self, db_obj, mac=None):
         self.__dict__.update({
             "data": [
                 {
-                    "clientMac": raw_mac(db_obj["device_mac"]) if mac is None else raw_mac(mac)
+                    "clientMac": Mac.raw(db_obj["device_mac"] if mac is None else mac)
                 }
             ],
-            "apMac": raw_mac(db_obj["router_mac"]),
+            "apMac": Mac.raw(db_obj["router_mac"]),
             "time": db_obj["created_at"],
             "band": db_obj["signal"]["channel"]
         })

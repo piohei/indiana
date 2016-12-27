@@ -3,7 +3,7 @@
 from pymongo import MongoClient
 
 from config import config
-from exception import DBException
+from db.base.db_exception import DBException
 
 
 class Collection(object):
@@ -33,4 +33,9 @@ class Collection(object):
     def insert(self, obj_dictionary):
         return self.assert_acknowledged(
                 self.collection.insert_one(obj_dictionary)
+        )
+
+    def clear(self):
+        return self.assert_acknowledged(
+            self.collection.delete_many({})
         )

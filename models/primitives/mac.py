@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import re
-from helpers.utils import mac_regexp
 
 
 class Mac(object):
+    REGEXP = r'^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$'
+
     def __init__(self, mac):
         if type(mac) != str:
             raise ValueError('Argument mac must be string')
-        if re.search("^{}$".format(mac_regexp()), mac) is None:
+        if re.search(self.REGEXP, mac) is None:
             raise ValueError('Argument mac must be valid mac')
 
         self.mac = mac.lower()
@@ -23,3 +24,11 @@ class Mac(object):
 
     def __hash__(self):
         return hash(self.mac)
+
+    @classmethod
+    def correct(cls, mac):
+        return cls(':'.join([mac[i:i+2].lower() for i in range(0, len(mac), 2)]))
+
+    @staticmethod
+    def raw(mac):
+        return mac.replace(":", "").upper()

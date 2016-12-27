@@ -1,5 +1,4 @@
-from helpers.utils import functional_add
-from positioning.entities import Fingertip
+from positioning.entities import Fingerprint
 from positioning.links.collect.collector import Collector
 
 
@@ -12,7 +11,7 @@ class Permutations(Collector):
             partial_results = self.permutate(source_dict, tail)
             apdatas = source_dict[ap_mac]
             return [
-                functional_add(ap_mac, apdata.rssis, partial)
+                self.functional_add(ap_mac, apdata.rssis, partial)
                 for apdata in apdatas
                 for partial in partial_results
                 ]
@@ -20,6 +19,12 @@ class Permutations(Collector):
     def permutations_for_macs(self, macs_to_rssis):
         return self.permutate(macs_to_rssis, macs_to_rssis.keys())
 
-    def to_fingertip(self, sample):
+    def to_fingerprint(self, sample):
         permutations = self.permutations_for_macs(sample.ap_data_by_mac)
-        return Fingertip(sample.location(), permutations)
+        return Fingerprint(sample.location(), permutations)
+
+    @staticmethod
+    def functional_add(key, value, dictionary):
+        new = dict(dictionary)
+        new[key] = value
+        return new

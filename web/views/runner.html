@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Benchmark: Runner{% end %}
+
+{% block container %}
+<div class="clearfix" id="runner">
+    <div class="col-sm-6">
+        <form class="centered control-holder">
+            <h1>Benchmark: Runner</h1>
+            <button id="post_btn" type="button" class="btn btn-lg btn-primary btn-block"
+                    onclick="runner.post()">Run benchmark
+            </button>
+            <button id="delete_btn" type="button" class="btn btn-lg btn-danger btn-block"
+                    onclick="runner.delete()">Terminate benchmark
+            </button>
+            <button id="status_btn" type="button" class="btn btn-lg btn-info btn-block" onclick="runner.getStatus()">
+                Get status
+            </button>
+
+        </form>
+    </div>
+
+    <div class="col-sm-6">
+        <textarea class="centered" id="result" rows="20" cols="50" readonly="readonly"></textarea>
+        <div class="control-holder centered">
+            <button id="clear_log_btn" type="button" class="btn btn-lg btn-warning btn-block"
+                onclick="runner.clearLog()">Clear log
+            </button>
+        </div>
+    </div>
+</div>
+{% end %}

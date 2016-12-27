@@ -19,7 +19,7 @@ class AccessPointDAO(BaseDAO):
             ),
             mac=Mac(db_object["mac"]),
             active=bool(db_object["active"]),
-            _id=db_object["_id"]
+            _id=db_object.get("_id")
         )
 
     def to_db_object(self, ap):

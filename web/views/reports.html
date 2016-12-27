@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block subtitle %}Benchmark: Reports{% end %}
+
+{% block container %}
+<div class="clearfix">
+    <div class="col-md-2">&nbsp;</div>
+    <div class="col-md-8"><h1>Benchmark: Reports</h1></div>
+    <div class="col-md-2">&nbsp;</div>
+</div>
+<div class="clearfix" id="reports">
+
+</div>
+
+<script language="JavaScript">
+    $(document).ready(function() {
+        reports.fetch("reports")
+    });
+</script>
+{% end %}

@@ -1,33 +1,12 @@
-export class Floor extends THREE.Mesh {
-  constructor(vertices, color="#ffffff") {
-    var geometry = _generateGeometry(vertices);
-    var material = _generateMaterial(color);
+import {FloorPolygon} from './floorPolygon'
 
-    super(geometry, material);
-  }
-}
+export class Floor {
 
-// Theese are class private functions
-function _generateGeometry(vertices) {
-  var floorShape = new THREE.Shape();
+    constructor(floor_data) {
+        this.polygons = floor_data.map(polygon_data => new FloorPolygon(polygon_data.polygon, polygon_data.color))
+    }
 
-  floorShape.moveTo(
-      vertices[vertices.length - 1].x,
-      vertices[vertices.length - 1].y
-  );
-
-  vertices.forEach(function(vertex) {
-      floorShape.lineTo(vertex.x, -1 * vertex.y);
-  });
-
-  var geometry = new THREE.ShapeGeometry(floorShape);
-  geometry.translate(0, 0, -0.1);
-
-  return geometry;
-}
-
-function _generateMaterial(color) {
-  return new THREE.MeshBasicMaterial({
-      color: color
-  });
+    getPolygons() {
+        return this.polygons
+    }
 }

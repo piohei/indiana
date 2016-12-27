@@ -1,4 +1,4 @@
-import {Floor as Floor2D} from './2d/floor'
+import {FloorPolygon as Floor2D} from './2d/floorPolygon'
 import {Wall as Wall2D} from './2d/wall'
 import {Router as Router2D} from './2d/router'
 import {Sample as Sample2D} from './2d/sample'
