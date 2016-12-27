@@ -12,6 +12,10 @@ class APDataHandler(APIHandler):
     def initialize(self, ap_data_dao):
         self.ap_data_dao = ap_data_dao
 
+    def options(self):
+        self.set_status(204)
+        self.finish()
+
     @schema.validate(input_schema={
         'type': 'object',
         'properties': {
